@@ -7,6 +7,8 @@ public class TocTest {
 	public void newTest(){
 		System.out.println("!!!");
 		
-		as
+		
+		
+		
 	}
 }
