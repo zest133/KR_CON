@@ -6,5 +6,7 @@ public class TocTest {
 	@Test
 	public void newTest(){
 		System.out.println("!!!");
+		
+		as
 	}
 }
