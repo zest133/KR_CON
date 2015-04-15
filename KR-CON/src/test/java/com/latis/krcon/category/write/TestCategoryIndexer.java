@@ -27,18 +27,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.*;
+
+
+
 import com.latis.krcon.category.dto.CategoryDTO;
 
 
-//@ContextConfiguration(locations="/test-applicationContext.xml")
-//@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestCategoryIndexer {
 
 	
 	private Directory dir = null;
 	
-//	@Autowired
-	private WhitespaceAnalyzer whitespaceAnalyer = new WhitespaceAnalyzer(Version.LUCENE_36);
+	@Autowired
+	private WhitespaceAnalyzer whitespaceAnalyer;
+	
+	@Autowired
+	private StandardAnalyzer standardAynalyzer;
+	
 	private IndexWriter writer;
 	
 	
@@ -65,7 +79,7 @@ public class TestCategoryIndexer {
 		String path = "D:/dev/categoryIndex";
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
-				whitespaceAnalyer);
+				standardAynalyzer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
@@ -95,11 +109,18 @@ public class TestCategoryIndexer {
 		
 		dto2 = new CategoryDTO();
 		dto2.setCategory("Basic");
-		dto2.setFileName("introduction.htm");
+		dto2.setFileName("pt01.html");
 		dto2.setFullPath("/Basic/Introduction");
 		dto2.setIndex(1);
 		dto2.setSequence(0);
 		dto2.setTitle("Introduction");
+		
+//		dto1 = mock(CategoryDTO.class);
+//		when(dto1.getCategory()).thenReturn("Basic");
+//		when(dto1.getFileName()).thenReturn("introduction.htm");
+//		when(dto1.getFullPath()).thenReturn("Basic");
+//		when(dto1.getIndex()).thenReturn(1);
+//		when(dto1.getSequence()).thenReturn(0);
 	}
 	
 	
@@ -121,8 +142,8 @@ public class TestCategoryIndexer {
 	
 	public void addDocument(CategoryDTO dto){
 		try {
-			Document doc = convetDocument(dto);
-			writer.addDocument(doc);
+//			Document doc = convetDocument(dto);
+			writer.addDocument(dto.convetDocument());
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -140,36 +161,36 @@ public class TestCategoryIndexer {
 		}
 	}
 	
-	public Document convetDocument(CategoryDTO dto) {
-		// TODO Auto-generated method stub
-		
-		
-		Document doc = new Document();
-//		NumericField createdAt = new NumericField("createdAt",Field.Store.YES,true);
-//		createdAt.setLongValue(this.getCreatedAt());		
-//		doc.add(createdAt);		
-	
-		
-		NumericField index = new NumericField("index",Field.Store.YES,true);
-		index.setIntValue(dto.getIndex());		
-		doc.add(index);		
-		
-	
-		
-		
-		doc.add(new Field("title",dto.getTitle(),Field.Store.YES,Field.Index.ANALYZED));
-		doc.add(new Field("filename", dto.getFileName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-		doc.add(new Field("category",dto.getCategory(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-		doc.add(new Field("fullPath",dto.getFullPath(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-		
-		NumericField sequence = new NumericField("sequence",Field.Store.YES,true);
-		sequence.setIntValue(dto.getIndex());		
-		doc.add(sequence);
-//		doc.add(new Field("sequence",this.getId(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-		return doc;
-		
-		
-	}
+//	public Document convetDocument(CategoryDTO dto) {
+//		// TODO Auto-generated method stub
+//		
+//		
+//		Document doc = new Document();
+////		NumericField createdAt = new NumericField("createdAt",Field.Store.YES,true);
+////		createdAt.setLongValue(this.getCreatedAt());		
+////		doc.add(createdAt);		
+//	
+//		
+//		NumericField index = new NumericField("index",Field.Store.YES,true);
+//		index.setIntValue(dto.getIndex());		
+//		doc.add(index);		
+//		
+//	
+//		
+//		
+//		doc.add(new Field("title",dto.getTitle(),Field.Store.YES,Field.Index.ANALYZED));
+//		doc.add(new Field("filename", dto.getFileName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+//		doc.add(new Field("category",dto.getCategory(),Field.Store.YES,Field.Index.NOT_ANALYZED));
+//		doc.add(new Field("fullPath",dto.getFullPath(),Field.Store.YES,Field.Index.NOT_ANALYZED));
+//		
+//		NumericField sequence = new NumericField("sequence",Field.Store.YES,true);
+//		sequence.setIntValue(dto.getIndex());		
+//		doc.add(sequence);
+////		doc.add(new Field("sequence",this.getId(),Field.Store.YES,Field.Index.NOT_ANALYZED));
+//		return doc;
+//		
+//		
+//	}
 	
 	@Test
 	public void testAddDocument() throws CorruptIndexException, IOException{

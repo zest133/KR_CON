@@ -8,15 +8,26 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<util:constant id="LUCENE_VERSION"
 		static-field="org.apache.lucene.util.Version.LUCENE_36" />
-	<bean id="WhitespaceAnalyzer" class="org.apache.lucene.analysis.WhitespaceAnalyzer">
+	<bean id="whitespaceAnalyzer" class="org.apache.lucene.analysis.WhitespaceAnalyzer">
 		<constructor-arg ref="LUCENE_VERSION" />
 	</bean>
-	<bean id="EnglishAnalyzer" class="org.apache.lucene.analysis.en.EnglishAnalyzer">
+	<bean id="standardAnalyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
 		<constructor-arg ref="LUCENE_VERSION" />
 	</bean>
-	<bean id="KoreanAnalyzer" class="org.apache.lucene.analysis.kr.KoreanAnalyzer">
+	<bean id="keywordAnalyzer" class="org.apache.lucene.analysis.KeywordAnalyzer">
+	</bean>
+	<bean id="englishAnalyzer" class="org.apache.lucene.analysis.en.EnglishAnalyzer">
+		<constructor-arg ref="LUCENE_VERSION" />
+	</bean>
+	<bean id="koreanAnalyzer" class="org.apache.lucene.analysis.kr.KoreanAnalyzer">
 		<constructor-arg ref="LUCENE_VERSION" />
 	</bean>	
+	
+	<bean class="com.latis.krcon.category.write.CategoryIndexer" id="CategoryIndexer" scope="prototype" >
+	</bean>
+	
+	<bean class="com.latis.krcon.category.write.fileread.CSVFileReader" id="csvFileReader" >
+	</bean>
 	
 	
 	

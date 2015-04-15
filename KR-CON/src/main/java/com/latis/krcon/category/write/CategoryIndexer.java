@@ -2,27 +2,25 @@ package com.latis.krcon.category.write;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.NumericField;
-import org.apache.lucene.document.Field.TermVector;
 import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.TieredMergePolicy;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.latis.krcon.category.dto.CategoryDTO;
+import com.latis.krcon.category.write.fileread.CSVFileReader;
 
 
 
@@ -32,8 +30,18 @@ public class CategoryIndexer {
 	private Directory dir = null;
 	
 	@Autowired
-	private WhitespaceAnalyzer whitespaceAnalyer;
+	private StandardAnalyzer standardAnalyer;
 	private IndexWriter writer;
+	
+	
+//	@Autowired
+//	private CSVFileReader csvFileReader;
+	
+	private String indexPath = null;
+	
+	public CategoryIndexer(){
+		
+	}
 	
 	
 	/**
@@ -46,13 +54,15 @@ public class CategoryIndexer {
 	MERGE_POLICY	=	true
 	MAX_MERGE_AT_ONCE	=	300
 	SEGMENTS_PER_TIER	=	100
+	 * @throws IOException 
+	 * @throws InterruptedException 
 	 */
 	
 	
-	public CategoryIndexer(String indexPath) throws IOException, InterruptedException{
+	public void init() throws IOException, InterruptedException{
 		dir = FSDirectory.open(new File(indexPath));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
-				whitespaceAnalyer);
+				standardAnalyer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
@@ -71,28 +81,18 @@ public class CategoryIndexer {
 		lockChecker();
 		writer = new IndexWriter(dir, iwc);
 	}
-
 	
-	
-	
-	
-	public void makeIndex(){
-		
-	}
-
-
-
-	public void lockChecker() throws IOException, InterruptedException {
+	private void lockChecker() throws IOException, InterruptedException {
 		while(dir.fileExists(IndexWriter.WRITE_LOCK_NAME)){
-//			dir.clearLock(name);
-//			System.out.println("lock");
 			Thread.sleep(10);
 		}
 	}
 	
-	public void addDocument(CategoryDTO dto){
+	public void addDocument(ArrayList<CategoryDTO> dtoList){
 		try {
-			writer.addDocument(convetDocument(dto));
+			for(CategoryDTO dto : dtoList){
+				writer.addDocument(dto.convetDocument());
+			}
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,35 +110,14 @@ public class CategoryIndexer {
 		}
 	}
 	
-	public Document convetDocument(CategoryDTO dto) {
-		// TODO Auto-generated method stub
-		
-		
-		Document doc = new Document();
-//		NumericField createdAt = new NumericField("createdAt",Field.Store.YES,true);
-//		createdAt.setLongValue(this.getCreatedAt());		
-//		doc.add(createdAt);		
 	
-		
-		NumericField index = new NumericField("index",Field.Store.YES,true);
-		index.setIntValue(dto.getIndex());		
-		doc.add(index);		
-		
-	
-		
-		
-		doc.add(new Field("title",dto.getTitle(),Field.Store.YES,Field.Index.ANALYZED));
-		doc.add(new Field("filename", dto.getFileName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-		doc.add(new Field("category",dto.getCategory(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-		doc.add(new Field("fullPath",dto.getFullPath(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-		
-		NumericField sequence = new NumericField("sequence",Field.Store.YES,true);
-		index.setIntValue(dto.getIndex());		
-		doc.add(sequence);
-//		doc.add(new Field("sequence",this.getId(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-		return doc;
-		
-		
+
+	public String getIndexPath() {
+		return indexPath;
+	}
+
+	public void setIndexPath(String indexPath) {
+		this.indexPath = indexPath;
 	}
 	
 	
