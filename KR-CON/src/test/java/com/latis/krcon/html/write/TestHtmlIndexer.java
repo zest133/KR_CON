@@ -1,7 +1,9 @@
-package com.latis.krcon.category.write;
+package com.latis.krcon.html.write;
+
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -20,45 +22,43 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
+import org.apache.tika.exception.TikaException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.xml.sax.SAXException;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Matchers.*;
-
-
-
-import com.latis.krcon.category.dto.CategoryDTO;
+import com.latis.krcon.html.dto.HtmlDTO;
+import com.latis.krcon.html.parser.HtmlWithTikaParser;
 
 
 @ContextConfiguration(locations={
 		"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
 		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TestCategoryIndexer {
+public class TestHtmlIndexer {
 
 	
 	private Directory dir = null;
 	
-	@Autowired
-	private WhitespaceAnalyzer whitespaceAnalyer;
+//	@Autowired
+//	private WhitespaceAnalyzer whitespaceAnalyer;
 	
 	@Autowired
 	private StandardAnalyzer standardAynalyzer;
 	
 	private IndexWriter writer;
 	
+	@Autowired
+	private HtmlWithTikaParser htmlParser;
 	
-	private CategoryDTO dto = null;
-	private CategoryDTO dto1 = null;
-	private CategoryDTO dto2 = null;
+	
+	
+	
 	
 	/**
 	 * 
@@ -76,7 +76,7 @@ public class TestCategoryIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "D:/dev/categoryIndex";
+		String path = "D:/dev/HtmlIndex";
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);
@@ -98,39 +98,10 @@ public class TestCategoryIndexer {
 		lockChecker();
 		writer = new IndexWriter(dir, iwc);
 		
-		dto = new CategoryDTO();
-		dto.setCategory("root");
-		dto.setFileName("pt01.htm");
-		dto.setFullPath("/Basic/");
-		dto.setIndex(0);
-		dto.setSequence(0);
-		dto.setTitle("Basic");
-		
-		
-		dto2 = new CategoryDTO();
-		dto2.setCategory("Basic");
-		dto2.setFileName("pt01.html");
-		dto2.setFullPath("/Basic/Introduction");
-		dto2.setIndex(1);
-		dto2.setSequence(0);
-		dto2.setTitle("Introduction");
-		
-//		dto1 = mock(CategoryDTO.class);
-//		when(dto1.getCategory()).thenReturn("Basic");
-//		when(dto1.getFileName()).thenReturn("introduction.htm");
-//		when(dto1.getFullPath()).thenReturn("Basic");
-//		when(dto1.getIndex()).thenReturn(1);
-//		when(dto1.getSequence()).thenReturn(0);
-	}
-	
-	
-
-	
-	public void makeIndex(){
 		
 	}
-
-
+	
+	
 
 	public void lockChecker() throws IOException, InterruptedException {
 		while(dir.fileExists(IndexWriter.WRITE_LOCK_NAME)){
@@ -140,8 +111,13 @@ public class TestCategoryIndexer {
 		}
 	}
 	
-	public void addDocument(CategoryDTO dto){
+	public void addDocument(HtmlDTO dto){
 		try {
+			
+			
+			
+			
+			
 //			Document doc = convetDocument(dto);
 			writer.addDocument(dto.convetDocument());
 		} catch (CorruptIndexException e) {
@@ -193,9 +169,24 @@ public class TestCategoryIndexer {
 //	}
 	
 	@Test
-	public void testAddDocument() throws CorruptIndexException, IOException{
-		addDocument(dto);
-		addDocument(dto2);
+	public void testAddDocument() throws CorruptIndexException, IOException, SAXException, TikaException{
+		htmlParser.setPath("html/");
+		File[] files = htmlParser.getFileList();
+		for(File file : files){
+			ArrayList<String> list =  htmlParser.htmlParser(file.getPath());
+			HtmlDTO dto = new HtmlDTO();
+			dto.setFilename(file.getPath());
+			dto.setTitle(list.get(0));
+			dto.setText(list.get(1));
+			
+			addDocument(dto);
+		}
+		writer.commit();
+		
+	}
+	
+	@After
+	public void tearDown() throws CorruptIndexException, IOException{
 		writeClose();
 	}
 	

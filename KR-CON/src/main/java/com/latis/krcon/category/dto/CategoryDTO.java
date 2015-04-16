@@ -1,5 +1,9 @@
 package com.latis.krcon.category.dto;
 
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericField;
+
 public class CategoryDTO {
 
 	
@@ -45,6 +49,28 @@ public class CategoryDTO {
 	}
 	public void setIndex(int index) {
 		this.index = index;
+	}
+	
+	public Document convetDocument() {
+		// TODO Auto-generated method stub
+		
+		Document doc = new Document();
+		NumericField index = new NumericField("index",Field.Store.YES,true);
+		index.setIntValue(this.getIndex());		
+		doc.add(index);		
+		
+		
+		doc.add(new Field("title",this.getTitle(),Field.Store.YES,Field.Index.ANALYZED));
+		doc.add(new Field("filename", this.getFileName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+		doc.add(new Field("category",this.getCategory(),Field.Store.YES,Field.Index.NOT_ANALYZED));
+		doc.add(new Field("fullPath",this.getFullPath(),Field.Store.YES,Field.Index.NOT_ANALYZED));
+		
+		NumericField sequence = new NumericField("sequence",Field.Store.YES,true);
+		sequence.setIntValue(this.getSequence());		
+		doc.add(sequence);
+		return doc;
+		
+		
 	}
 	
 }
