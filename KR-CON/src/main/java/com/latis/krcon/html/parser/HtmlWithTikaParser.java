@@ -1,11 +1,8 @@
 package com.latis.krcon.html.parser;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -17,7 +14,6 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.apache.tika.sax.LinkContentHandler;
 import org.apache.tika.sax.TeeContentHandler;
 import org.apache.tika.sax.ToHTMLContentHandler;
-import org.junit.Test;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
