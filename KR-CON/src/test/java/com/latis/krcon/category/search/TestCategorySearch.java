@@ -42,7 +42,7 @@ import static org.mockito.Matchers.*;
 public class TestCategorySearch {
 
 	
-	private String dirPath = "C:/categoryindex";
+	private String dirPath = "D:/dev/categoryIndex";
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
