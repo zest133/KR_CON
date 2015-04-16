@@ -42,6 +42,8 @@ import com.latis.krcon.html.parser.HtmlWithTikaParser;
 public class TestHtmlIndexer {
 
 	
+	
+	
 	private Directory dir = null;
 	
 //	@Autowired
