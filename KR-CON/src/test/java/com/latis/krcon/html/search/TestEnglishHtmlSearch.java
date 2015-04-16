@@ -13,6 +13,7 @@ import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
@@ -242,16 +243,20 @@ public class TestEnglishHtmlSearch {
 	public void displayTokens(TokenStream stream) throws IOException {
 
 		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
+		OffsetAttribute offset = stream.addAttribute(OffsetAttribute.class);
 		while (stream.incrementToken()) {
 
-			System.out.print("[" + term.toString() + "] "); // B
+			
+			System.out.print("[" + term.toString() +offset.startOffset() + "->" +
+					offset.endOffset() + "] "); // B
+			
 		}
 		System.out.println();
 	}
 
 	public void displayTokens(Analyzer analyzer, String text)
 			throws IOException {
-		displayTokens(analyzer.tokenStream("contents", new StringReader(text))); // A
+		displayTokens(analyzer.tokenStream("text", new StringReader(text))); // A
 	}
 
 }
