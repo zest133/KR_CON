@@ -5,22 +5,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.NumericField;
-import org.apache.lucene.document.Field.TermVector;
 import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.TieredMergePolicy;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.tika.exception.TikaException;
 import org.junit.After;
@@ -36,10 +28,9 @@ import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
 
 
-@ContextConfiguration(locations={
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
-		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 public class TestHtmlIndexer {
 
 	
@@ -56,7 +47,8 @@ public class TestHtmlIndexer {
 	@Autowired
 	private HtmlWithTikaParser htmlParser;
 	
-	
+	@Autowired
+	private TieredMergePolicy tmp;
 	
 	
 	
@@ -76,22 +68,22 @@ public class TestHtmlIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "D:/dev/HtmlIndex";
+		String path = "F:/data/wilson/KR/index";
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-		TieredMergePolicy tmp = new TieredMergePolicy();
-		Integer maxMergeAtOnce = 300;
-		Integer segmentsPerTier = 300;
-		if(maxMergeAtOnce != null){
-			tmp.setMaxMergeAtOnce(maxMergeAtOnce);
-		}
-		if(segmentsPerTier != null){
-			tmp.setSegmentsPerTier(segmentsPerTier);
-		}				
+//		TieredMergePolicy tmp = new TieredMergePolicy();
+//		Integer maxMergeAtOnce = 300;
+//		Integer segmentsPerTier = 300;
+//		if(maxMergeAtOnce != null){
+//			tmp.setMaxMergeAtOnce(maxMergeAtOnce);
+//		}
+//		if(segmentsPerTier != null){
+//			tmp.setSegmentsPerTier(segmentsPerTier);
+//		}				
 		iwc.setMergePolicy(tmp);
 		
 		

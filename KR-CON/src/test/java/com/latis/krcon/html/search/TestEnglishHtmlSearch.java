@@ -47,12 +47,11 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Matchers.*;
 
 @ContextConfiguration(locations = {
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
-		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml" })
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestEnglishHtmlSearch {
 
-	private String dirPath = "D:/dev/HtmlIndex";
+	private String dirPath = "F:/data/wilson/KR/index";
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
@@ -87,13 +86,14 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		// String andWordSearch = "Eco Driver Pack";
+		String andWordSearch = "Eco Driver Pack";
 		String orWordSearch = "Wireless network setup";
 		String exactWordSearch = "\"Eco Driver Pack\"";
 		String notWordSearch = "Wireless network setup";
 
 		try {
-			totalSearch(null, null, exactWordSearch, null,"D:\\dev\\git\\KR-CON\\KR-CON\\target\\test-classes\\html\\BABBADDG.htm", null);
+			totalSearch(null, null, exactWordSearch, null,
+					"D:\\dev\\git\\KR-CON\\KR-CON\\target\\test-classes\\html\\BABBADDG.htm", null);
 		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -37,8 +37,7 @@ import static org.mockito.Matchers.*;
 
 
 @ContextConfiguration(locations={
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
-		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCategorySearch {
 
