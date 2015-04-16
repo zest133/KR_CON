@@ -2,9 +2,6 @@ package com.latis.krcon.html.write;
 
 
 import java.io.File;
-asdgdaslgkjaskldgjaslkgjaslkgjaslkjgasdlkgjdasgklj
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 
