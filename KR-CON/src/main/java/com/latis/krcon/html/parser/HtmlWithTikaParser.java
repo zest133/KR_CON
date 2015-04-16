@@ -48,19 +48,22 @@ public class HtmlWithTikaParser {
 //				.getResourceAsStream(fileName);
 		FileInputStream input = new FileInputStream(new File(fileName));
 		
+		HtmlParser parser = new HtmlParser();
 		
 		LinkContentHandler linkHandler = new LinkContentHandler();
 		ContentHandler textHandler = new BodyContentHandler();
 		ToHTMLContentHandler toHTMLHandler = new ToHTMLContentHandler();
+		
 		TeeContentHandler teeHandler = new TeeContentHandler(linkHandler,
 				textHandler, toHTMLHandler);
+		
 		Metadata metadata = new Metadata();
 		ParseContext parseContext = new ParseContext();
-		HtmlParser parser = new HtmlParser();
+		
 		parser.parse(input, teeHandler, metadata, parseContext);
-		System.out.println("title:\n" + metadata.get("title"));
-//		System.out.println("links:\n" + linkHandler.getLinks());
-		System.out.println("text:\n" + textHandler.toString());
+//		System.out.println("title:\n" + metadata.get("title"));
+////		System.out.println("links:\n" + linkHandler.getLinks());
+//		System.out.println("text:\n" + textHandler.toString());
 
 //		System.out.println("html:\n" + toHTMLHandler.toString());
 		ArrayList<String> returnList = new ArrayList<String>();
