@@ -19,8 +19,7 @@ import com.latis.krcon.category.dto.CategoryDTO;
 
 
 @ContextConfiguration(locations={
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
-		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCSVFileReader {
 

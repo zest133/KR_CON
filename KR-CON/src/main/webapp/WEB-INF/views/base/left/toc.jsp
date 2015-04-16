@@ -112,15 +112,13 @@
 </div>
 <div class="header">
 	<div class="headerWrap">
-		
-			<form class="searchWrap" action="search.do" method="post">
-				<div class="search_from_valign">
-					<input id="searchinputbox" type="text" name="keyword">
-				</div>
-					<input id="searchLink" type="submit" title="Search" alt="Search" >
-					
-				
-			</form>
+
+		<form class="searchWrap" action="search.do" method="post">
+			<div class="search_from_valign">
+				<input id="searchinputbox" type="text" name="keyword">
+			</div>
+			<input id="searchLink" type="submit" title="Search" alt="Search">
+		</form>
 		<!-- 
 		<form class="searchform" action="search.do">
 			<input class="searchfield" type="text" 

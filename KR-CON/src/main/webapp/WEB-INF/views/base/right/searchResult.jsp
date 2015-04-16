@@ -6,9 +6,14 @@
 <div class="contents" style="padding-left: 270px;">
 	<div class="result">
 		<div class="enterKeyword">
-			<p>
-				Enter Keyword: <span>${searchKeyword}</span>
-			</p>
+			<c:if test="${searchKeyword == 'Advanced Search'}">
+				<p>${searchKeyword}</p>
+			</c:if>
+			<c:if test="${searchKeyword != 'Advanced Search'}">
+				<p>
+					Enter Keyword: <span>${searchKeyword}</span>
+				</p>
+			</c:if>
 		</div>
 		<div class="resultcount">
 			<p>Search Results: (${resultSize})</p>

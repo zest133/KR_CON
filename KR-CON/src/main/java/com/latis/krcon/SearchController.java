@@ -99,7 +99,5 @@ public class SearchController {
 		public void setResulttext(String resulttext) {
 			this.resulttext = resulttext;
 		}
-		
-		
 	}
 }

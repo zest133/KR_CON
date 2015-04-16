@@ -201,7 +201,7 @@ div.contents .resultcount p{margin:0px 0 20px 0; padding:0px; display: block; co
 div.contents .result {margin:0px 0 0 0; display: block;}
 div.contents .result_list{border-top:1px solid #dadada; }
 div.contents p.no_result{font-size: 16px; padding:30px 10px; border-top:1px solid #ccc; border-top:1px solid #ccc; }
-div.contents .filename {display: block; padding: 20px 10px 0px; background: url(images/sub0Bullet.png) no-repeat 13px 24px;}
+div.contents .filename {display: block; padding: 20px 10px 0px; background: 13px 24px;}
 div.contents .filename p {margin: 0 10px 0 0; color: #5A75A0;}
 div.contents .filename p a {color: #076eb0; font-size:21px;}
 div.contents .filename p a:visited {color:#9E9FA4;}
