@@ -75,7 +75,7 @@ public class TestCategoryIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "D:/dev/categoryIndex";
+		String path = "C:/categoryindex";
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);
