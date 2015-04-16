@@ -9,7 +9,8 @@ public class HtmlDTO {
 	private String title;
 	private String text;
 	private String filename;
-	
+	private String path;
+	private String html;
 	
 	
 	public String getFilename() {
@@ -31,6 +32,18 @@ public class HtmlDTO {
 		this.text = text;
 	}
 	
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public String getHtml() {
+		return html;
+	}
+	public void setHtml(String html) {
+		this.html = html;
+	}
 	public Document convetDocument() {
 		// TODO Auto-generated method stub
 		
@@ -39,6 +52,7 @@ public class HtmlDTO {
 		
 		doc.add(new Field("title",this.getTitle(),Field.Store.YES,Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS ));
 		doc.add(new Field("text", this.getText(), Field.Store.YES, Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS));
+		doc.add(new Field("html", this.getText(), Field.Store.YES, Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS));
 		doc.add(new Field("filename",this.filename,Field.Store.YES,Field.Index.NOT_ANALYZED));
 		
 		return doc;

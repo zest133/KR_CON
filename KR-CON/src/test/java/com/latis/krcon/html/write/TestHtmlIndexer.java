@@ -5,14 +5,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericField;
+import org.apache.lucene.document.Field.TermVector;
 import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.TieredMergePolicy;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.tika.exception.TikaException;
 import org.junit.After;
@@ -28,9 +36,9 @@ import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
 		"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestHtmlIndexer {
 
 	
@@ -68,7 +76,7 @@ public class TestHtmlIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "F:/data/wilson/KR/index";
+		String path = "D:/dev/HtmlIndex";
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);

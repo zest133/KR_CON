@@ -13,7 +13,6 @@ import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
@@ -52,7 +51,7 @@ import static org.mockito.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestEnglishHtmlSearch {
 
-	private String dirPath = "F:/data/wilson/KR/index";
+	private String dirPath = "D:/dev/HtmlIndex";
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
@@ -87,14 +86,13 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		String andWordSearch = "Eco Driver Pack";
+		// String andWordSearch = "Eco Driver Pack";
 		String orWordSearch = "Wireless network setup";
 		String exactWordSearch = "\"Eco Driver Pack\"";
 		String notWordSearch = "Wireless network setup";
 
 		try {
-			totalSearch(null, null, exactWordSearch, null,
-					"D:\\dev\\git\\KR-CON\\KR-CON\\target\\test-classes\\html\\BABBADDG.htm", null);
+			totalSearch(null, null, exactWordSearch, null,"D:\\dev\\git\\KR-CON\\KR-CON\\target\\test-classes\\html\\BABBADDG.htm", null);
 		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -243,20 +241,16 @@ public class TestEnglishHtmlSearch {
 	public void displayTokens(TokenStream stream) throws IOException {
 
 		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-		OffsetAttribute offset = stream.addAttribute(OffsetAttribute.class);
 		while (stream.incrementToken()) {
 
-			
-			System.out.print("[" + term.toString() +offset.startOffset() + "->" +
-					offset.endOffset() + "] "); // B
-			
+			System.out.print("[" + term.toString() + "] "); // B
 		}
 		System.out.println();
 	}
 
 	public void displayTokens(Analyzer analyzer, String text)
 			throws IOException {
-		displayTokens(analyzer.tokenStream("text", new StringReader(text))); // A
+		displayTokens(analyzer.tokenStream("contents", new StringReader(text))); // A
 	}
 
 }
