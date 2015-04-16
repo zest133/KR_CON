@@ -29,6 +29,9 @@
 	<bean class="com.latis.krcon.category.write.fileread.CSVFileReader" id="csvFileReader" >
 	</bean>
 	
+	<bean class="com.latis.krcon.html.parser.HtmlWithTikaParser" id="htmlParsingWithTika" >
+	</bean>
+	
 	
 	
 </beans>

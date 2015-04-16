@@ -54,7 +54,6 @@ public class CategoryDTO {
 	public Document convetDocument() {
 		// TODO Auto-generated method stub
 		
-		
 		Document doc = new Document();
 		NumericField index = new NumericField("index",Field.Store.YES,true);
 		index.setIntValue(this.getIndex());		
