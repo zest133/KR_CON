@@ -3,6 +3,7 @@ package com.latis.krcon.html.write;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -68,7 +69,8 @@ public class TestHtmlIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "F:/data/wilson/KR/index";
+		
+		String path = "C:/index";
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);

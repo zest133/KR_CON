@@ -51,7 +51,7 @@ import static org.mockito.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestEnglishHtmlSearch {
 
-	private String dirPath = "F:/data/wilson/KR/index";
+	private String dirPath = "C:/index";
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
