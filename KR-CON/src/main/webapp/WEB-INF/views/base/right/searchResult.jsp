@@ -1,19 +1,33 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script>
-
+	
 </script>
 
 <div class="contents" style="padding-left: 270px;">
 	<div class="result">
 		<div class="enterKeyword">
-			<p>Enter Keyword: <span></span></p>
+			<p>
+				Enter Keyword: <span>${searchKeyword}</span>
+			</p>
 		</div>
 		<div class="resultcount">
-			<p>Search Results: (4)</p>
+			<p>Search Results: (${resultSize})</p>
+		</div>
+		<div class="result_list">
+			<c:forEach items="${searchResult}" var="item">
+				<div class="filename">
+					<p>
+						<a href="#">${item.fileName}</a>
+					</p>
+				</div>
+				<div class="resulttext">
+					<p>${item.resulttext}</p>
+				</div>
+			</c:forEach>
 		</div>
 	</div>
 
-<!-- 
+	<!-- 
 	<div class="result">
 		<div class="enterKeyword">
 			<p>Enter Keyword: <span>blah blah</span></p>

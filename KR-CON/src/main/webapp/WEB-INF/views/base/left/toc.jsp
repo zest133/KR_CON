@@ -132,10 +132,3 @@
 		 -->
 	</div>
 </div>
-
-<script>
-	$("#searchLink").click(function() {
-		var searchObj = new Search();
-		searchObj.startSearch(false);
-	});
-</script>
