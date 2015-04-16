@@ -37,7 +37,7 @@ div.contents {  margin:90px 40px 40px 40px; display: block; max-width: 1000px;}
 .searchWrap {  width:180px; float: left; margin: 9px 20px;  height:32px; padding overflow:hidden;  background:url(images/search_bar.png) left no-repeat;  z-index:9999;}
 .searchWrap .search_from_valign { width:140px; height:22px; overflow:hidden; float:left; margin: 5px; }
 .searchWrap .search_from_valign input { height:22px; font-size: 14px; line-height:22px; color:#666; background:transparent; border:none; vertical-align:middle; text-indent: 10px; width: 140px; outline: none; }
-.searchWrap #searchLink {   display:block; width:30px; height:32px; overflow:hidden; float: left; background:url(images/search_btn.png) left;  text-indent: -9999px; }
+.searchWrap #searchLink {   display:block; width:30px; height:32px; overflow:hidden; float: left; background:url(images/search_btn.png) left;  text-indent: -9999px; border: none;}
 .searchWrap #searchLink:hover { background-position: right; }
 
 

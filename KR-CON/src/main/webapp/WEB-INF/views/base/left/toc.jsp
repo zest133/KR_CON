@@ -1,9 +1,7 @@
 <div id="tocDiv" style="overflow-x: hidden;">
 	<div class="empty"></div>
 	<div style="overflow-y: auto; overflow-x: hidden; height: 90%;">
-		<span class="tocContent">
-			<input type="button" value="1" id="button1">
-			<input type="button" value="1" id="button2">
+		<span class="tocContent"> <!-- 
 			<div class="level0" id="pt01"parent="">
 				<p></p>
 				<div class="closePic" onclick="subMenuHide('0_0', 'pt01')"></div>
@@ -109,18 +107,35 @@
 				<p></p>
 			</div>
 			<div id="contact_worldwide_child"></div></span>
+		 -->
 	</div>
 </div>
 <div class="header">
 	<div class="headerWrap">
-		<div class="searchWrap">
-			<div class="search_from_valign">
-				<input id="searchinputbox" type="text" name="keyword"
-					onkeydown="TextClick(event)">
-			</div>
-			<a id="searchLink" title="Search" alt="Search"
-				href="searchText_find.html" onclick="SetSearch(); return false;">
-				Search</a>
-		</div>
+		
+			<form class="searchWrap" action="search.do" method="post">
+				<div class="search_from_valign">
+					<input id="searchinputbox" type="text" name="keyword">
+				</div>
+					<input id="searchLink" type="submit" title="Search" alt="Search" >
+					
+				
+			</form>
+		<!-- 
+		<form class="searchform" action="search.do">
+			<input class="searchfield" type="text" 
+				value="Search..."
+				onfocus="if (this.value == 'Search...') {this.value = '';}"
+				onblur="if (this.value == '') {this.value = 'Search...';}" >
+			<input class="searchbutton" type="Submit" value="Search">
+		</form>
+		 -->
 	</div>
 </div>
+
+<script>
+	$("#searchLink").click(function() {
+		var searchObj = new Search();
+		searchObj.startSearch(false);
+	});
+</script>

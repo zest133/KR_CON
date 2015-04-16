@@ -1,4 +1,19 @@
+
+<script>
+
+</script>
+
 <div class="contents" style="padding-left: 270px;">
+	<div class="result">
+		<div class="enterKeyword">
+			<p>Enter Keyword: <span></span></p>
+		</div>
+		<div class="resultcount">
+			<p>Search Results: (4)</p>
+		</div>
+	</div>
+
+<!-- 
 	<div class="result">
 		<div class="enterKeyword">
 			<p>Enter Keyword: <span>blah blah</span></p>
@@ -43,4 +58,5 @@
 			</div>
 		</div>
 	</div>
+ -->
 </div>

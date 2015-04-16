@@ -9,13 +9,20 @@
 
 				<li><label>any of these words</label> <input type="text" id="searchOR"></li>
 
-				<li><label>this exact word or phrase</label> <input type="text" id="searchExactParam"></li>
+				<li><label>this exact word or phrase</label> <input type="text" id="searchExact"></li>
 
 				<li><label>none of these words</label> <input type="text" id="searchNON"></li>
 			</ul>
 			
-			<input type="button" value="Search" id="searchButton">
+			<input type="button" value="Search" id="advabcedSearchButton">
 
 		</div>
 	</div>
 </div>
+
+<script>
+$("#advabcedSearchButton").click(function(){
+	var searchObj = new Search();
+	searchObj.startSearch(true);
+});
+</script>
