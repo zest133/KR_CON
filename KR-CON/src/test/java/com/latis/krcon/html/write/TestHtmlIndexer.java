@@ -35,6 +35,7 @@ public class TestHtmlIndexer {
 
 	
 	
+	
 	private Directory dir = null;
 	
 //	@Autowired
