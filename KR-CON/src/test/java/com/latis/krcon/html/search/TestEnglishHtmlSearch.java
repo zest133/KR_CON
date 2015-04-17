@@ -1,5 +1,6 @@
 package com.latis.krcon.html.search;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,10 +8,12 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharReader;
 import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.kr.KoreanAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -30,6 +33,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.apache.lucene.search.highlight.NullFragmenter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
@@ -105,13 +109,13 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		 String andWordSearch = "Eco Driver Pack";
+//		String andWordSearch = "Advance Driver Pack";
 		String orWordSearch = "Wireless network setup";
-//		String exactWordSearch = "\"Eco Driver Pack\"";
+		String exactWordSearch = "\"Eco Driver Pack\"";
 		String notWordSearch = "Wireless network setup";
 
 		try {
-			totalSearch(andWordSearch, null, null, null,"BABBADDG.htm", null);
+			totalSearch(null, null, exactWordSearch, null,"BABBADDG.htm", null);
 		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,7 +135,6 @@ public class TestEnglishHtmlSearch {
 					englishAnalyzer).parse(andQueryStr); // #B
 			textBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
 			
-			andQueryStr = andAnalyze(andSearch, "html", englishAnalyzer);
 			andQuery = new QueryParser(Version.LUCENE_36, "html",
 					englishAnalyzer).parse(andQueryStr);
 			htmlBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
@@ -169,6 +172,10 @@ public class TestEnglishHtmlSearch {
 			Query notAndQuery = new QueryParser(Version.LUCENE_36, "text",
 					englishAnalyzer).parse(notAndQueryStr);
 			textBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+			
+			notAndQuery = new QueryParser(Version.LUCENE_36, "html",
+					englishAnalyzer).parse(notAndQueryStr);
+			
 			htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
 		}
 
@@ -182,43 +189,61 @@ public class TestEnglishHtmlSearch {
 			hits = searcher.search(textBooleanQuery, searcher.maxDoc());
 		}
 		
-//		ArrayList<Document> docList = dumpHits(searcher, hits, "text");
-//		dumpHits(searcher, hits, "html");
-		// assertEquals("or", 3, hits.totalHits);
-		
-		FastVectorHighlighter highlighter = getHighlighter();
-		QueryParser parser = new QueryParser(Version.LUCENE_36, "html", standardAnalyzer);
-		Query query = parser.parse(htmlBooleanQuery.toString());
-		FieldQuery fieldQuery = highlighter.getFieldQuery(query);
-		FileWriter writer = new FileWriter("d:/test.html");
 		for (ScoreDoc scoreDoc : hits.scoreDocs) {
-			String snippet = highlighter.getBestFragment(
-					fieldQuery, searcher.getIndexReader(), 
-					scoreDoc.doc, "html", -1); // #E
-			if (snippet != null) {
-				writer.write(scoreDoc.doc + " : " + snippet + "<br/>\n");
-			}
+			
+			Document doc = searcher.doc(scoreDoc.doc);
+			String result = highlightHTML(englishAnalyzer, doc.get("html"), htmlBooleanQuery, "html");
+			System.out.println(result);
 		}
-		writer.close();
-//		SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("<span class=\"highlight\">", "</span>");
-//		for (ScoreDoc scoreDoc : hits.scoreDocs) {
-//			Document doc = searcher.doc(scoreDoc.doc);
-//			TokenStream tokens = standardAnalyzer.tokenStream("html", new StringReader(doc.get("html")));
-//			
-//			QueryScorer scorer = new QueryScorer(htmlBooleanQuery, "html"); // #4
-//			
-//			Highlighter highlighter = new Highlighter(formatter, scorer);
-//			
-//			highlighter.setTextFragmenter( // #6
-//					new SimpleSpanFragmenter(scorer)); // #6
-//
-//			String result = // #7
-//			highlighter.getBestFragments(tokens, doc.get("html"), 3, ""); 
-//			
-//			System.out.println(result);
-//			
-//		}
+		
+		
+		
 	}
+	
+	
+	
+	public static String highlightHTML(Analyzer analyzer, String htmlText, Query query,String field) {
+
+		QueryScorer scorer = new QueryScorer(query, field);
+
+		SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(
+				"<span class=\"highlight\">", "</span>");
+
+		Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
+
+		// Nullfragmenter for highlighting entire document.
+//		StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
+		highlighter.setTextFragmenter(new NullFragmenter());
+
+		StringReader strReader = new StringReader(htmlText);
+		TokenStream ts = analyzer.tokenStream(
+				"f",
+				new HTMLStripCharFilter(CharReader.get(strReader
+						.markSupported() ? strReader : new BufferedReader(
+						strReader))));
+
+		try {
+
+			String highlightedText = highlighter.getBestFragment(ts, htmlText);
+
+			if (highlightedText != null) {
+
+				return highlightedText;
+
+			}
+
+		} catch (Exception e) {
+
+			// LOG.error("Failed to highlight query string "+ query, e);
+
+		}
+
+		return htmlText;
+
+	}
+	
+	
+	
 	
 	public static String getHighlightedField(Query query, Analyzer analyzer, String fieldName, String fieldValue) throws IOException, InvalidTokenOffsetsException {
 	    Formatter formatter = new SimpleHTMLFormatter("<span class=\"MatchedText\">", "</span>");
@@ -277,8 +302,8 @@ public class TestEnglishHtmlSearch {
 		buffer.append("(");
 		while (stream.incrementToken()) { // C
 			buffer.append("+");
-			buffer.append(field);
-			buffer.append(":");
+//			buffer.append(field);
+//			buffer.append(":");
 			buffer.append(term.toString()).append("* ");
 		}
 		buffer.append(")");
@@ -302,8 +327,8 @@ public class TestEnglishHtmlSearch {
 		buffer.append("(");
 		while (stream.incrementToken()) { // C
 			// buffer.append("");
-			buffer.append(field);
-			buffer.append(":");
+//			buffer.append(field);
+//			buffer.append(":");
 			buffer.append(term.toString()).append("* ");
 		}
 		buffer.append(")");

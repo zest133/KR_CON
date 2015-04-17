@@ -80,15 +80,6 @@ public class TestHtmlIndexer {
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-//		TieredMergePolicy tmp = new TieredMergePolicy();
-//		Integer maxMergeAtOnce = 300;
-//		Integer segmentsPerTier = 300;
-//		if(maxMergeAtOnce != null){
-//			tmp.setMaxMergeAtOnce(maxMergeAtOnce);
-//		}
-//		if(segmentsPerTier != null){
-//			tmp.setSegmentsPerTier(segmentsPerTier);
-//		}				
 		iwc.setMergePolicy(tmp);
 		
 		
@@ -111,11 +102,6 @@ public class TestHtmlIndexer {
 	public void addDocument(HtmlDTO dto){
 		try {
 			
-			
-			
-			
-			
-//			Document doc = convetDocument(dto);
 			writer.addDocument(dto.convetDocument());
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
