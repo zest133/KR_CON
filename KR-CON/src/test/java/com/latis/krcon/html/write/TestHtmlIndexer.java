@@ -4,6 +4,7 @@ package com.latis.krcon.html.write;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
@@ -125,6 +126,16 @@ public class TestHtmlIndexer {
 	public void testAddDocument() throws CorruptIndexException, IOException, SAXException, TikaException{
 		htmlParser.setPath("html/");
 		File[] files = htmlParser.getFileList();
+		
+		HashMap<String, String> pathMap = new HashMap<String, String>();
+		pathMap.put("BABBADDG.htm","solars");
+		pathMap.put("BABBHHBB.htm","solars/chapter1");
+		pathMap.put("BABBIBJC.htm","solars/chapter2");
+		pathMap.put("BABCHFBC.htm", "solars/chapter1/partA");
+		pathMap.put("BABCIGEH.htm","solars/chapter2/partA");
+		
+		HashMap<String, String> levelMap = new HashMap<String, String>();
+		levelMap.put(key, value)
 		for(File file : files){
 			ArrayList<String> list =  htmlParser.htmlParser(file.getPath());
 			HtmlDTO dto = new HtmlDTO();
