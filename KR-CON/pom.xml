@@ -258,7 +258,7 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
-				
+
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -270,7 +270,7 @@
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
-					
+
 				</configuration>
 			</plugin>
 			<plugin>
@@ -294,10 +294,30 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					
+
 				</configuration>
 
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>src/main/resources-${environment}</directory>
+							<includes>
+								<include>*.properties</include>
+								<include>*.xml</include>
+							</includes>
+							<targetPath>WEB-INF/config</targetPath>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
 		</plugins>
 		<resources>
 			<resource>
@@ -355,7 +375,7 @@
 			<id>shin</id>
 			<properties>
 				<environment>shin</environment>
-			</properties>			
+			</properties>
 		</profile>
 		<profile>
 			<id>ci</id>
