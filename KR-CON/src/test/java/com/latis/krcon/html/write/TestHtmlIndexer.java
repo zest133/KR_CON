@@ -131,36 +131,6 @@ public class TestHtmlIndexer {
 		}
 	}
 	
-//	public Document convetDocument(CategoryDTO dto) {
-//		// TODO Auto-generated method stub
-//		
-//		
-//		Document doc = new Document();
-////		NumericField createdAt = new NumericField("createdAt",Field.Store.YES,true);
-////		createdAt.setLongValue(this.getCreatedAt());		
-////		doc.add(createdAt);		
-//	
-//		
-//		NumericField index = new NumericField("index",Field.Store.YES,true);
-//		index.setIntValue(dto.getIndex());		
-//		doc.add(index);		
-//		
-//	
-//		
-//		
-//		doc.add(new Field("title",dto.getTitle(),Field.Store.YES,Field.Index.ANALYZED));
-//		doc.add(new Field("filename", dto.getFileName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-//		doc.add(new Field("category",dto.getCategory(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-//		doc.add(new Field("fullPath",dto.getFullPath(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-//		
-//		NumericField sequence = new NumericField("sequence",Field.Store.YES,true);
-//		sequence.setIntValue(dto.getIndex());		
-//		doc.add(sequence);
-////		doc.add(new Field("sequence",this.getId(),Field.Store.YES,Field.Index.NOT_ANALYZED));
-//		return doc;
-//		
-//		
-//	}
 	
 	@Test
 	public void testAddDocument() throws CorruptIndexException, IOException, SAXException, TikaException{
@@ -169,10 +139,12 @@ public class TestHtmlIndexer {
 		for(File file : files){
 			ArrayList<String> list =  htmlParser.htmlParser(file.getPath());
 			HtmlDTO dto = new HtmlDTO();
-			dto.setFilename(file.getPath());
+			
+			dto.setFilename(file.getName());
+			dto.setPath(file.getPath());
 			dto.setTitle(list.get(0));
 			dto.setText(list.get(1));
-			
+			dto.setHtml(list.get(2));
 			addDocument(dto);
 		}
 		writer.commit();

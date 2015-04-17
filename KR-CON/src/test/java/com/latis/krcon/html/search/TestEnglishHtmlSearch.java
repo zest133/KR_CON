@@ -1,6 +1,7 @@
 package com.latis.krcon.html.search;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.kr.KoreanAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
@@ -25,6 +27,19 @@ import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.highlight.Formatter;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
+import org.apache.lucene.search.vectorhighlight.BaseFragmentsBuilder;
+import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
+import org.apache.lucene.search.vectorhighlight.FieldQuery;
+import org.apache.lucene.search.vectorhighlight.FragListBuilder;
+import org.apache.lucene.search.vectorhighlight.FragmentsBuilder;
+import org.apache.lucene.search.vectorhighlight.ScoreOrderFragmentsBuilder;
+import org.apache.lucene.search.vectorhighlight.SimpleFragListBuilder;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -86,13 +101,13 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		// String andWordSearch = "Eco Driver Pack";
+		 String andWordSearch = "Eco Driver Pack";
 		String orWordSearch = "Wireless network setup";
-		String exactWordSearch = "\"Eco Driver Pack\"";
+//		String exactWordSearch = "\"Eco Driver Pack\"";
 		String notWordSearch = "Wireless network setup";
 
 		try {
-			totalSearch(null, null, exactWordSearch, null,"D:\\dev\\git\\KR-CON\\KR-CON\\target\\test-classes\\html\\BABBADDG.htm", null);
+			totalSearch(andWordSearch, null, null, null,"BABBADDG.htm", null);
 		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,13 +118,19 @@ public class TestEnglishHtmlSearch {
 			String non, String fileNameFilter, String categoryFilter)
 			throws Exception {
 
-		BooleanQuery bq = new BooleanQuery();
+		BooleanQuery textBooleanQuery = new BooleanQuery();
+		BooleanQuery htmlBooleanQuery = new BooleanQuery();
 
 		if (andSearch != null && andSearch != "") {
 			String andQueryStr = andAnalyze(andSearch, "text", englishAnalyzer);
 			Query andQuery = new QueryParser(Version.LUCENE_36, "text",
 					englishAnalyzer).parse(andQueryStr); // #B
-			bq.add(andQuery, BooleanClause.Occur.MUST);
+			textBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
+			
+			andQueryStr = andAnalyze(andSearch, "html", englishAnalyzer);
+			andQuery = new QueryParser(Version.LUCENE_36, "html",
+					englishAnalyzer).parse(andQueryStr);
+			htmlBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
 		}
 
 		if (orSearch != null && orSearch != "") {
@@ -117,7 +138,12 @@ public class TestEnglishHtmlSearch {
 
 			Query orQuery = new QueryParser(Version.LUCENE_36, "text",
 					englishAnalyzer).parse(orQueryStr);
-			bq.add(orQuery, BooleanClause.Occur.MUST);
+			textBooleanQuery.add(orQuery, BooleanClause.Occur.MUST);
+			
+			
+			orQuery = new QueryParser(Version.LUCENE_36, "html",
+					englishAnalyzer).parse(orQueryStr);
+			htmlBooleanQuery.add(orQuery, BooleanClause.Occur.MUST);
 
 		}
 
@@ -126,15 +152,20 @@ public class TestEnglishHtmlSearch {
 			CustomQueryParser queryParser = new CustomQueryParser(
 					Version.LUCENE_36, "text", standardAnalyzer);
 			Query exactQuery = queryParser.parse(exact);
-			bq.add(exactQuery, BooleanClause.Occur.MUST);
-
+			textBooleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
+			
+			queryParser = new CustomQueryParser(
+					Version.LUCENE_36, "html", standardAnalyzer);
+			exactQuery = queryParser.parse(exact);
+			htmlBooleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
 		}
 
 		if (non != null && non != "") {
 			String notAndQueryStr = orAnalyze(non, "text", englishAnalyzer);
 			Query notAndQuery = new QueryParser(Version.LUCENE_36, "text",
 					englishAnalyzer).parse(notAndQueryStr);
-			bq.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+			textBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+			htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
 		}
 
 		
@@ -142,16 +173,58 @@ public class TestEnglishHtmlSearch {
 		ChainedFilter chain =  htmlFilter.getFilter();
 		TopDocs hits = null;
 		if(chain != null){
-			hits = searcher.search(bq,chain, searcher.maxDoc());
+			hits = searcher.search(textBooleanQuery,chain, searcher.maxDoc());
 		}else{
-			hits = searcher.search(bq, searcher.maxDoc());
+			hits = searcher.search(textBooleanQuery, searcher.maxDoc());
 		}
 		
-		dumpHits(searcher, hits, "text");
+//		ArrayList<Document> docList = dumpHits(searcher, hits, "text");
+//		dumpHits(searcher, hits, "html");
 		// assertEquals("or", 3, hits.totalHits);
-
+		
+		FastVectorHighlighter highlighter = getHighlighter();
+		QueryParser parser = new QueryParser(Version.LUCENE_36, "html", standardAnalyzer);
+		Query query = parser.parse(htmlBooleanQuery.toString());
+		FieldQuery fieldQuery = highlighter.getFieldQuery(query);
+		FileWriter writer = new FileWriter("d:/test.html");
+		for (ScoreDoc scoreDoc : hits.scoreDocs) {
+			String snippet = highlighter.getBestFragment(
+					fieldQuery, searcher.getIndexReader(), 
+					scoreDoc.doc, "html", -1); // #E
+			if (snippet != null) {
+				writer.write(scoreDoc.doc + " : " + snippet + "<br/>\n");
+			}
+		}
+		writer.close();
+//		SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("<span class=\"highlight\">", "</span>");
+//		for (ScoreDoc scoreDoc : hits.scoreDocs) {
+//			Document doc = searcher.doc(scoreDoc.doc);
+//			TokenStream tokens = standardAnalyzer.tokenStream("html", new StringReader(doc.get("html")));
+//			
+//			QueryScorer scorer = new QueryScorer(htmlBooleanQuery, "html"); // #4
+//			
+//			Highlighter highlighter = new Highlighter(formatter, scorer);
+//			
+//			highlighter.setTextFragmenter( // #6
+//					new SimpleSpanFragmenter(scorer)); // #6
+//
+//			String result = // #7
+//			highlighter.getBestFragments(tokens, doc.get("html"), 3, ""); 
+//			
+//			System.out.println(result);
+//			
+//		}
 	}
 
+	public static String getHighlightedField(Query query, Analyzer analyzer, String fieldName, String fieldValue) throws IOException, InvalidTokenOffsetsException {
+	    Formatter formatter = new SimpleHTMLFormatter("<span class=\"MatchedText\">", "</span>");
+	    QueryScorer queryScorer = new QueryScorer(query);
+	    Highlighter highlighter = new Highlighter(formatter, queryScorer);
+	    highlighter.setTextFragmenter(new SimpleSpanFragmenter(queryScorer, Integer.MAX_VALUE));
+	    highlighter.setMaxDocCharsToAnalyze(Integer.MAX_VALUE);
+	    return highlighter.getBestFragment(analyzer, fieldName, fieldValue);
+	}
+	
 	public ArrayList<Document> categorySearchData(String field,
 			String searchWord) {
 		ArrayList<Document> returnList = null;
@@ -251,6 +324,16 @@ public class TestEnglishHtmlSearch {
 	public void displayTokens(Analyzer analyzer, String text)
 			throws IOException {
 		displayTokens(analyzer.tokenStream("contents", new StringReader(text))); // A
+	}
+	
+	public FastVectorHighlighter getHighlighter() {
+		FragListBuilder fragListBuilder = new SimpleFragListBuilder(); // #F
+		FragmentsBuilder fragmentBuilder = // #F
+		new ScoreOrderFragmentsBuilder( // #F
+				BaseFragmentsBuilder.COLORED_PRE_TAGS, // #F
+				BaseFragmentsBuilder.COLORED_POST_TAGS); // #F
+		return new FastVectorHighlighter(true, true, // #F
+				fragListBuilder, fragmentBuilder); // #F
 	}
 
 }
