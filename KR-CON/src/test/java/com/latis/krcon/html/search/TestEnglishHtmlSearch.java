@@ -53,7 +53,7 @@ import static org.mockito.Matchers.*;
 public class TestEnglishHtmlSearch {
 
 //	private String dirPath = "D:/dev/HtmlIndex";
-	@Value("${categoryindex}")
+	@Value("${fileindex}")
 	private String dirPath;
 	
 	private IndexSearcher searcher;

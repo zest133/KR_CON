@@ -258,6 +258,7 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
+				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -269,6 +270,7 @@
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+					
 				</configuration>
 			</plugin>
 			<plugin>
@@ -291,9 +293,22 @@
 						<version>2.18.1</version>
 					</dependency>
 				</dependencies>
+				<configuration>
+					
+				</configuration>
 
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources-${environment}</directory>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources-${environment}</directory>
+			</testResource>
+		</testResources>
 	</build>
 
 	<reporting>
@@ -340,6 +355,12 @@
 			<id>ci</id>
 			<properties>
 				<environment>ci</environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>song</id>
+			<properties>
+				<environment>song</environment>
 			</properties>
 		</profile>
 	</profiles>
