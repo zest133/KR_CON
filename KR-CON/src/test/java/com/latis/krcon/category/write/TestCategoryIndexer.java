@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -32,8 +33,6 @@ import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Matchers.*;
-
-
 
 import com.latis.krcon.category.dto.CategoryDTO;
 
@@ -59,6 +58,8 @@ public class TestCategoryIndexer {
 	private CategoryDTO dto1 = null;
 	private CategoryDTO dto2 = null;
 	
+	@Value("${categoryindex}")
+	private String path;
 	/**
 	 * 
 	 * #open mode (create,append,create_or_append)
@@ -75,7 +76,7 @@ public class TestCategoryIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "D:/dev/categoryIndex";
+		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);

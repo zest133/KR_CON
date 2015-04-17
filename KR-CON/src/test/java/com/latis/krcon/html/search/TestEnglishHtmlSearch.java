@@ -49,6 +49,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mvel2.sh.command.basic.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -66,7 +67,10 @@ import static org.mockito.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestEnglishHtmlSearch {
 
-	private String dirPath = "D:/dev/HtmlIndex";
+//	private String dirPath = "D:/dev/HtmlIndex";
+	@Value("${fileindex}")
+	private String dirPath;
+	
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;

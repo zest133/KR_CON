@@ -1,7 +1,6 @@
 package com.latis.krcon.html.search;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -25,12 +24,11 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-import org.junit.After;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
+
 
 
 public class EnglishHtmlSearch {

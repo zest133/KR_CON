@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xml.sax.SAXException;
@@ -52,7 +53,8 @@ public class TestHtmlIndexer {
 	@Autowired
 	private TieredMergePolicy tmp;
 	
-	
+	@Value("${fileindex}")
+	private String path;
 	
 	/**
 	 * 
@@ -70,7 +72,8 @@ public class TestHtmlIndexer {
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
-		String path = "D:/dev/HtmlIndex";
+//		String path = "D:/dev/HtmlIndex";
+		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
 				standardAynalyzer);
