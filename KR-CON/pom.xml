@@ -291,10 +291,11 @@
 						<version>2.18.1</version>
 					</dependency>
 				</dependencies>
-				
+
 			</plugin>
 		</plugins>
 	</build>
+
 	<reporting>
 		<plugins>
 			<!-- EMMA Coverage Reporting -->
@@ -333,4 +334,14 @@
 
 
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>ci</id>
+			<properties>
+				<environment>ci</environment>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>

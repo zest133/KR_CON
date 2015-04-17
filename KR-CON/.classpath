@@ -6,6 +6,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="src/test/resources-song"/>
+	<classpathentry kind="src" path="src/main/resources-song"/>
+	<classpathentry kind="src" path="src/main/resources-ci"/>
+	<classpathentry kind="src" path="src/test/resources-ci"/>
 	<classpathentry including="**/*.java" kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
