@@ -4,7 +4,7 @@
 		<h1>Advanced Search</h1>
 
 		<div>
-			<form action="advSearch.do" method="post">
+			<form action="adv_search.do" method="post">
 			<ul class="searchOptions">
 				<li><label>all these words</label> <input type="text" id="searchAND" name="searchAND"></li>
 

@@ -85,7 +85,6 @@ public class TestEnglishHtmlSearch {
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
 		searcher = new IndexSearcher(reader);
-
 	}
 
 	@After
