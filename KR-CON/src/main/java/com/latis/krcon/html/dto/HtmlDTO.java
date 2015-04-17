@@ -6,11 +6,13 @@ import org.apache.lucene.document.Field.TermVector;
 
 public class HtmlDTO {
 
-	private String title;
+	private String title; //not index
 	private String text;
 	private String filename;
 	private String path;
 	private String html;
+	private int index;
+	private int levelSequen;
 	
 	
 	public String getFilename() {
