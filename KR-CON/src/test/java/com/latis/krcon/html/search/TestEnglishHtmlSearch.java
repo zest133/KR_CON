@@ -133,6 +133,7 @@ public class TestEnglishHtmlSearch {
 			String andQueryStr = andAnalyze(andSearch, "text", englishAnalyzer);
 			Query andQuery = new QueryParser(Version.LUCENE_36, "text",
 					englishAnalyzer).parse(andQueryStr); // #B
+			
 			textBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
 			
 			andQuery = new QueryParser(Version.LUCENE_36, "html",
@@ -202,7 +203,7 @@ public class TestEnglishHtmlSearch {
 	
 	
 	
-	public static String highlightHTML(Analyzer analyzer, String htmlText, Query query,String field) {
+	public String highlightHTML(Analyzer analyzer, String htmlText, Query query,String field) {
 
 		QueryScorer scorer = new QueryScorer(query, field);
 
@@ -212,7 +213,6 @@ public class TestEnglishHtmlSearch {
 		Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
 
 		// Nullfragmenter for highlighting entire document.
-//		StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
 		highlighter.setTextFragmenter(new NullFragmenter());
 
 		StringReader strReader = new StringReader(htmlText);
@@ -240,18 +240,6 @@ public class TestEnglishHtmlSearch {
 
 		return htmlText;
 
-	}
-	
-	
-	
-	
-	public static String getHighlightedField(Query query, Analyzer analyzer, String fieldName, String fieldValue) throws IOException, InvalidTokenOffsetsException {
-	    Formatter formatter = new SimpleHTMLFormatter("<span class=\"MatchedText\">", "</span>");
-	    QueryScorer queryScorer = new QueryScorer(query);
-	    Highlighter highlighter = new Highlighter(formatter, queryScorer);
-	    highlighter.setTextFragmenter(new SimpleSpanFragmenter(queryScorer, Integer.MAX_VALUE));
-	    highlighter.setMaxDocCharsToAnalyze(Integer.MAX_VALUE);
-	    return highlighter.getBestFragment(analyzer, fieldName, fieldValue);
 	}
 	
 	public ArrayList<Document> categorySearchData(String field,
@@ -355,14 +343,6 @@ public class TestEnglishHtmlSearch {
 		displayTokens(analyzer.tokenStream("contents", new StringReader(text))); // A
 	}
 	
-	public FastVectorHighlighter getHighlighter() {
-		FragListBuilder fragListBuilder = new SimpleFragListBuilder(); // #F
-		FragmentsBuilder fragmentBuilder = // #F
-		new ScoreOrderFragmentsBuilder( // #F
-				BaseFragmentsBuilder.COLORED_PRE_TAGS, // #F
-				BaseFragmentsBuilder.COLORED_POST_TAGS); // #F
-		return new FastVectorHighlighter(true, true, // #F
-				fragListBuilder, fragmentBuilder); // #F
-	}
+	
 
 }
