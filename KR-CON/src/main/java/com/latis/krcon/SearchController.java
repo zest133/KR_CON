@@ -23,10 +23,10 @@ public class SearchController {
 		 * Search
 		 */
 		
-		List<TestDTO> searchResult = new ArrayList<TestDTO>();
+		List<TestSearchDTO> searchResult = new ArrayList<TestSearchDTO>();
 		
-		TestDTO testDTO1 = new TestDTO();
-		TestDTO testDTO2 = new TestDTO();
+		TestSearchDTO testDTO1 = new TestSearchDTO();
+		TestSearchDTO testDTO2 = new TestSearchDTO();
 		
 		testDTO1.setFileName("name1");
 		testDTO1.setResulttext("text1");
@@ -46,7 +46,7 @@ public class SearchController {
 		return "searchResult";
 	}
 	
-	@RequestMapping(value = "/advSearch.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/adv_search.do", method = RequestMethod.POST)
 	public String advancedSearch(Model model, @RequestParam String searchAND,
 			@RequestParam String searchOR, @RequestParam String searchExact, @RequestParam String searchNON){
 //		String searchKeyword = keyword;
@@ -60,10 +60,10 @@ public class SearchController {
 		 * Search
 		 */
 		
-		List<TestDTO> searchResult = new ArrayList<TestDTO>();
+		List<TestSearchDTO> searchResult = new ArrayList<TestSearchDTO>();
 		
-		TestDTO testDTO1 = new TestDTO();
-		TestDTO testDTO2 = new TestDTO();
+		TestSearchDTO testDTO1 = new TestSearchDTO();
+		TestSearchDTO testDTO2 = new TestSearchDTO();
 		
 		testDTO1.setFileName("name1");
 		testDTO1.setResulttext("text1");
@@ -83,7 +83,7 @@ public class SearchController {
 		return "searchResult";
 	}
 	
-	public class TestDTO{
+	public class TestSearchDTO{
 		public String fileName;
 		public String resulttext;
 		
