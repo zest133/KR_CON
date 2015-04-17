@@ -219,7 +219,7 @@ public class TestEnglishHtmlSearch {
 //			
 //		}
 	}
-
+	
 	public static String getHighlightedField(Query query, Analyzer analyzer, String fieldName, String fieldValue) throws IOException, InvalidTokenOffsetsException {
 	    Formatter formatter = new SimpleHTMLFormatter("<span class=\"MatchedText\">", "</span>");
 	    QueryScorer queryScorer = new QueryScorer(query);
