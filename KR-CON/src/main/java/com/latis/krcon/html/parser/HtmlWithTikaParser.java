@@ -47,7 +47,7 @@ public class HtmlWithTikaParser {
 		HtmlParser parser = new HtmlParser();
 		
 		LinkContentHandler linkHandler = new LinkContentHandler();
-		ContentHandler textHandler = new BodyContentHandler();
+		ContentHandler textHandler = new BodyContentHandler(-1);
 		ToHTMLContentHandler toHTMLHandler = new ToHTMLContentHandler();
 		
 		TeeContentHandler teeHandler = new TeeContentHandler(linkHandler,
@@ -65,6 +65,7 @@ public class HtmlWithTikaParser {
 		ArrayList<String> returnList = new ArrayList<String>();
 		returnList.add(metadata.get("title"));
 		returnList.add(textHandler.toString());
+		returnList.add(toHTMLHandler.toString());
 		
 		return returnList;
 	}

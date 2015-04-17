@@ -52,7 +52,8 @@ public class HtmlDTO {
 		
 		doc.add(new Field("title",this.getTitle(),Field.Store.YES,Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS ));
 		doc.add(new Field("text", this.getText(), Field.Store.YES, Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS));
-		doc.add(new Field("html", this.getText(), Field.Store.YES, Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS));
+		doc.add(new Field("html", this.getHtml(), Field.Store.YES, Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS));
+		doc.add(new Field("path", this.getPath(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 		doc.add(new Field("filename",this.filename,Field.Store.YES,Field.Index.NOT_ANALYZED));
 		
 		return doc;

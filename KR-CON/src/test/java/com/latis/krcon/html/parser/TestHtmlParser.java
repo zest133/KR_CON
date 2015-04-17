@@ -45,7 +45,7 @@ public class TestHtmlParser {
 		// BufferedInputStream bis = new BufferedInputStream(new
 		// FileInputStream(new File()) )
 		LinkContentHandler linkHandler = new LinkContentHandler();
-		ContentHandler textHandler = new BodyContentHandler();
+		ContentHandler textHandler = new BodyContentHandler(-1);
 		ToHTMLContentHandler toHTMLHandler = new ToHTMLContentHandler();
 		TeeContentHandler teeHandler = new TeeContentHandler(linkHandler,
 				textHandler, toHTMLHandler);
