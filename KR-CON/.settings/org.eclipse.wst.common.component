@@ -3,11 +3,11 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
 		<wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources-ci"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources-ci"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources-song"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources-song"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources-shin"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources-song"/>
 		<property name="java-output-path" value="target/classes"/>
         <property name="context-root" value="krcon"/>
 	</wb-module>

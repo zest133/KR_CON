@@ -352,6 +352,12 @@
 
 	<profiles>
 		<profile>
+			<id>shin</id>
+			<properties>
+				<environment>shin</environment>
+			</properties>			
+		</profile>
+		<profile>
 			<id>ci</id>
 			<properties>
 				<environment>ci</environment>
