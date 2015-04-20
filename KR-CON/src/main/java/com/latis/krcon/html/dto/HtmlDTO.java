@@ -7,6 +7,25 @@ import org.apache.lucene.document.Field.TermVector;
 
 public class HtmlDTO {
 
+	/**
+	 *  "0000.00e0.1530.0005": {
+               // "DepthLevel": "2",
+               // "ChildList": {},
+                "FilePath": "7733.en.7733.html",
+                "CATEGORY_TEXT_ID": "7733",
+                //"CATEGORY_TREE": "0000.00e0.1530.0005",
+                "CATEGORY_ID": "4271",
+                "LOCALE_KEY": "en",
+                "CATEGORY_TITLE": "Amendment Status",
+                "CATEGORY_DESC": "SOLAS 1974",
+                "DATA_XML": "",
+                "DATA_XML_TRANSFORM": null,
+                "DATA_TEXT": null
+            },
+	 */
+	
+	
+	
 	private String categoryTree; // category tree struct
 	private int categoryTextId;	
 	private int categoryId;	
