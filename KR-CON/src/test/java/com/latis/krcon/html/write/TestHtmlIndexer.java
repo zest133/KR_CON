@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
@@ -126,26 +127,59 @@ public class TestHtmlIndexer {
 	public void testAddDocument() throws CorruptIndexException, IOException, SAXException, TikaException{
 		htmlParser.setPath("html/");
 		File[] files = htmlParser.getFileList();
+		//    
+		//   
+		HashMap<String, String[]> map = new HashMap<String, String[]>();
+		//full path, level seq, total index, parent path, category, lang  
+		//KRCON>KR-CON (English)>SOLAS 1974 ***>SOLAS 2015 Consolidated Edition>
+		//filename SOLAS 1974 Convention Articles.
+		//KRCON>KR-CON (English)>SOLAS 1974 ***>SOLAS 2015 Consolidated Edition>
+		//filename article1.
+		///KRCON>KR-CON (English)>SOLAS 1974 ***>
+		map.put("CACBHJFH.htm",new String[]{"solars/chapter1/partA/item1","0","5","solars/chapter1/partA"});
+		map.put("BABBHHBB.htm",new String[]{"solars/chapter1","0","1","solars","chapter1", "en"});
+		map.put("CACDHBHA.htm",new String[]{"solars/chapter1/partA/item1","1","6","solars/chapter1/partA"});
+		map.put("CACDIAHF.htm",new String[]{"solars/chapter1/partA/item1","2","7","solars/chapter1/partA"});
+		map.put("CACEFCHJ.htm",new String[]{"solars/chapter1/partA/item1","3","8","solars/chapter1/partA"});
+		map.put("CACFAFBG.htm",new String[]{"solars/chapter1/partA/item1","4","9","solars/chapter1/partA"});
 		
-		HashMap<String, String> pathMap = new HashMap<String, String>();
-		pathMap.put("BABBADDG.htm","solars");
-		pathMap.put("BABBHHBB.htm","solars/chapter1");
-		pathMap.put("BABBIBJC.htm","solars/chapter2");
-		pathMap.put("BABCHFBC.htm", "solars/chapter1/partA");
-		pathMap.put("BABCIGEH.htm","solars/chapter2/partA");
+		map.put("BABBADDG.htm",new String[]{"solars","0","0","null","solars", "en"} );
+		map.put("CACGJDIG.htm",new String[]{"solars/chapter2/partA/item2","2","12","solars/chapter2/partA"});
+		map.put("CACHBFHB.htm",new String[]{"solars/chapter2/partA/item2","3","13","solars/chapter2/partA"});
+		map.put("CACHDGFD.htm",new String[]{"solars/chapter2/partA/item2","4","14","solars/chapter2/partA"});
+		map.put("BABBIBJC.htm",new String[]{"solars/chapter2","1","2","solars", "chapter2","en"});
+		map.put("BABCHFBC.htm",new String[]{"solars/chapter1/partA","0","3","solars/chapter1,} );
+		map.put("BABCIGEH.htm",new String[]{"solars/chapter2/partA","0","4","solars/chapter2"});
 		
-		HashMap<String, String> levelMap = new HashMap<String, String>();
-		levelMap.put(key, value)
+		
+		map.put("CACFBJHD.htm",new String[]{"solars/chapter2/partA/item2","0","10","solars/chapter2/partA"});
+		map.put("CACFEGFG.htm",new String[]{"solars/chapter2/partA/item2","1","11","solars/chapter2/partA"});
+
+		
+		
 		for(File file : files){
 			ArrayList<String> list =  htmlParser.htmlParser(file.getPath());
-			HtmlDTO dto = new HtmlDTO();
+			Iterator<String> key =  map.keySet().iterator();
+			while(key.hasNext()){
+				String keyVal = key.next();
+				if(file.getName().equals(keyVal)){
+					String[] dataArr = map.get(keyVal);
+					HtmlDTO dto = new HtmlDTO();
+					
+					dto.setFilename(file.getName());
+					dto.setPath(dataArr[0]);
+					dto.setLevelSequence(Integer.parseInt(dataArr[1]));
+					dto.setIndex(Integer.parseInt(dataArr[2]));
+					dto.setTitle(list.get(0));
+					dto.setText(list.get(1));
+					dto.setHtml(list.get(2));
+					addDocument(dto);
+					break;
+				}
+				
+			}
 			
-			dto.setFilename(file.getName());
-			dto.setPath(file.getPath());
-			dto.setTitle(list.get(0));
-			dto.setText(list.get(1));
-			dto.setHtml(list.get(2));
-			addDocument(dto);
+			
 		}
 		writer.commit();
 		
