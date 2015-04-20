@@ -139,8 +139,8 @@ public class HtmlIndexer {
 		for(File file : files){
 			ArrayList<String> list =  htmlParser.htmlParser(file.getPath());
 			HtmlDTO dto = new HtmlDTO();
-			dto.setFilename(file.getPath());
-			dto.setTitle(list.get(0));
+//			dto.setFilename(file.getPath());
+//			dto.setTitle(list.get(0));
 			dto.setText(list.get(1));
 			
 			addDocument(dto);
