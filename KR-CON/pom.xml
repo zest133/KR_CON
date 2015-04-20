@@ -206,6 +206,14 @@
 			<version>1.9.12</version>
 		</dependency>
 
+		<!-- JSON Object -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20141113</version>
+		</dependency>
+
+
 		<!-- Mockito -->
 		<dependency>
 			<groupId>org.mockito</groupId>
