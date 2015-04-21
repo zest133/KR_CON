@@ -23,16 +23,13 @@
 		<constructor-arg ref="LUCENE_VERSION" />
 	</bean>	
 	
-	<bean class="com.latis.krcon.category.write.CategoryIndexer" id="CategoryIndexer" scope="prototype" >
-	</bean>
-	
-	<bean class="com.latis.krcon.category.write.fileread.CSVFileReader" id="csvFileReader" >
-	</bean>
-	
 	<bean class="com.latis.krcon.html.parser.HtmlWithTikaParser" id="htmlParsingWithTika" >
 	</bean>
 	
 	<bean class="com.latis.krcon.html.sort.HtmlSort" id="htmlSort" >
+	</bean>
+	
+	<bean class="com.latis.krcon.html.category.search.CategorySearch" id="categorySearch">
 	</bean>
 	
 	<bean class="org.apache.lucene.index.TieredMergePolicy" id="tieredMergePolicy" scope="prototype">
