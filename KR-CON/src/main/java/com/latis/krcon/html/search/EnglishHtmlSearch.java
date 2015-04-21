@@ -37,6 +37,7 @@ import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.latis.krcon.html.dto.SearchDTO;
 import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 import com.latis.krcon.html.sort.HtmlSort;
@@ -64,18 +65,10 @@ public class EnglishHtmlSearch {
 	@Autowired
 	private StandardAnalyzer standardAnalyzer;
 
-	private String andWordSearch;
-	private String orWordSearch;
-	private String exactWordSearch;
-	private String notWordSearch;
 	
+	private SearchDTO searchDTO;
 	
-	private String breadcrumb;
-	private String categoryTitle;
-	private String locale;
-	
-	private String sortFileName;
-	
+
 	
 
 	public EnglishHtmlSearch() {
@@ -106,12 +99,12 @@ public class EnglishHtmlSearch {
 		
 		TopDocs hits = null;
 		try {
-			Query query = totalSearchBuildQuery(textField, this.getAndWordSearch(), this.getOrWordSearch(), 
-					this.getExactWordSearch(), this.getNotWordSearch());
-			Filter filter = applyChainedFilter(this.getBreadcrumb(), this.getCategoryTitle(), this.getLocale());
+			Query query = totalSearchBuildQuery(textField, searchDTO.getAndWordSearch(), searchDTO.getOrWordSearch(), 
+					searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
+			Filter filter = applyChainedFilter(searchDTO.getBreadcrumb(), searchDTO.getCategoryTitle(), searchDTO.getLocale());
 			
 			HtmlSort htmlSort = new HtmlSort();
-			htmlSort.addSortList(new SortField(this.getSortFileName(), SortField.STRING)); //1 번. 
+			htmlSort.addSortList(new SortField(searchDTO.getSortFileName(), SortField.STRING)); //1 번. 
 			
 			Sort sort = htmlSort.getSort();
 			
@@ -297,77 +290,16 @@ public class EnglishHtmlSearch {
 
 		return buffer.toString();
 	}
+	
+	public SearchDTO getSearchDTO() {
+		return searchDTO;
+	}
+
+	public void setSearchDTO(SearchDTO searchDTO) {
+		this.searchDTO = searchDTO;
+	}
 
 	
-	public String getBreadcrumb() {
-		return breadcrumb;
-	}
-
-	public void setBreadcrumb(String breadcrumb) {
-		this.breadcrumb = breadcrumb;
-	}
-
-	public String getCategoryTitle() {
-		return categoryTitle;
-	}
-
-	public void setCategoryTitle(String categoryTitle) {
-		this.categoryTitle = categoryTitle;
-	}
-
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-	public String getDirPath() {
-		return dirPath;
-	}
-
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
-
-	public String getAndWordSearch() {
-		return andWordSearch;
-	}
-
-	public void setAndWordSearch(String andWordSearch) {
-		this.andWordSearch = andWordSearch;
-	}
-
-	public String getOrWordSearch() {
-		return orWordSearch;
-	}
-
-	public void setOrWordSearch(String orWordSearch) {
-		this.orWordSearch = orWordSearch;
-	}
-
-	public String getExactWordSearch() {
-		return exactWordSearch;
-	}
-
-	public void setExactWordSearch(String exactWordSearch) {
-		this.exactWordSearch = exactWordSearch;
-	}
-
-	public String getNotWordSearch() {
-		return notWordSearch;
-	}
-
-	public void setNotWordSearch(String notWordSearch) {
-		this.notWordSearch = notWordSearch;
-	}
-	public String getSortFileName() {
-		return sortFileName;
-	}
-
-	public void setSortFileName(String sortFileName) {
-		this.sortFileName = sortFileName;
-	}
 
 	
 	
