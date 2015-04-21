@@ -1,10 +1,11 @@
 package com.latis.krcon.html.write;
 
-
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -17,6 +18,10 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.tika.exception.TikaException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,16 +35,13 @@ import org.xml.sax.SAXException;
 import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
 
-
 @ContextConfiguration(locations={
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
+"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestHtmlIndexer {
 
 	
-	
-	
-	private Directory dir = null;
+private Directory dir = null;
 	
 //	@Autowired
 //	private WhitespaceAnalyzer whitespaceAnalyer;
@@ -58,19 +60,6 @@ public class TestHtmlIndexer {
 	@Value("${fileindex}")
 	private String path;
 	
-	/**
-	 * 
-	 * #open mode (create,append,create_or_append)
-	OPEN_MODE	=	create_or_append
-	#OPEN_MODE	=	create
-	
-	#merge setting
-	MERGE_POLICY	=	true
-	MAX_MERGE_AT_ONCE	=	300
-	SEGMENTS_PER_TIER	=	100
-	 * @throws IOException 
-	 * @throws InterruptedException 
-	 */
 	
 	@Before
 	public void setup() throws IOException, InterruptedException{
@@ -90,9 +79,6 @@ public class TestHtmlIndexer {
 		
 		
 	}
-	
-	
-
 	public void lockChecker() throws IOException, InterruptedException {
 		while(dir.fileExists(IndexWriter.WRITE_LOCK_NAME)){
 //			dir.clearLock(name);
@@ -125,63 +111,76 @@ public class TestHtmlIndexer {
 	
 	@Test
 	public void testAddDocument() throws CorruptIndexException, IOException, SAXException, TikaException{
-		htmlParser.setPath("html/");
-		File[] files = htmlParser.getFileList();
-		//    
-		//   
-		HashMap<String, String[]> map = new HashMap<String, String[]>();
-		//full path, level seq, total index, parent path, category, lang  
-		//KRCON>KR-CON (English)>SOLAS 1974 ***>SOLAS 2015 Consolidated Edition>
-		//filename SOLAS 1974 Convention Articles.
-		//KRCON>KR-CON (English)>SOLAS 1974 ***>SOLAS 2015 Consolidated Edition>
-		//filename article1.
-		///KRCON>KR-CON (English)>SOLAS 1974 ***>
-		map.put("CACBHJFH.htm",new String[]{"solars/chapter1/partA/item1","0","5","solars/chapter1/partA"});
-		map.put("BABBHHBB.htm",new String[]{"solars/chapter1","0","1","solars","chapter1", "en"});
-		map.put("CACDHBHA.htm",new String[]{"solars/chapter1/partA/item1","1","6","solars/chapter1/partA"});
-		map.put("CACDIAHF.htm",new String[]{"solars/chapter1/partA/item1","2","7","solars/chapter1/partA"});
-		map.put("CACEFCHJ.htm",new String[]{"solars/chapter1/partA/item1","3","8","solars/chapter1/partA"});
-		map.put("CACFAFBG.htm",new String[]{"solars/chapter1/partA/item1","4","9","solars/chapter1/partA"});
-		
-		map.put("BABBADDG.htm",new String[]{"solars","0","0","null","solars", "en"} );
-		map.put("CACGJDIG.htm",new String[]{"solars/chapter2/partA/item2","2","12","solars/chapter2/partA"});
-		map.put("CACHBFHB.htm",new String[]{"solars/chapter2/partA/item2","3","13","solars/chapter2/partA"});
-		map.put("CACHDGFD.htm",new String[]{"solars/chapter2/partA/item2","4","14","solars/chapter2/partA"});
-		map.put("BABBIBJC.htm",new String[]{"solars/chapter2","1","2","solars", "chapter2","en"});
-		map.put("BABCHFBC.htm",new String[]{"solars/chapter1/partA","0","3","solars/chapter1,} );
-		map.put("BABCIGEH.htm",new String[]{"solars/chapter2/partA","0","4","solars/chapter2"});
+		URL url = this.getClass().getClassLoader().getResource("html/test.json"); // 이부분 수정. 
+		String path = url.getPath();
+		File file = new File(path);
 		
 		
-		map.put("CACFBJHD.htm",new String[]{"solars/chapter2/partA/item2","0","10","solars/chapter2/partA"});
-		map.put("CACFEGFG.htm",new String[]{"solars/chapter2/partA/item2","1","11","solars/chapter2/partA"});
-
-		
-		
-		for(File file : files){
-			ArrayList<String> list =  htmlParser.htmlParser(file.getPath());
-			Iterator<String> key =  map.keySet().iterator();
-			while(key.hasNext()){
-				String keyVal = key.next();
-				if(file.getName().equals(keyVal)){
-					String[] dataArr = map.get(keyVal);
-					HtmlDTO dto = new HtmlDTO();
-					
-					dto.setFilename(file.getName());
-					dto.setPath(dataArr[0]);
-					dto.setLevelSequence(Integer.parseInt(dataArr[1]));
-					dto.setIndex(Integer.parseInt(dataArr[2]));
-					dto.setTitle(list.get(0));
-					dto.setText(list.get(1));
-					dto.setHtml(list.get(2));
-					addDocument(dto);
-					break;
-				}
+		JSONParser parser = new JSONParser();
+		try {
+			 
+			Object obj = parser.parse(new FileReader(path));
+	 
+			JSONObject jsonObject = (JSONObject) obj;
+	 
+			
+			Iterator<String> keys =  jsonObject.keySet().iterator();
+			while(keys.hasNext()){
+				String key = keys.next();
+				JSONObject valueObj =  (JSONObject) jsonObject.get(key);
+				String filepath = valueObj.get("FilePath").toString();
+				String CATEGORY_TEXT_ID = valueObj.get("CATEGORY_TEXT_ID").toString();
+				String breadcrumb = valueObj.get("Breadcrumb").toString();
+				String CATEGORY_TREE = valueObj.get("CATEGORY_TREE").toString();
+				String CATEGORY_ID = valueObj.get("CATEGORY_ID").toString();
+				String LOCALE_KEY = valueObj.get("LOCALE_KEY").toString();
+				String CATEGORY_TITLE = valueObj.get("CATEGORY_TITLE").toString();
+				String CATEGORY_DESC = valueObj.get("CATEGORY_DESC").toString();
+//				String filepath = valueObj.get("FilePath").toString();
+//				String filepath = valueObj.get("FilePath").toString();
 				
+				
+				
+				HtmlDTO dto = new HtmlDTO();
+				
+				dto.setCategoryTextId(Integer.parseInt(CATEGORY_TEXT_ID));
+				dto.setCategoryTree(CATEGORY_TREE);
+				dto.setBreadcrumb(breadcrumb);
+				dto.setCategoryId(Integer.parseInt(CATEGORY_ID));
+				dto.setLocaleKey(LOCALE_KEY);
+				dto.setCategoryTitle(CATEGORY_TITLE);
+				dto.setCategoryDesc(CATEGORY_DESC);
+				
+				
+				url = this.getClass().getClassLoader().getResource("html/"+filepath); // 이부분 수정. 
+				ArrayList<String> list = htmlParser.htmlParser(url.getPath());
+				
+				dto.setText(list.get(0));
+				dto.setHtml(list.get(1));
+				
+				addDocument(dto);
 			}
 			
-			
+	 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		writer.commit();
+	 
+		
+//		JSONObject jsonObj = new JSONObject(file);
+//		Iterator<String> keys =  jsonObj.keys();
+//		while(keys.hasNext()){
+//			String key = keys.next();
+//			System.out.println(key);
+//		}
+		
+//		htmlParser.setPath("html/toc.json");
+		File[] files = htmlParser.getFileList();
+		
 		
 	}
 	
@@ -189,10 +188,5 @@ public class TestHtmlIndexer {
 	public void tearDown() throws CorruptIndexException, IOException{
 		writeClose();
 	}
-	
-	
-	
-	
-	
 	
 }
