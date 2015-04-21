@@ -21,6 +21,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -192,6 +194,59 @@ public class TestCategorySearch {
 
 	public void setPreFixQueryData(String preFixQueryData) {
 		this.preFixQueryData = preFixQueryData;
+	}
+	
+	public void buildRootCategory() throws IOException, ParseException{
+		String searchWord = "0000.00e0.1530";
+		
+		ArrayList<Document> list =  categorySearchData(categoryTreeField, searchWord);
+		
+		
+		JSONArray array = new JSONArray();
+		for(Document document : list){
+			JSONObject jsonObject = new JSONObject();
+			
+			jsonObject.put("categoryTree", document.get("categoryTree"));
+			jsonObject.put("categoryTitle", document.get("categoryTitle"));
+			
+			
+			checkSubCategory(document, jsonObject);
+			
+			jsonObject.put("isFolder", "true");
+			jsonObject.put("isLazy", "true");
+			
+			array.add(jsonObject);
+		}
+		
+		System.out.println(array.toString());
+		/*
+		 * private String categoryTree; // category tree struct
+	private int categoryTextId;	
+	private int categoryId;	
+	private String localeKey;	//locale info
+	private String categoryTitle;	//breadcrumbs
+	private String categoryDesc;	//desc
+	
+	private String html;			//html
+	private String text;			//html text
+	private String breadcrumb;
+		 */
+		
+	}
+
+	private void checkSubCategory(Document document, JSONObject jsonObject) throws IOException,
+			ParseException {
+		String queryStr = andAnalyze(document.get("categoryTree")+anonymousData, categoryTreeField, analyzer);
+		
+		Query query = new QueryParser(Version.LUCENE_36, categoryTreeField, analyzer).parse(queryStr);
+		TopDocs hits = searcher.search(query, searcher.maxDoc());
+		
+		
+		if (hits.totalHits == 0) {
+		}else{
+			jsonObject.put("isFolder", "true");
+			jsonObject.put("isLazy", "true");
+		}
 	}
 
 }
