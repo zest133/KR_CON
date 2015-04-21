@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.latis.krcon.html.filter.TestHtmlFilter;
+import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 import com.latis.krcon.html.sort.HtmlSort;
 
@@ -67,6 +67,8 @@ htmlField=html
 	 */
 	@Value("${textField}")
 	private String textField;
+	
+	
 	@Value("${htmlField}")
 	private String htmlField;
 	
@@ -130,11 +132,11 @@ htmlField=html
 			
 			
 			//2번. 
-			ArrayList<SortField> list = new ArrayList<SortField>();
-			list.add(new SortField("categoryTree", SortField.STRING));
-			list.add(new SortField("categoryId", SortField.INT));
-			
-			htmlSort.setSortList(list);
+//			ArrayList<SortField> list = new ArrayList<SortField>();
+//			list.add(new SortField("categoryTree", SortField.STRING));
+//			list.add(new SortField("categoryId", SortField.INT));
+//			
+//			htmlSort.setSortList(list);
 			
 			
 			
@@ -226,7 +228,7 @@ htmlField=html
 	}
 	
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle, String locale) throws Exception{
-		TestHtmlFilter htmlFilter = new TestHtmlFilter(breadcrumb, categoryTitle, locale );
+		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle, locale );
 		
 		return   htmlFilter.getFilter();
 	}

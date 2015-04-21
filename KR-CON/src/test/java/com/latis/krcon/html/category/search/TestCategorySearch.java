@@ -1,4 +1,4 @@
-package com.latis.krcon.category.search;
+package com.latis.krcon.html.category.search;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,24 +43,35 @@ import static org.mockito.Matchers.*;
 public class TestCategorySearch {
 
 	
-//	private String dirPath = "D:/dev/categoryIndex";
-	@Value("${categoryindex}")
+	@Value("${fileindex}")
 	private String dirPath;
 	
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
 	
+	@Value("${categoryTreeField}")
+	private String categoryTreeField;
+	
+	
+	@Value("${anonymousData}")
+	private String anonymousData;
+	
 	@Autowired
 	private KeywordAnalyzer analyzer;
 	
 	
+	private String preFixQueryData;
+	
+	
+	
+
 	@Before
 	public void setup() throws IOException{
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
 		searcher = new IndexSearcher(reader);
-		
+		preFixQueryData = "0000.00e0.1530";
 	}
 	
 	@After
@@ -78,11 +89,11 @@ public class TestCategorySearch {
 	
 	@Test
 	public void testSearch(){
-		String field = "filename";
-		String searchWord = "pt01.htm";
+		String searchWord = "0000.00e0.1530";
 		
-		ArrayList<Document> list =  categorySearchData(field, searchWord);
-		//assertEquals(1, list.size());
+		ArrayList<Document> list =  categorySearchData(categoryTreeField, searchWord);
+		
+		assertEquals(1, list.size());
 		//fail();
 	}
 	
@@ -91,11 +102,25 @@ public class TestCategorySearch {
 		Query allCategoryQuery = new MatchAllDocsQuery();
 		try {
 			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc());
-			dumpHits(searcher, hits, "filename");
+			dumpHits(searcher, hits, categoryTreeField);
+			
+			assertNotSame(0, hits.scoreDocs.length);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testCategorySubTreeSearchData(){
+		String searchWord = this.preFixQueryData+anonymousData;
+		
+		
+		
+		ArrayList<Document> list =  categorySearchData(categoryTreeField, searchWord);
+		
+		assertEquals(1, list.size());
 	}
 	
 	
@@ -127,7 +152,7 @@ public class TestCategorySearch {
 		docList = new ArrayList<Document>();
 		for (ScoreDoc match : hits.scoreDocs) {
 			Document doc = searcher.doc(match.doc);
-			System.out.println(match.score + ":" + doc.get(fieldName));
+//			System.out.println(match.score + ":" + doc.get(fieldName));
 			docList.add(doc);
 		}
 		return docList;
@@ -159,6 +184,14 @@ public class TestCategorySearch {
 		System.out.println(output);
 
 		return buffer.toString();
+	}
+	
+	public String getPreFixQueryData() {
+		return preFixQueryData;
+	}
+
+	public void setPreFixQueryData(String preFixQueryData) {
+		this.preFixQueryData = preFixQueryData;
 	}
 
 }

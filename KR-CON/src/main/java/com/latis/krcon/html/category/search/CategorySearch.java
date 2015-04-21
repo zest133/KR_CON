@@ -1,4 +1,4 @@
-package com.latis.krcon.category.search;
+package com.latis.krcon.html.category.search;
 
 import java.io.File;
 import java.io.IOException;
