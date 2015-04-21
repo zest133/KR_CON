@@ -34,7 +34,7 @@ import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.latis.krcon.html.filter.HtmlFilter;
+import com.latis.krcon.html.filter.TestHtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 
 
@@ -145,7 +145,7 @@ public class EnglishHtmlSearch {
 		}
 
 		
-		HtmlFilter htmlFilter = new HtmlFilter(fileNameFilter, categoryFilter);
+		TestHtmlFilter htmlFilter = new TestHtmlFilter(fileNameFilter, categoryFilter);
 		ChainedFilter chain =  htmlFilter.getFilter();
 		TopDocs hits = null;
 		if(chain != null){

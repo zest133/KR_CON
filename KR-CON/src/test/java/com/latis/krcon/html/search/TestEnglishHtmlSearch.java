@@ -2,49 +2,35 @@ package com.latis.krcon.html.search;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharReader;
-import org.apache.lucene.analysis.KeywordAnalyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.kr.KoreanAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.ChainedFilter;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.search.highlight.NullFragmenter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
-import org.apache.lucene.search.vectorhighlight.BaseFragmentsBuilder;
-import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
-import org.apache.lucene.search.vectorhighlight.FieldQuery;
-import org.apache.lucene.search.vectorhighlight.FragListBuilder;
-import org.apache.lucene.search.vectorhighlight.FragmentsBuilder;
-import org.apache.lucene.search.vectorhighlight.ScoreOrderFragmentsBuilder;
-import org.apache.lucene.search.vectorhighlight.SimpleFragListBuilder;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -52,14 +38,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mvel2.sh.command.basic.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.latis.krcon.html.filter.HtmlFilter;
+import com.latis.krcon.html.filter.TestHtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
+import com.latis.krcon.html.sort.HtmlSort;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -75,6 +61,15 @@ public class TestEnglishHtmlSearch {
 //	private String dirPath = "D:/dev/HtmlIndex";
 	@Value("${fileindex}")
 	private String dirPath;
+	/**
+	 * textField=text
+htmlField=html
+	 */
+	@Value("${textField}")
+	private String textField;
+	@Value("${htmlField}")
+	private String htmlField;
+	
 	
 	private IndexSearcher searcher;
 	private Directory dir;
@@ -84,6 +79,15 @@ public class TestEnglishHtmlSearch {
 	private EnglishAnalyzer englishAnalyzer;
 	@Autowired
 	private StandardAnalyzer standardAnalyzer;
+
+	private String breadcrumb;
+	private String categoryTitle;
+	private String locale;
+	
+	
+	
+	
+	
 
 	@Before
 	public void setup() throws IOException {
@@ -109,106 +113,122 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-//		String andWordSearch = "Advance Driver Pack";
+		String andWordSearch = "solas amend";
 		String orWordSearch = "Wireless network setup";
 		String exactWordSearch = "\"Eco Driver Pack\"";
 		String notWordSearch = "Wireless network setup";
 
+		
+		
+		
 		try {
-			Query[] query = totalSearch(null, null, exactWordSearch, null);
+			Query query = totalSearchBuildQuery(textField, andWordSearch, null, null, null);
+			Filter filter = applyChainedFilter("KRCON/KR-CON (English)/SOLAS 1974 ***/SOLAS 1989/1990 Amend/", categoryTitle, locale);
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
+			HtmlSort htmlSort = new HtmlSort();
+			htmlSort.addSortList(new SortField("categoryTree", SortField.STRING)); //1 번. 
+			
+			
+			//2번. 
+			ArrayList<SortField> list = new ArrayList<SortField>();
+			list.add(new SortField("categoryTree", SortField.STRING));
+			list.add(new SortField("categoryId", SortField.INT));
+			
+			htmlSort.setSortList(list);
+			
+			
+			
+			Sort sort = htmlSort.getSort();
+			
+			TopDocs hits = null;
+			if(filter != null && sort != null){
+				hits = searcher.search(query,filter, searcher.maxDoc(), sort);
+			}else if(filter != null && sort == null){
+				hits = searcher.search(query,filter, searcher.maxDoc());
+			}else if(sort != null && filter == null){
+				hits = searcher.search(query, null, searcher.maxDoc(), sort);
+			}else{
+				hits = searcher.search(query, searcher.maxDoc());
+			}
+			
+			String highlight = getHighlightHTML(hits, andWordSearch,null, null, null );
+			
+		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public Query[] totalSearch(String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
+	public String getHighlightHTML(TopDocs hits, String andWordSearch, String orWordSearch, String exact, String non  )
+			throws CorruptIndexException, IOException, ParseException {
+		String result = null;
+		for (ScoreDoc scoreDoc : hits.scoreDocs) {
+//				
+			Document doc = searcher.doc(scoreDoc.doc);
+			Query query = totalSearchBuildQuery(htmlField, andWordSearch, null, null, null);
+			result = highlightHTML(englishAnalyzer, doc.get(htmlField), query, htmlField);
+			System.out.println(result);
+			break;
+		}
+		return result;
+	}
 
-		BooleanQuery textBooleanQuery = new BooleanQuery();
-		BooleanQuery htmlBooleanQuery = new BooleanQuery();
+	public Query totalSearchBuildQuery(String fieldName, String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
 
-		Query[] returnQuery = new Query[2];
+		BooleanQuery booleanQuery = new BooleanQuery();
+
 		
 		if (andSearch != null && andSearch != "") {
-			String andQueryStr = andAnalyze(andSearch, "text", englishAnalyzer);
-			Query andQuery = new QueryParser(Version.LUCENE_36, "text",
+			String andQueryStr = andAnalyze(andSearch, fieldName, englishAnalyzer);
+			Query andQuery = new QueryParser(Version.LUCENE_36, fieldName,
 					englishAnalyzer).parse(andQueryStr); // #B
 			
-			textBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
-			
-			andQuery = new QueryParser(Version.LUCENE_36, "html",
-					englishAnalyzer).parse(andQueryStr);
-			htmlBooleanQuery.add(andQuery, BooleanClause.Occur.MUST);
+			booleanQuery.add(andQuery, BooleanClause.Occur.MUST);
 		}
 
 		if (orSearch != null && orSearch != "") {
-			String orQueryStr = orAnalyze(orSearch, "text", englishAnalyzer);
+			String orQueryStr = orAnalyze(orSearch, fieldName, englishAnalyzer);
 
-			Query orQuery = new QueryParser(Version.LUCENE_36, "text",
+			Query orQuery = new QueryParser(Version.LUCENE_36, fieldName,
 					englishAnalyzer).parse(orQueryStr);
-			textBooleanQuery.add(orQuery, BooleanClause.Occur.MUST);
+			booleanQuery.add(orQuery, BooleanClause.Occur.MUST);
 			
 			
-			orQuery = new QueryParser(Version.LUCENE_36, "html",
-					englishAnalyzer).parse(orQueryStr);
-			htmlBooleanQuery.add(orQuery, BooleanClause.Occur.MUST);
 
 		}
 
 		if (exact != null && exact != "") {
 			// Set set = (Set) standardAnalyzer.STOP_WORDS_SET;
 			CustomQueryParser queryParser = new CustomQueryParser(
-					Version.LUCENE_36, "text", standardAnalyzer);
+					Version.LUCENE_36,fieldName, standardAnalyzer);
 			Query exactQuery = queryParser.parse(exact);
-			textBooleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
+			booleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
 			
-			queryParser = new CustomQueryParser(
-					Version.LUCENE_36, "html", standardAnalyzer);
-			exactQuery = queryParser.parse(exact);
-			htmlBooleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
 		}
 
 		if (non != null && non != "") {
-			String notAndQueryStr = orAnalyze(non, "text", englishAnalyzer);
-			Query notAndQuery = new QueryParser(Version.LUCENE_36, "text",
+			String notAndQueryStr = orAnalyze(non, fieldName, englishAnalyzer);
+			Query notAndQuery = new QueryParser(Version.LUCENE_36, fieldName,
 					englishAnalyzer).parse(notAndQueryStr);
-			textBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+			booleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
 			
-			notAndQuery = new QueryParser(Version.LUCENE_36, "html",
-					englishAnalyzer).parse(notAndQueryStr);
-			
-			htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+//			notAndQuery = new QueryParser(Version.LUCENE_36, "html",
+//					englishAnalyzer).parse(notAndQueryStr);
+//			
+//			htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
 		}
 
-//		applyFilter();
-//		HtmlFilter htmlFilter = new HtmlFilter(fileNameFilter, categoryFilter);
-//		ChainedFilter chain =  htmlFilter.getFilter();
-//		TopDocs hits = null;
-//		if(chain != null){
-//			hits = searcher.search(textBooleanQuery,chain, searcher.maxDoc());
-//		}else{
-//			hits = searcher.search(textBooleanQuery, searcher.maxDoc());
-//		}
-//		
-//		for (ScoreDoc scoreDoc : hits.scoreDocs) {
-//			
-//			Document doc = searcher.doc(scoreDoc.doc);
-//			String result = highlightHTML(englishAnalyzer, doc.get("html"), htmlBooleanQuery, "html");
-//			System.out.println(result);
-//		}
-		returnQuery[0] = textBooleanQuery;
-		returnQuery[1] = htmlBooleanQuery;
-		return returnQuery;
+//		returnQuery[0] = textBooleanQuery;
+//		returnQuery[1] = htmlBooleanQuery;
+		return booleanQuery;
 		
 		
 	}
 	
-	public Filter applyChainedFilter(String breadcrumb, String categoryTitle, String locale){
-		return null;
+	public Filter applyChainedFilter(String breadcrumb, String categoryTitle, String locale) throws Exception{
+		TestHtmlFilter htmlFilter = new TestHtmlFilter(breadcrumb, categoryTitle, locale );
+		
+		return   htmlFilter.getFilter();
 	}
 	
 	
@@ -351,6 +371,30 @@ public class TestEnglishHtmlSearch {
 	public void displayTokens(Analyzer analyzer, String text)
 			throws IOException {
 		displayTokens(analyzer.tokenStream("contents", new StringReader(text))); // A
+	}
+	
+	public String getBreadcrumb() {
+		return breadcrumb;
+	}
+
+	public void setBreadcrumb(String breadcrumb) {
+		this.breadcrumb = breadcrumb;
+	}
+
+	public String getCategoryTitle() {
+		return categoryTitle;
+	}
+
+	public void setCategoryTitle(String categoryTitle) {
+		this.categoryTitle = categoryTitle;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 	
 	

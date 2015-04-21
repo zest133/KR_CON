@@ -32,6 +32,9 @@
 	<bean class="com.latis.krcon.html.parser.HtmlWithTikaParser" id="htmlParsingWithTika" >
 	</bean>
 	
+	<bean class="com.latis.krcon.html.sort.HtmlSort" id="htmlSort" >
+	</bean>
+	
 	<bean class="org.apache.lucene.index.TieredMergePolicy" id="tieredMergePolicy" scope="prototype">
 		<property name="maxMergeAtOnce">
 			<value>300</value>

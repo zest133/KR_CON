@@ -18,11 +18,11 @@ public class CustomQueryParser extends QueryParser {
 		
 	}
 
-	@Override
-	protected final Query getWildcardQuery(String field, String termStr)
-			throws ParseException {
-		throw new ParseException("Wildcard not allowed");
-	}
+//	@Override
+//	protected final Query getWildcardQuery(String field, String termStr)
+//			throws ParseException {
+//		throw new ParseException("Wildcard not allowed");
+//	}
 
 	@Override
 	protected Query getFuzzyQuery(String field, String term, float minSimilarity)
