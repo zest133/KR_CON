@@ -80,12 +80,7 @@ public class TestCategorySearch {
 		reader.close();
 	}
 	
-	public String getDirPath() {
-		return dirPath;
-	}
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
+	
 	
 	@Test
 	public void testSearch(){
@@ -192,6 +187,13 @@ public class TestCategorySearch {
 
 	public void setPreFixQueryData(String preFixQueryData) {
 		this.preFixQueryData = preFixQueryData;
+	}
+	
+	public String getDirPath() {
+		return dirPath;
+	}
+	public void setDirPath(String dirPath) {
+		this.dirPath = dirPath;
 	}
 
 }

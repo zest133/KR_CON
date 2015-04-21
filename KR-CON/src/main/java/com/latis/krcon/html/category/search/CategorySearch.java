@@ -1,5 +1,6 @@
 package com.latis.krcon.html.category.search;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -22,18 +23,34 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class CategorySearch {
 
 	
-	private String dirPath = null;
+	@Value("${fileindex}")
+	private String dirPath;
+	
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
 	
+	@Value("${categoryTreeField}")
+	private String categoryTreeField;
+	
+	
+	@Value("${anonymousData}")
+	private String anonymousData;
+	
 	@Autowired
 	private KeywordAnalyzer analyzer;
+	
+	
+//	private String preFixQueryData;
+	private String searchWord;
+	
+	
 	
 	public CategorySearch(){
 		
@@ -44,11 +61,41 @@ public class CategorySearch {
 		searcher = new IndexSearcher(reader);
 	}
 	
-	public String getDirPath() {
-		return dirPath;
+	
+	public void close()  {
+		try {
+			if(searcher != null)
+				searcher.close();
+			if(reader != null)
+				reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
+	
+	public ArrayList<Document>  search(){
+		return categorySearchData(categoryTreeField, this.getSearchWord());
+	}
+	
+	public ArrayList<Document> categoryAllSearchData(){
+		Query allCategoryQuery = new MatchAllDocsQuery();
+		ArrayList<Document> list = null;
+		try {
+			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc());
+			list = dumpHits(searcher, hits, categoryTreeField);
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<Document>  categorySubTreeSearchData(){
+		String searchWord = this.getSearchWord()+anonymousData;
+		return categorySearchData(categoryTreeField, searchWord);
 	}
 	
 	
@@ -70,21 +117,6 @@ public class CategorySearch {
 		return returnList;
 	}
 	
-	
-	public ArrayList<Document> categoryAllSearchData(){
-		Query allCategoryQuery = new MatchAllDocsQuery();
-		ArrayList<Document> returnList = null;
-		try {
-			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc());
-			returnList = dumpHits(searcher, hits, "filename");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return returnList;
-	}
-	
-	
 	private ArrayList<Document> dumpHits(IndexSearcher searcher, TopDocs hits, String fieldName)
 			throws IOException {
 		ArrayList< Document> docList = null; 
@@ -95,7 +127,7 @@ public class CategorySearch {
 		docList = new ArrayList<Document>();
 		for (ScoreDoc match : hits.scoreDocs) {
 			Document doc = searcher.doc(match.doc);
-			System.out.println(match.score + ":" + doc.get(fieldName));
+//			System.out.println(match.score + ":" + doc.get(fieldName));
 			docList.add(doc);
 		}
 		return docList;
@@ -111,8 +143,6 @@ public class CategorySearch {
 		TokenStream stream = analyzer.tokenStream(field, new StringReader(
 				searchWord));
 		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-		// PositionIncrementAttribute posIncr = stream
-		// .addAttribute(PositionIncrementAttribute.class);
 		buffer.append("(");
 		while (stream.incrementToken()) { // C
 			buffer.append("+");
@@ -127,6 +157,20 @@ public class CategorySearch {
 		System.out.println(output);
 
 		return buffer.toString();
+	}
+	
+	
+	public String getDirPath() {
+		return dirPath;
+	}
+	public void setDirPath(String dirPath) {
+		this.dirPath = dirPath;
+	}
+	public String getSearchWord() {
+		return searchWord;
+	}
+	public void setSearchWord(String searchWord) {
+		this.searchWord = searchWord;
 	}
 
 }

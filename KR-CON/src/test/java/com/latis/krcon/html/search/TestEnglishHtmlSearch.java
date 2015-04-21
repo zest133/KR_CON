@@ -61,10 +61,6 @@ public class TestEnglishHtmlSearch {
 //	private String dirPath = "D:/dev/HtmlIndex";
 	@Value("${fileindex}")
 	private String dirPath;
-	/**
-	 * textField=text
-htmlField=html
-	 */
 	@Value("${textField}")
 	private String textField;
 	
@@ -104,14 +100,7 @@ htmlField=html
 		reader.close();
 	}
 
-	public String getDirPath() {
-		return dirPath;
-	}
-
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
-
+	
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
@@ -398,6 +387,14 @@ htmlField=html
 	public void setLocale(String locale) {
 		this.locale = locale;
 	}
+	public String getDirPath() {
+		return dirPath;
+	}
+
+	public void setDirPath(String dirPath) {
+		this.dirPath = dirPath;
+	}
+
 	
 	
 
