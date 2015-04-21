@@ -4,7 +4,10 @@ package com.latis.krcon.html.category.search;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+
+import javassist.compiler.Parser;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.KeywordAnalyzer;
@@ -18,12 +21,15 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import com.latis.krcon.html.sort.HtmlSort;
 
 
 public class CategorySearch {
@@ -50,7 +56,8 @@ public class CategorySearch {
 //	private String preFixQueryData;
 	private String searchWord;
 	
-	
+	@Autowired
+	private HtmlSort htmlSort;
 	
 	public CategorySearch(){
 		
@@ -80,9 +87,11 @@ public class CategorySearch {
 	
 	public ArrayList<Document> categoryAllSearchData(){
 		Query allCategoryQuery = new MatchAllDocsQuery();
+		htmlSort.addSortList(new SortField(categoryTreeField,SortField.STRING));
+		
 		ArrayList<Document> list = null;
 		try {
-			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc());
+			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc(), htmlSort.getSort());
 			list = dumpHits(searcher, hits, categoryTreeField);
 			
 			
@@ -103,9 +112,9 @@ public class CategorySearch {
 		ArrayList<Document> returnList =null;
 		try {
 			String queryStr = andAnalyze(searchWord, field, analyzer);
-			
+			htmlSort.addSortList(new SortField(categoryTreeField,SortField.STRING));
 			Query query = new QueryParser(Version.LUCENE_36, field, analyzer).parse(queryStr);
-			TopDocs hits = searcher.search(query, searcher.maxDoc());
+			TopDocs hits = searcher.search(query, searcher.maxDoc(), htmlSort.getSort());
 			returnList = dumpHits(searcher, hits, field);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

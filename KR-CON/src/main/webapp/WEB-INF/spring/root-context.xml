@@ -26,7 +26,7 @@
 	<bean class="com.latis.krcon.html.parser.HtmlWithTikaParser" id="htmlParsingWithTika" >
 	</bean>
 	
-	<bean class="com.latis.krcon.html.sort.HtmlSort" id="htmlSort" >
+	<bean class="com.latis.krcon.html.sort.HtmlSort" id="htmlSort" scope="prototype">
 	</bean>
 	
 	<bean class="com.latis.krcon.html.category.search.CategorySearch" id="categorySearch">
