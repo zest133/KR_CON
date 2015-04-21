@@ -30,9 +30,11 @@ public class SearchController {
 		
 		testDTO1.setFileName("name1");
 		testDTO1.setResulttext("text1");
+		testDTO1.setBreadcrumbs("bbbb/rrrr/eeee/aaa");
 		
 		testDTO2.setFileName("name2");
 		testDTO2.setResulttext("text2");
+		testDTO2.setBreadcrumbs("dddd/cccc/rrrr");
 		
 		searchResult.add(testDTO1);
 		searchResult.add(testDTO2);
@@ -67,9 +69,11 @@ public class SearchController {
 		
 		testDTO1.setFileName("name1");
 		testDTO1.setResulttext("text1");
+		testDTO1.setBreadcrumbs("bbbb/rrrr/eeee/aaa");
 		
 		testDTO2.setFileName("name2");
 		testDTO2.setResulttext("text2");
+		testDTO2.setBreadcrumbs("dddd/cccc/rrrr");
 		
 		searchResult.add(testDTO1);
 		searchResult.add(testDTO2);
@@ -86,6 +90,7 @@ public class SearchController {
 	public class TestSearchDTO{
 		public String fileName;
 		public String resulttext;
+		public String breadcrumbs;
 		
 		public String getFileName() {
 			return fileName;
@@ -99,5 +104,13 @@ public class SearchController {
 		public void setResulttext(String resulttext) {
 			this.resulttext = resulttext;
 		}
+		public String getBreadcrumbs() {
+			return breadcrumbs;
+		}
+		public void setBreadcrumbs(String breadcrumbs) {
+			this.breadcrumbs = breadcrumbs;
+		}
+		
+		
 	}
 }
