@@ -1,6 +1,7 @@
 package com.latis.krcon.html.search;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -34,7 +35,6 @@ import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.latis.krcon.html.filter.TestHtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 
 
