@@ -82,12 +82,7 @@ public class TestCategorySearch {
 		reader.close();
 	}
 	
-	public String getDirPath() {
-		return dirPath;
-	}
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
+	
 	
 	@Test
 	public void testSearch(){
@@ -212,8 +207,8 @@ public class TestCategorySearch {
 			
 			checkSubCategory(document, jsonObject);
 			
-			jsonObject.put("isFolder", "true");
-			jsonObject.put("isLazy", "true");
+//			jsonObject.put("isFolder", "true");
+//			jsonObject.put("isLazy", "true");
 			
 			array.add(jsonObject);
 		}
@@ -247,6 +242,16 @@ public class TestCategorySearch {
 			jsonObject.put("isFolder", "true");
 			jsonObject.put("isLazy", "true");
 		}
+
+	}
+	
+	public String getDirPath() {
+		return dirPath;
+	}
+	public void setDirPath(String dirPath) {
+		this.dirPath = dirPath;
 	}
 
 }
+
+	
