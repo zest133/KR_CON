@@ -25,6 +25,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.ChainedFilter;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
@@ -114,20 +115,24 @@ public class TestEnglishHtmlSearch {
 		String notWordSearch = "Wireless network setup";
 
 		try {
-			totalSearch(null, null, exactWordSearch, null,"BABBADDG.htm", null);
-		}  catch (Exception e) {
+			Query[] query = totalSearch(null, null, exactWordSearch, null);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void totalSearch(String andSearch, String orSearch, String exact,
-			String non, String fileNameFilter, String categoryFilter)
-			throws Exception {
+	public Query[] totalSearch(String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
 
 		BooleanQuery textBooleanQuery = new BooleanQuery();
 		BooleanQuery htmlBooleanQuery = new BooleanQuery();
 
+		Query[] returnQuery = new Query[2];
+		
 		if (andSearch != null && andSearch != "") {
 			String andQueryStr = andAnalyze(andSearch, "text", englishAnalyzer);
 			Query andQuery = new QueryParser(Version.LUCENE_36, "text",
@@ -179,25 +184,31 @@ public class TestEnglishHtmlSearch {
 			htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
 		}
 
+//		applyFilter();
+//		HtmlFilter htmlFilter = new HtmlFilter(fileNameFilter, categoryFilter);
+//		ChainedFilter chain =  htmlFilter.getFilter();
+//		TopDocs hits = null;
+//		if(chain != null){
+//			hits = searcher.search(textBooleanQuery,chain, searcher.maxDoc());
+//		}else{
+//			hits = searcher.search(textBooleanQuery, searcher.maxDoc());
+//		}
+//		
+//		for (ScoreDoc scoreDoc : hits.scoreDocs) {
+//			
+//			Document doc = searcher.doc(scoreDoc.doc);
+//			String result = highlightHTML(englishAnalyzer, doc.get("html"), htmlBooleanQuery, "html");
+//			System.out.println(result);
+//		}
+		returnQuery[0] = textBooleanQuery;
+		returnQuery[1] = htmlBooleanQuery;
+		return returnQuery;
 		
-		HtmlFilter htmlFilter = new HtmlFilter(fileNameFilter, categoryFilter);
-		ChainedFilter chain =  htmlFilter.getFilter();
-		TopDocs hits = null;
-		if(chain != null){
-			hits = searcher.search(textBooleanQuery,chain, searcher.maxDoc());
-		}else{
-			hits = searcher.search(textBooleanQuery, searcher.maxDoc());
-		}
 		
-		for (ScoreDoc scoreDoc : hits.scoreDocs) {
-			
-			Document doc = searcher.doc(scoreDoc.doc);
-			String result = highlightHTML(englishAnalyzer, doc.get("html"), htmlBooleanQuery, "html");
-			System.out.println(result);
-		}
-		
-		
-		
+	}
+	
+	public Filter applyChainedFilter(String breadcrumb, String categoryTitle, String locale){
+		return null;
 	}
 	
 	
