@@ -1,6 +1,8 @@
 <div id="tocDiv" style="overflow-x: hidden;">
 	<div class="empty"></div>
 	<div style="overflow-y: auto; overflow-x: hidden; height: 90%;">
+		<button id="btnLoadKeyPath">Load node by path</button>
+		<button id="btnCollapseAll">Collapse All</button>
 		<div id="tocContent"></div>
 	</div>
 </div>
@@ -33,13 +35,43 @@
 			},
 			onActivate : function(node) {
 				alert(node.data.title);
+			},
+			onLazyRead : function(node) {
+				node.appendAjax({
+					url : "sub_category.do",
+					data : {
+						key : node.data.key
+					}
+				});
 			}
 		});
+
+		$("#btnLoadKeyPath").click(
+				function() {
+					var tree = $("#tocContent").dynatree("getTree");
+
+					tree.loadKeyPath("/folder1/folder1/folder1/folder1",
+							function(node, status) {
+								if (status == "loaded") {
+									node.expand();
+								} else if (status == "ok") {
+									node.activate();
+								}
+							});
+				});
+
+		$("#btnCollapseAll").click(function() {
+			$("#tocContent").dynatree("getRoot").visit(function(node) {
+				node.expand(false);
+			});
+			return false;
+		});
+
 	});
 </script>
 
 <style>
-	ul.dynatree-container {
-		border: none;
-	}
+ul.dynatree-container {
+	border: none;
+}
 </style>

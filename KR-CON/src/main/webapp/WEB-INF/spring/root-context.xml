@@ -42,7 +42,7 @@
 	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="indexPath.properties"></property>
+		<property name="location" value="classpath:/indexPath.properties"></property>
 		<property name="fileEncoding" value="UTF-8"></property>
 	</bean>
 	

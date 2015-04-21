@@ -1,17 +1,14 @@
 package com.latis.krcon;
 
-import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.latis.krcon.category.dto.CategoryDTO;
 
 @Controller
 public class CategoryController {
@@ -24,7 +21,7 @@ public class CategoryController {
 	 */
 
 	@RequestMapping(value = "/root_category.do")
-	public @ResponseBody String getRootCategory() throws JSONException {
+	public @ResponseBody String getRootCategory() {
 //		ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
 		
 		JSONArray returnList = new JSONArray();
@@ -36,13 +33,16 @@ public class CategoryController {
 
 		jsonObject.put("title", "Folder 1");
 		jsonObject.put("isFolder", "true");
+		jsonObject.put("isLazy", "true");
 		jsonObject.put("key", "folder1");
+		jsonObject.put("other", "other");
+		jsonObject.put("more", "more");
+		jsonObject.put("attr", "attr");
 
-		array.put(new JSONObject("{\"title\": \"Sub 1\"}"));
 
 		jsonObject.put("children", array);
 
-		returnList.put(jsonObject);
+		returnList.add(jsonObject);
 
 		/*
 		 * root 로 찾는다
@@ -52,14 +52,33 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "/sub_category.do")
-	public ArrayList<JSONObject> getSubCategory(@PathVariable String parent) {
+	public @ResponseBody String getSubCategory(@RequestParam String key) {
+//		System.out.println(key);
+		
+		JSONArray returnList = new JSONArray();
 
-		ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
+		JSONObject jsonObject = new JSONObject();
+
+		JSONArray array = new JSONArray();
+
+
+		jsonObject.put("title", "Folder 1");
+		jsonObject.put("isFolder", "true");
+		jsonObject.put("key", "folder1");
+		jsonObject.put("isLazy", "true");
+		jsonObject.put("other", "other");
+		jsonObject.put("more", "more");
+		jsonObject.put("attr", "attr");
+
+
+		jsonObject.put("children", array);
+
+		returnList.add(jsonObject);
 
 		/*
 		 * parent 로 찾는다
 		 */
 
-		return returnList;
+		return returnList.toString();
 	}
 }
