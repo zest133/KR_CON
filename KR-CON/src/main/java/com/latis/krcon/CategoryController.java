@@ -30,23 +30,19 @@ public class CategoryController {
 
 		JSONArray array = new JSONArray();
 
-
 		jsonObject.put("title", "Folder 1");
-		jsonObject.put("isFolder", "true");
-		jsonObject.put("isLazy", "true");
-		jsonObject.put("key", "folder1");
 		jsonObject.put("other", "other");
 		jsonObject.put("more", "more");
 		jsonObject.put("attr", "attr");
-
-
-		jsonObject.put("children", array);
-
-		returnList.add(jsonObject);
-
+		jsonObject.put("key", "folder1");
+		
+		jsonObject.put("isFolder", "true");
+		jsonObject.put("isLazy", "true");
 		/*
 		 * root 로 찾는다
 		 */
+		
+		returnList.add(jsonObject);
 
 		return returnList.toString();
 	}
@@ -71,13 +67,12 @@ public class CategoryController {
 		jsonObject.put("attr", "attr");
 
 
-		jsonObject.put("children", array);
 
-		returnList.add(jsonObject);
 
 		/*
 		 * parent 로 찾는다
 		 */
+		returnList.add(jsonObject);
 
 		return returnList.toString();
 	}

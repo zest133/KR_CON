@@ -204,7 +204,7 @@ div.contents p.no_result{font-size: 16px; padding:30px 10px; border-top:1px soli
 div.contents .filename {display: block; padding: 20px 10px 0px; background: 13px 24px;}
 div.contents .filename p {margin: 0 10px 0 0; color: #5A75A0;}
 div.contents .filename p a {color: #076eb0; font-size:21px;}
-div.contents .filename p a:visited {color:#9E9FA4;}
+//div.contents .filename p a:visited {color:#9E9FA4;}
 div.contents .resulttext p {padding: 0 10px 20px; color: #666; border-bottom:1px solid #dadada; }
 div.contents .keyword {font-size: 16px; color: #333; font-weight: bold;}
 

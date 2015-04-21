@@ -18,12 +18,16 @@
 		<div class="resultcount">
 			<p>Search Results: (${resultSize})</p>
 		</div>
+		
 		<div class="result_list">
 			<c:forEach items="${searchResult}" var="item">
 				<div class="filename">
 					<p>
 						<a href="#">${item.fileName}</a>
 					</p>
+					<div class="resultBreadCrumbs">
+						<p>${item.breadcrumbs}</p>
+					</div>
 				</div>
 				<div class="resulttext">
 					<p>${item.resulttext}</p>
