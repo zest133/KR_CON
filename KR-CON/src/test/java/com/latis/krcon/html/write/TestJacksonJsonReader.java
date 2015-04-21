@@ -143,7 +143,7 @@ private Directory dir = null;
 				
 				HtmlDTO dto = new HtmlDTO();
 				
-				dto.setCategoryId(Integer.parseInt(CATEGORY_TEXT_ID));
+				dto.setCategoryTextId(Integer.parseInt(CATEGORY_TEXT_ID));
 				dto.setCategoryTree(CATEGORY_TREE);
 				dto.setBreadcrumb(breadcrumb);
 				dto.setCategoryId(Integer.parseInt(CATEGORY_ID));
