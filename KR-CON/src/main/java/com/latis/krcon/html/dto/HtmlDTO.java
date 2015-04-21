@@ -35,9 +35,24 @@ public class HtmlDTO {
 	
 	private String html;			//html
 	private String text;			//html text
+	private String breadcrumb;
 	
 	
-	
+
+
+
+	public String getBreadcrumb() {
+		return breadcrumb;
+	}
+
+
+
+	public void setBreadcrumb(String breadcrumb) {
+		this.breadcrumb = breadcrumb;
+	}
+
+
+
 	public String getCategoryTree() {
 		return categoryTree;
 	}
@@ -165,6 +180,7 @@ public class HtmlDTO {
 		
 		doc.add(new Field("categoryTree",this.getCategoryTree(),Field.Store.YES,Field.Index.NOT_ANALYZED ));
 		doc.add(new Field("localeKey",this.getLocaleKey(),Field.Store.YES,Field.Index.NOT_ANALYZED ));
+		doc.add(new Field("breadcrumb",this.getBreadcrumb(),Field.Store.YES,Field.Index.NOT_ANALYZED ));
 		doc.add(new Field("categoryTitle",this.getCategoryTitle(),Field.Store.YES,Field.Index.NOT_ANALYZED ));
 		doc.add(new Field("categoryDesc",this.getCategoryDesc(),Field.Store.YES,Field.Index.NOT_ANALYZED ));
 		doc.add(new Field("text", this.getText(), Field.Store.YES, Field.Index.ANALYZED, TermVector.WITH_POSITIONS_OFFSETS));
