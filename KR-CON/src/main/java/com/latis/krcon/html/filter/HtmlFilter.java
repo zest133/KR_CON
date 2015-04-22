@@ -41,7 +41,7 @@ public class HtmlFilter {
 		
 		if (breadcrumb != null && breadcrumb != "") {
 			breadcrumbFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term(breadcrumbField, breadcrumb))));
+					new TermQuery(new Term("breadcrumb", breadcrumb))));
 			filterList.add(breadcrumbFilter);
 		}
 		if (categoryTitle != null && categoryTitle != "") {
