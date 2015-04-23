@@ -127,22 +127,26 @@ public class EnglishHtmlSearch {
 		return hits;
 	}
 	
+	public String convertToText(String text){
+		if(text != null){
+			text = text.replaceAll("\\s\\s", "");
+			return text.replaceAll("\\n", "");
+		}
+		return null;
+	}
 	
-	
-	
-	public String getHighlightHTML(TopDocs hits, String andWordSearch, String orWordSearch, String exact, String non  )
+	public String getHighlightHTML(String text, String field, String andWordSearch,
+			String orWordSearch, String exact, String non)
 			throws CorruptIndexException, IOException, ParseException {
 		String result = null;
-		for (ScoreDoc scoreDoc : hits.scoreDocs) {
-			Document doc = searcher.doc(scoreDoc.doc);
-			Query query = totalSearchBuildQuery(htmlField, andWordSearch, null, null, null);
-			result = highlightHTML(englishAnalyzer, doc.get(htmlField), query, htmlField);
-//			System.out.println(result);
-			break;
-		}
+			//
+		Query query = totalSearchBuildQuery(field, andWordSearch, null,
+				null, null);
+		result = highlightHTML(englishAnalyzer, text, query,
+				field);
+			System.out.println(result);
 		return result;
 	}
-
 	public Query totalSearchBuildQuery(String fieldName, String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
 
 		BooleanQuery booleanQuery = new BooleanQuery();
