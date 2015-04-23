@@ -26,6 +26,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -34,24 +35,18 @@ import com.latis.krcon.html.sort.HtmlSort;
 
 public class CategorySearch {
 
-	
-	@Value("${fileindex}")
 	private String dirPath;
 	
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
 	
-	@Value("${categoryTreeField}")
 	private String categoryTreeField;
 	
-	
-	@Value("${anonymousData}")
 	private String anonymousData;
 	
 	@Autowired
 	private KeywordAnalyzer analyzer;
-	
 	
 //	private String preFixQueryData;
 	private String searchWord;
@@ -168,6 +163,23 @@ public class CategorySearch {
 		return buffer.toString();
 	}
 	
+	public void checkSubCategory(Document document, JSONObject jsonObject)
+			throws IOException, ParseException {
+		String queryStr = andAnalyze(document.get("categoryTree")
+				+ anonymousData, categoryTreeField, analyzer);
+
+		Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
+				analyzer).parse(queryStr);
+		TopDocs hits = searcher.search(query, searcher.maxDoc());
+
+		if (hits.totalHits == 0) {
+		} else {
+			jsonObject.put("isFolder", "true");
+			jsonObject.put("isLazy", "true");
+		}
+
+	}
+	
 	
 	public String getDirPath() {
 		return dirPath;
@@ -180,6 +192,18 @@ public class CategorySearch {
 	}
 	public void setSearchWord(String searchWord) {
 		this.searchWord = searchWord;
+	}
+	public String getCategoryTreeField() {
+		return categoryTreeField;
+	}
+	public void setCategoryTreeField(String categoryTreeField) {
+		this.categoryTreeField = categoryTreeField;
+	}
+	public String getAnonymousData() {
+		return anonymousData;
+	}
+	public void setAnonymousData(String anonymousData) {
+		this.anonymousData = anonymousData;
 	}
 
 }

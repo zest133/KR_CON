@@ -2,7 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
@@ -30,6 +32,10 @@
 	</bean>
 	
 	<bean class="com.latis.krcon.html.category.search.CategorySearch" id="categorySearch">
+		<property name="dirPath" value="${fileindex}"></property>
+		<property name="categoryTreeField" value="${categoryTreeField}"></property>
+		<property name="anonymousData" value="${anonymousData}"></property>
+		<property name="searchWord" value="${rootCategoryTreeName}"></property>
 	</bean>
 	
 	<bean class="org.apache.lucene.index.TieredMergePolicy" id="tieredMergePolicy" scope="prototype">
@@ -46,5 +52,8 @@
 		<property name="fileEncoding" value="UTF-8"></property>
 	</bean>
 	
+	<bean class="com.latis.krcon.html.category.search.dao.CategorySearchDAOImpl" id="categorySearchDAO">
+	</bean>
 	
+	<context:component-scan base-package="com.latis.krcron"></context:component-scan>
 </beans>

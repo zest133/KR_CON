@@ -191,8 +191,9 @@ public class TestCategorySearch {
 		this.preFixQueryData = preFixQueryData;
 	}
 	
+	@Test
 	public void buildRootCategory() throws IOException, ParseException{
-		String searchWord = "0000.00e0.1530";
+		String searchWord = "0000.00e0.1530.????";
 		
 		ArrayList<Document> list =  categorySearchData(categoryTreeField, searchWord);
 		

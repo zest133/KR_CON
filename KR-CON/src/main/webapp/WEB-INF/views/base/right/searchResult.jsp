@@ -1,7 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<script>
-	
-</script>
 
 <div class="contents" style="padding-left: 270px;">
 	<div class="result">
@@ -17,6 +14,10 @@
 		</div>
 		<div class="resultcount">
 			<p>Search Results: (${resultSize})</p>
+		</div>
+		
+		<div>
+			<input type="button" value="Advanced Search" id="advSearchButton">
 		</div>
 		
 		<div class="result_list">
@@ -83,3 +84,12 @@
 	</div>
  -->
 </div>
+
+
+<script type="text/javascript">
+	$(function(){
+		$("#advSearchButton").click(function(){
+			document.location.href="advancedSearch.do";
+		});
+	});
+</script>

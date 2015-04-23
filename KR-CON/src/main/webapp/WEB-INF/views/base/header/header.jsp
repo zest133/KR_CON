@@ -10,6 +10,10 @@
 <script type="text/javascript" src="js/dynatree-master/dist/jquery.dynatree.js"></script>
 <link rel="stylesheet" type="text/css" href="js/dynatree-master/dist/skin/ui.dynatree.css">
 
+<script type="text/javascript" src="js/class/categoryTree.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
 </head>
 <body>
-	
+
+

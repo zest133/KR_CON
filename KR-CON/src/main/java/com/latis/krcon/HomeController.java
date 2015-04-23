@@ -37,7 +37,13 @@ public class HomeController {
 //	}
 	
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	public String home() {
+	public String home(Model model) {
+		
+		return "content";
+	}
+	
+	@RequestMapping(value = "/main.do", method = RequestMethod.POST)
+	public String load(Model model) {
 		return "content";
 	}
 	

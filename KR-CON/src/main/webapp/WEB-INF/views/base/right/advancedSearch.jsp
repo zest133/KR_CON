@@ -42,3 +42,10 @@
 		</div>
 	</div>
 </div>
+
+<style>
+label {
+	display: inline-block;
+	width: 200px;
+}
+</style>
