@@ -31,7 +31,8 @@ public class CategoryController {
 //		ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
 		
 		
-
+		
+		
 		return categorySearchDAO.getRootCategory().toString();
 	}
 
@@ -41,5 +42,13 @@ public class CategoryController {
 		
 		
 		return categorySearchDAO.getSubCategory(categoryTree).toString();
+	}
+	
+	@RequestMapping(value = "/current_html.do")
+	public @ResponseBody String getCurrentCategoryHTML(@RequestParam String categoryTree) {
+//		System.out.println(key);
+		
+		
+		return categorySearchDAO.getCurrentCategoryHTML(categoryTree).toString();
 	}
 }

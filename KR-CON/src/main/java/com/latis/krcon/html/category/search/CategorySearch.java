@@ -80,6 +80,10 @@ public class CategorySearch {
 		return categorySearchData(categoryTreeField, this.getSearchWord());
 	}
 	
+	public ArrayList<Document>  currentSearch(String currentCategoryTree){
+		return categorySearchData(categoryTreeField, currentCategoryTree);
+	}
+	
 	public ArrayList<Document> categoryAllSearchData(){
 		Query allCategoryQuery = new MatchAllDocsQuery();
 		htmlSort.addSortList(new SortField(categoryTreeField,SortField.STRING));
@@ -179,8 +183,7 @@ public class CategorySearch {
 		}
 
 	}
-	
-	
+
 	public String getDirPath() {
 		return dirPath;
 	}

@@ -16,22 +16,18 @@
 			<p>Search Results: (${resultSize})</p>
 		</div>
 		
-		<div>
-			<input type="button" value="Advanced Search" id="advSearchButton">
-		</div>
-		
 		<div class="result_list">
 			<c:forEach items="${searchResult}" var="item">
 				<div class="filename">
 					<p>
-						<a href="#">${item.fileName}</a>
+						<a href="#">${item.title}</a>
 					</p>
 					<div class="resultBreadCrumbs">
 						<p>${item.breadcrumbs}</p>
 					</div>
 				</div>
 				<div class="resulttext">
-					<p>${item.resulttext}</p>
+					<p>${item.htmlText}</p>
 				</div>
 			</c:forEach>
 		</div>
@@ -84,12 +80,3 @@
 	</div>
  -->
 </div>
-
-
-<script type="text/javascript">
-	$(function(){
-		$("#advSearchButton").click(function(){
-			document.location.href="advancedSearch.do";
-		});
-	});
-</script>

@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.dto.SearchDTO;
+import com.latis.krcon.html.dto.SearchResultDTO;
 import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 import com.latis.krcon.html.sort.HtmlSort;
@@ -306,7 +307,26 @@ public class EnglishHtmlSearch {
 	
 
 	
-	
+	public ArrayList<SearchResultDTO> getSearchData() throws IOException{
+		
+		TopDocs hits = htmlSearchData();
+		
+		ArrayList<Document> list = dumpHits(searcher, hits, textField);
+		
+		ArrayList<SearchResultDTO> returnList = new ArrayList<SearchResultDTO>();
+		if(list != null){
+			for(Document doc : list){
+				SearchResultDTO resultDTO = new SearchResultDTO();
+				
+				resultDTO.setTitle(doc.get("categoryTitle"));
+				resultDTO.setHtmlText(doc.get(textField));
+				resultDTO.setBreadcrumbs(doc.get("breadcrumb"));
+				
+				returnList.add(resultDTO);
+			}
+		}
+		return returnList;
+	}
 	
 	
 	

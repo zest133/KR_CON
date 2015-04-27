@@ -25,5 +25,8 @@ $(document).ready(function(){
 	 * Search
 	 */
 	
+	$("#advSearchButton").click(function(){
+		document.location.href="advanced_search.do";
+	});
 	
 });

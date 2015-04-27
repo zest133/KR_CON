@@ -17,6 +17,8 @@
 			</div>
 			<input id="searchLink" type="submit" title="Search" alt="Search">
 		</form>
+		
+		<input type="button" value="Advanced Search" id="advSearchButton">
 		<!-- 
 		<form class="searchform" action="search.do">
 			<input class="searchfield" type="text" 

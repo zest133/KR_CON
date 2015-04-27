@@ -30,7 +30,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		JSONArray returnArray = null;
 		try {
 			categorySearch.init();
-//			categorySearch.setSearchWord("0000.00e0.1530");
+			categorySearch.setSearchWord("0000.00e0.1530");
 			ArrayList<Document> list = categorySearch.search();
 
 			returnArray = convertJsonArray(list);
@@ -75,7 +75,20 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 	@Override
 	public String getCurrentCategoryHTML(String selectedCategoryTree) {
 		// TODO Auto-generated method stub
-		return null;
+		String returnVal = "";
+		try {
+			categorySearch.init();
+			ArrayList<Document> list = categorySearch
+					.currentSearch(selectedCategoryTree);
+			returnVal = cenvertHtmlText(list);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			categorySearch.close();
+		}
+		
+		return returnVal;
 	}
 
 	public JSONArray convertJsonArray(ArrayList<Document> list)
@@ -99,6 +112,11 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		}
 
 		return array;
+	}
+	
+	public String cenvertHtmlText(ArrayList<Document> list){
+		
+		return list.get(0).get("html");
 	}
 
 }
