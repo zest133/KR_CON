@@ -241,7 +241,6 @@ public class TestEnglishHtmlSearch {
 	public void compareStopWord() {
 		String andWordSearch = "Convention for the Safed";
 		String[] queryArr = andWordSearch.split("\\ ");
-<<<<<<< HEAD
 		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
 		assertEquals(true, temp.contains("for"));
 
@@ -261,19 +260,9 @@ public class TestEnglishHtmlSearch {
 			}else{
 				buffer.append(word).append(" ");
 			}
-=======
-		CharArraySet temp = (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
-		if (temp.contains("for")) {
-			System.out.println("aaa");
->>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 		}
-<<<<<<< HEAD
 		
-		System.out.println(buffer.toString().trim());
 		
-=======
-
->>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 	}
 
 	public String convertToText(String text) {
