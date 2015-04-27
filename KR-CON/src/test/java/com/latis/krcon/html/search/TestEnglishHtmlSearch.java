@@ -109,25 +109,24 @@ public class TestEnglishHtmlSearch {
 		String exactWordSearch = "\"international voyage Issued under\"";
 		String notWordSearch = "Wireless network setup";
 
-//		 "a", "an", "and", "are", "as", "at", "be", "but", "by",
-//	      "for", "if", "in", "into", "is", "it",
-//	      "no", "not", "of", "on", "or", "such",
-//	      "that", "the", "their", "then", "there", "these",
-//	      "they", "this", "to", "was", "will", "with"
+		// "a", "an", "and", "are", "as", "at", "be", "but", "by",
+		// "for", "if", "in", "into", "is", "it",
+		// "no", "not", "of", "on", "or", "such",
+		// "that", "the", "their", "then", "there", "these",
+		// "they", "this", "to", "was", "will", "with"
 		try {
 			Query query = totalSearchBuildQuery(textField, null, null,
 					exactWordSearch, null);
-//			Filter filter = applyChainedFilter(
-//					"KRCON/KR-CON (English)/SOLAS 1974 ***/SOLAS 1989/1990 Amend/",
-//					categoryTitle, locale);
-			Filter filter = applyChainedFilter(
-					breadcrumb,
-					categoryTitle, locale);
+			// Filter filter = applyChainedFilter(
+			// "KRCON/KR-CON (English)/SOLAS 1974 ***/SOLAS 1989/1990 Amend/",
+			// categoryTitle, locale);
+			Filter filter = applyChainedFilter(breadcrumb, categoryTitle,
+					locale);
 
 			HtmlSort htmlSort = new HtmlSort();
 			htmlSort.addSortList(new SortField("categoryTree", SortField.STRING)); // 1
 																					// 번.
-			
+
 			// 2번.
 			// ArrayList<SortField> list = new ArrayList<SortField>();
 			// list.add(new SortField("categoryTree", SortField.STRING));
@@ -179,24 +178,24 @@ public class TestEnglishHtmlSearch {
 					}
 				}
 			}
-			
-			//text
+
+			// text
 			for (ScoreDoc scoreDoc : hits.scoreDocs) {
 				Document doc = searcher.doc(scoreDoc.doc);
 				String text = convertToText(doc.get(textField));
-				String highlight = getHighlightHTML(text,textField, andWordSearch, null,null, null);
-				
+				String highlight = getHighlightHTML(text, textField,
+						andWordSearch, null, null, null);
+
 			}
-			
-			
-			//html highlight
+
+			// html highlight
 			for (ScoreDoc scoreDoc : hits.scoreDocs) {
 				Document doc = searcher.doc(scoreDoc.doc);
-				String highlight = getHighlightHTML(doc.get(htmlField),htmlField, andWordSearch, null,null, null);
+				String highlight = getHighlightHTML(doc.get(htmlField),
+						htmlField, andWordSearch, null, null, null);
 				break;
-				
+
 			}
-			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -205,9 +204,44 @@ public class TestEnglishHtmlSearch {
 	}
 
 	@Test
-	public void compareStopWord(){
+	public void pagingNavigation() throws IOException, ParseException {
+		
+		int pageNum = 0;
+		int pagingCount = 20;
+		int totalPagingCount = (pageNum+1)*pagingCount;
+		
+		
+		
+		String andWordSearch = "Convention for the Safe";
+		String orWordSearch = "Wireless network setup";
+		String exactWordSearch = "\"international voyage Issued under\"";
+		String notWordSearch = "Wireless network setup";
+		
+		
+		ArrayList<Document> luceneDocuments = new ArrayList<Document>();
+
+		
+		
+		Query query = totalSearchBuildQuery(textField, null, null,
+				exactWordSearch, null);
+		
+
+		TopDocs hits = searcher.search(query, totalPagingCount);
+		
+		ScoreDoc[] scoreDocs = hits.scoreDocs;
+
+		for (int i = (totalPagingCount - pagingCount); i < totalPagingCount ; i++) {
+			
+
+			luceneDocuments.add(searcher.doc(scoreDocs[i].doc));
+		}
+	}
+
+	@Test
+	public void compareStopWord() {
 		String andWordSearch = "Convention for the Safed";
 		String[] queryArr = andWordSearch.split("\\ ");
+<<<<<<< HEAD
 		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
 		assertEquals(true, temp.contains("for"));
 
@@ -227,37 +261,40 @@ public class TestEnglishHtmlSearch {
 			}else{
 				buffer.append(word).append(" ");
 			}
+=======
+		CharArraySet temp = (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+		if (temp.contains("for")) {
+			System.out.println("aaa");
+>>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 		}
+<<<<<<< HEAD
 		
 		System.out.println(buffer.toString().trim());
 		
+=======
+
+>>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 	}
-	
-	
-	public String convertToText(String text){
-		if(text != null){
+
+	public String convertToText(String text) {
+		if (text != null) {
 			text = text.replaceAll("\\s\\s", "");
 			return text.replaceAll("\\n", "");
 		}
 		return null;
 	}
-	
-	public String getHighlightHTML(String text, String field, String andWordSearch,
-			String orWordSearch, String exact, String non)
+
+	public String getHighlightHTML(String text, String field,
+			String andWordSearch, String orWordSearch, String exact, String non)
 			throws CorruptIndexException, IOException, ParseException {
 		String result = null;
-			//
-		Query query = totalSearchBuildQuery(field, andWordSearch, null,
-				null, null);
-		result = highlightHTML(englishAnalyzer, text, query,
-				field);
-			System.out.println(result);
+		//
+		Query query = totalSearchBuildQuery(field, andWordSearch, null, null,
+				null);
+		result = highlightHTML(englishAnalyzer, text, query, field);
+		System.out.println(result);
 		return result;
 	}
-	
-	
-	
-	
 
 	public Query totalSearchBuildQuery(String fieldName, String andSearch,
 			String orSearch, String exact, String non) throws IOException,
@@ -332,9 +369,8 @@ public class TestEnglishHtmlSearch {
 		highlighter.setTextFragmenter(new NullFragmenter());
 
 		StringReader strReader = new StringReader(htmlText);
-		TokenStream ts = analyzer.tokenStream(
-				"f",
-				new HTMLStripCharFilter(CharReader.get(strReader)));
+		TokenStream ts = analyzer.tokenStream("f", new HTMLStripCharFilter(
+				CharReader.get(strReader)));
 
 		try {
 
