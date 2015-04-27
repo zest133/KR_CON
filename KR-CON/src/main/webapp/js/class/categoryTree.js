@@ -34,18 +34,40 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 			});
 };
 
-/*
- * $("#btnLoadKeyPath").click( function() { var tree =
- * $("#tocContent").dynatree("getTree");
- * 
- * tree.loadKeyPath("/folder1/folder1/folder1/folder1", function(node, status) {
- * if (status == "loaded") { node.expand(); } else if (status == "ok") {
- * node.activate(); } }); });
- * 
- * $("#btnCollapseAll").click(function() {
- * $("#tocContent").dynatree("getRoot").visit(function(node) {
- * node.expand(false); }); return false; });
- */
+CategoryTree.prototype.openCurrentTree = function(keyPath) {
+	var tree = $("#tocContent").dynatree("getTree");
+
+	tree.loadKeyPath("/folder1/folder1/folder1/folder1", function(node,
+			status) {
+		if (status == "loaded") {
+			node.expand();
+		} else if (status == "ok") {
+			node.activate();
+		}
+	});
+};
+
+//
+//$("#btnLoadKeyPath").click(
+//		function() {
+//			var tree = $("#tocContent").dynatree("getTree");
+//
+//			tree.loadKeyPath("/folder1/folder1/folder1/folder1", function(node,
+//					status) {
+//				if (status == "loaded") {
+//					node.expand();
+//				} else if (status == "ok") {
+//					node.activate();
+//				}
+//			});
+//		});
+
+$("#btnCollapseAll").click(function() {
+	$("#tocContent").dynatree("getRoot").visit(function(node) {
+		node.expand(false);
+	});
+	return false;
+});
 
 CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 		currentCategoryTree) {

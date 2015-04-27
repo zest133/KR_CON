@@ -4,6 +4,7 @@ public class SearchResultDTO {
 	private String title;
 	private String htmlText;
 	private String breadcrumbs;
+	private String categoryTree;
 	
 	public String getTitle() {
 		return title;
@@ -23,6 +24,14 @@ public class SearchResultDTO {
 	public void setBreadcrumbs(String breadcrumbs) {
 		this.breadcrumbs = breadcrumbs;
 	}
+	public String getCategoryTree() {
+		return categoryTree;
+	}
+	public void setCategoryTree(String categoryTree) {
+		this.categoryTree = categoryTree;
+	}
+	
+	
 	
 	
 }

@@ -16,13 +16,13 @@ public class HtmlFilter {
 	private Filter breadcrumbFilter = null;
 	private Filter categoryTitleFilter = null;
 	private Filter localeTitleFilter = null;
-
-	@Value("${breadcrumbField}")
-	private String breadcrumbField;
-	@Value("${categoryTitleField}")
-	private String categoryTitleField;
-	@Value("${localeField}")
-	private String localeField;
+//
+//	@Value("${breadcrumbField}")
+//	private String breadcrumbField;
+//	@Value("${categoryTitleField}")
+//	private String categoryTitleField;
+//	@Value("${localeField}")
+//	private String localeField;
 	
 	
 //	private String breadcrumb;
@@ -39,20 +39,20 @@ public class HtmlFilter {
 		
 		filterList = new ArrayList<Filter>();
 		
-		if (breadcrumb != null && breadcrumb != "") {
+		if (breadcrumb != null && !breadcrumb.equals("") && !breadcrumb.equals("All")) {
 			breadcrumbFilter = new CachingWrapperFilter(new QueryWrapperFilter(
 					new TermQuery(new Term("breadcrumb", breadcrumb))));
 			filterList.add(breadcrumbFilter);
 		}
-		if (categoryTitle != null && categoryTitle != "") {
+		if (categoryTitle != null && categoryTitle.equals("") && !categoryTitle.equals("All")) {
 			categoryTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term(categoryTitleField, categoryTitle))));
+					new TermQuery(new Term("categoryTree", categoryTitle))));
 			filterList.add(categoryTitleFilter);
 		}
 		
-		if (locale != null && locale != "") {
+		if (locale != null && locale.equals("")) {
 			localeTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term(localeField, locale))));
+					new TermQuery(new Term("categoryTitle", locale))));
 			filterList.add(localeTitleFilter);
 		}
 		

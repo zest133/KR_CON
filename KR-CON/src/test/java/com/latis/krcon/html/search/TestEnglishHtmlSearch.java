@@ -87,6 +87,8 @@ public class TestEnglishHtmlSearch {
 	private String breadcrumb;
 	private String categoryTitle;
 	private String locale;
+	@Value("${highlightTag}")
+	private String highlightTag;
 
 	@Before
 	public void setup() throws IOException {
@@ -104,9 +106,9 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		String andWordSearch = "Convention for the Safe";
+		String andWordSearch = "cross-sectional";
 		String orWordSearch = "Wireless network setup";
-		String exactWordSearch = "\"international voyage Issued under\"";
+		String exactWordSearch = "\"cross-sectional\"";
 		String notWordSearch = "Wireless network setup";
 
 		// "a", "an", "and", "are", "as", "at", "be", "but", "by",
@@ -185,6 +187,15 @@ public class TestEnglishHtmlSearch {
 				String text = convertToText(doc.get(textField));
 				String highlight = getHighlightHTML(text, textField,
 						andWordSearch, null, null, null);
+				
+				if(highlight.indexOf(highlightTag) >= 0){
+					if(highlight.indexOf(highlightTag) == 0){
+						highlight = highlight.substring(highlight.indexOf(highlightTag), 200) + "...";
+					}else{
+						highlight = "..." +highlight.substring(highlight.indexOf(highlightTag), highlight.indexOf(highlightTag) + 200) + "...";
+					}
+				}
+				
 
 			}
 
@@ -231,8 +242,6 @@ public class TestEnglishHtmlSearch {
 		ScoreDoc[] scoreDocs = hits.scoreDocs;
 
 		for (int i = (totalPagingCount - pagingCount); i < totalPagingCount ; i++) {
-			
-
 			luceneDocuments.add(searcher.doc(scoreDocs[i].doc));
 		}
 	}

@@ -98,6 +98,10 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 			
 			ArrayList<Document> allList = categorySearch.categoryAllSearchData();
 			
+			breadcrumbsFilter.add("All");
+			titleFilter.add("All");
+			localeFilter.add("All");
+			
 			for(Document doc : allList){
 				breadcrumbsFilter.add(doc.get(breadcrumbField));
 				titleFilter.add(doc.get(categoryTitleField));

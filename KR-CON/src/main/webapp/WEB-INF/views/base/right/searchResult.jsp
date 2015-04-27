@@ -14,12 +14,15 @@
 		</div>
 		
 		<div class="stopWord">
-				<p>
+				<p> Stop Word: 
 			<c:forEach items="${stopWord}" var="item">
 				${item},
 			</c:forEach>
 				</p>
 		
+		</div>
+		
+		<div class="spellCheck">
 		</div>
 		
 		<div class="resultcount">

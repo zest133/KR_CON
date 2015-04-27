@@ -60,8 +60,16 @@ public class SearchController {
 		SearchDTO dto = new SearchDTO();
 		dto.setAndWordSearch(searchAND);
 		dto.setOrWordSearch(searchOR);
-		dto.setExactWordSearch("\"" + searchExact + "\"");
+		
+		if(!searchExact.equals("")){
+			dto.setExactWordSearch("\"" + searchExact + "\"");
+		}
 		dto.setNotWordSearch(searchNON);
+		
+		dto.setBreadcrumb(filterBreradcrumbsList);
+		dto.setCategoryTitle(filterTitleList);
+		dto.setLocale(filterLocaleList);
+		
 		
 		List<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		

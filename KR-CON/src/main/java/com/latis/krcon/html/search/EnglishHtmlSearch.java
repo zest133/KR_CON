@@ -51,13 +51,24 @@ public class EnglishHtmlSearch {
 
 	@Value("${fileindex}")
 	private String dirPath;
+
 	@Value("${textField}")
 	private String textField;
-	
 	
 	@Value("${htmlField}")
 	private String htmlField;
 	
+	@Value("${categoryTreeField}")
+	private String categoryTreeField;
+	
+	@Value("${breadcrumbField}")
+	private String breadcrumbField;
+	
+	@Value("${categoryTitleField}")
+	private String categoryTitleField;
+	
+	@Value("${rootCategoryTreeName}")
+	private String rootCategoryTreeName;
 	
 	private IndexSearcher searcher;
 	private Directory dir;
@@ -71,8 +82,8 @@ public class EnglishHtmlSearch {
 	
 	private SearchDTO searchDTO;
 	
-
-	
+	@Value("${highlightTag}")
+	private String highlightTag;
 
 	public EnglishHtmlSearch() {
 		// TODO Auto-generated constructor stub
@@ -147,9 +158,10 @@ public class EnglishHtmlSearch {
 				null, null);
 		result = highlightHTML(englishAnalyzer, text, query,
 				field);
-			System.out.println(result);
+			//System.out.println(result);
 		return result;
 	}
+	
 	public Query totalSearchBuildQuery(String fieldName, String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
 		BooleanQuery booleanQuery = new BooleanQuery();
 		if (andSearch != null && andSearch != "") {
@@ -187,7 +199,7 @@ public class EnglishHtmlSearch {
 	}
 	
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle, String locale) throws Exception{
-		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle, locale );
+		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle, locale);
 		
 		return   htmlFilter.getFilter();
 	}
@@ -324,14 +336,58 @@ public class EnglishHtmlSearch {
 			for(Document doc : list){
 				SearchResultDTO resultDTO = new SearchResultDTO();
 				
-				resultDTO.setTitle(doc.get("categoryTitle"));
-				resultDTO.setHtmlText(doc.get(textField));
-				resultDTO.setBreadcrumbs(doc.get("breadcrumb"));
+				resultDTO.setTitle(doc.get(categoryTitleField));
+				
+				try {
+					String highlight = getHighlightHTML(doc.get(textField), textField, searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
+							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
+					
+					highlight = substringHighlight(highlight);
+					
+					resultDTO.setHtmlText(highlight);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
+				
+				
+				String[] categoryIds = doc.get(categoryTreeField).split(".");
+				
+				StringBuffer buffer = new StringBuffer();
+				
+				buffer.append(rootCategoryTreeName).append("/");
+				
+				for(String categoryId : categoryIds){
+					
+				}
+				
+				resultDTO.setCategoryTree(buffer.toString());
 				
 				returnList.add(resultDTO);
 			}
 		}
 		return returnList;
+	}
+
+	private String substringHighlight(String highlight) {
+		if(highlight.indexOf(highlightTag) >= 0){
+			if(highlight.indexOf(highlightTag) == 0){
+				if(highlight.length() >= highlight.indexOf(highlightTag) + 200){
+					highlight = highlight.substring(highlight.indexOf(highlightTag), 200) + "...";
+				}else{
+					highlight = highlight.substring(highlight.indexOf(highlightTag), highlight.length());
+				}
+			}else{
+				if(highlight.length() >= highlight.indexOf(highlightTag) + 200){
+					highlight = "..." + highlight.substring(highlight.indexOf(highlightTag), highlight.indexOf(highlightTag) + 200) + "...";
+				}else{
+					highlight = "..." + highlight.substring(highlight.indexOf(highlightTag), highlight.length());
+				}
+			}
+		}
+		return highlight;
 	}
 	
 	public String checkWord(String query){
@@ -377,11 +433,11 @@ public class EnglishHtmlSearch {
 	
 	public ArrayList<String> checkWord(String query, ArrayList<String> stopList){
 		String[] queryArr = query.split("\\ ");
-		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+		CharArraySet temp = (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
 		
 		for(String str : queryArr){
 			
-			if(temp.contains(str)){
+			if(temp.contains(str.toLowerCase())){
 				if(!stopList.contains(str)){
 					stopList.add(str);
 				}
