@@ -5,9 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.CharReader;
+import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -100,22 +104,30 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		String andWordSearch = "solas amend";
+		String andWordSearch = "Convention for the Safe";
 		String orWordSearch = "Wireless network setup";
-		String exactWordSearch = "\"Eco Driver Pack\"";
+		String exactWordSearch = "\"international voyage Issued under\"";
 		String notWordSearch = "Wireless network setup";
 
+//		 "a", "an", "and", "are", "as", "at", "be", "but", "by",
+//	      "for", "if", "in", "into", "is", "it",
+//	      "no", "not", "of", "on", "or", "such",
+//	      "that", "the", "their", "then", "there", "these",
+//	      "they", "this", "to", "was", "will", "with"
 		try {
-			Query query = totalSearchBuildQuery(textField, andWordSearch, null,
-					null, null);
+			Query query = totalSearchBuildQuery(textField, null, null,
+					exactWordSearch, null);
+//			Filter filter = applyChainedFilter(
+//					"KRCON/KR-CON (English)/SOLAS 1974 ***/SOLAS 1989/1990 Amend/",
+//					categoryTitle, locale);
 			Filter filter = applyChainedFilter(
-					"KRCON/KR-CON (English)/SOLAS 1974 ***/SOLAS 1989/1990 Amend/",
+					breadcrumb,
 					categoryTitle, locale);
 
 			HtmlSort htmlSort = new HtmlSort();
 			htmlSort.addSortList(new SortField("categoryTree", SortField.STRING)); // 1
 																					// 번.
-
+			
 			// 2번.
 			// ArrayList<SortField> list = new ArrayList<SortField>();
 			// list.add(new SortField("categoryTree", SortField.STRING));
@@ -192,6 +204,17 @@ public class TestEnglishHtmlSearch {
 		}
 	}
 
+	@Test
+	public void compareStopWord(){
+		String andWordSearch = "Convention for the Safed";
+		String[] queryArr = andWordSearch.split("\\ ");
+		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+		if(temp.contains("for")){
+			System.out.println("aaa");
+		}
+		
+	}
+	
 	
 	public String convertToText(String text){
 		if(text != null){
