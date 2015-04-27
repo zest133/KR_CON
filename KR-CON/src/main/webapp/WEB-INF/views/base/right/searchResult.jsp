@@ -12,6 +12,16 @@
 				</p>
 			</c:if>
 		</div>
+		
+		<div class="stopWord">
+				<p>
+			<c:forEach items="${stopWord}" var="item">
+				${item},
+			</c:forEach>
+				</p>
+		
+		</div>
+		
 		<div class="resultcount">
 			<p>Search Results: (${resultSize})</p>
 		</div>

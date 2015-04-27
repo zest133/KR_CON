@@ -35,6 +35,7 @@ public class SearchController {
 			model.addAttribute("searchKeyword", keyword);
 			model.addAttribute("searchResult", searchResult);
 			model.addAttribute("resultSize", searchResult.size());
+			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
 		}
 		
 		return "searchResult";
@@ -45,7 +46,11 @@ public class SearchController {
 			@RequestParam String searchAND,
 			@RequestParam String searchOR, 
 			@RequestParam String searchExact, 
-			@RequestParam String searchNON){
+			@RequestParam String searchNON,
+			@RequestParam String filterBreradcrumbsList,
+			@RequestParam String filterTitleList,
+			@RequestParam String filterLocaleList
+			){
 		
 //		System.out.println(searchAND);
 //		System.out.println(searchOR);
@@ -60,11 +65,14 @@ public class SearchController {
 		
 		List<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		
+		
+		
 		if(searchResult != null){
 			
 			model.addAttribute("searchKeyword", "Advanced Search");
 			model.addAttribute("searchResult", searchResult);
 			model.addAttribute("resultSize", searchResult.size());
+			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
 		}
 		
 		return "searchResult";

@@ -7,7 +7,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.CharReader;
+import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -149,7 +151,6 @@ public class EnglishHtmlSearch {
 		return result;
 	}
 	public Query totalSearchBuildQuery(String fieldName, String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
-
 		BooleanQuery booleanQuery = new BooleanQuery();
 		if (andSearch != null && andSearch != "") {
 			String andQueryStr = andAnalyze(andSearch, fieldName, englishAnalyzer);
@@ -267,11 +268,14 @@ public class EnglishHtmlSearch {
 			throws IOException {
 		StringBuffer buffer = new StringBuffer();
 
+		string = checkWord(string);
+		
 		TokenStream stream = analyzer.tokenStream(field, new StringReader(
 				string));
 		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
 		buffer.append("(");
 		while (stream.incrementToken()) { // C
+			
 			buffer.append("+");
 			buffer.append(term.toString()).append("* ");
 		}
@@ -284,6 +288,8 @@ public class EnglishHtmlSearch {
 			throws IOException {
 		StringBuffer buffer = new StringBuffer();
 
+		string = checkWord(string);
+		
 		TokenStream stream = analyzer.tokenStream(field, new StringReader(
 				string));
 		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
@@ -328,7 +334,63 @@ public class EnglishHtmlSearch {
 		return returnList;
 	}
 	
+	public String checkWord(String query){
+		
+		String[] querys = query.split(" ");
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		for(String word : querys){
+			if(word.endsWith("y")){
+				buffer.append(word.substring(0, word.length()-1)).append(" ");
+			}else{
+				buffer.append(word).append(" ");
+			}
+		}
+		
+		
+		
+		return buffer.toString().trim();
+	}
 	
+	public ArrayList<String> compareStopWord(){
+		ArrayList<String> stopList = new ArrayList<String>();
+		
+		if(searchDTO.getAndWordSearch() != null && !searchDTO.getAndWordSearch().equals("")){
+			stopList = checkWord(searchDTO.getAndWordSearch(), stopList);
+		}
+		
+		if(searchDTO.getOrWordSearch() != null && !searchDTO.getOrWordSearch().equals("")){
+			stopList = checkWord(searchDTO.getOrWordSearch(), stopList);
+		}
+		
+		if(searchDTO.getExactWordSearch() != null && !searchDTO.getExactWordSearch().equals("")){
+			stopList = checkWord(searchDTO.getExactWordSearch(), stopList);
+		}
+		
+		if(searchDTO.getNotWordSearch() != null && !searchDTO.getNotWordSearch().equals("")){
+			stopList = checkWord(searchDTO.getNotWordSearch(), stopList);
+		}
+		
+		return stopList;
+	}
+	
+	public ArrayList<String> checkWord(String query, ArrayList<String> stopList){
+		String[] queryArr = query.split("\\ ");
+		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+		
+		for(String str : queryArr){
+			
+			if(temp.contains(str)){
+				if(!stopList.contains(str)){
+					stopList.add(str);
+				}
+			}
+		}
+		
+		
+		return stopList;
+	}
 	
 
 }

@@ -3,6 +3,8 @@ package com.latis.krcon.html.search.dao;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -116,5 +118,11 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 		
 		return dto;
 	}
+	
+	@Override
+	public ArrayList<String> getStopWordList(){
+		return englishHtmlSearch.compareStopWord();
+	}
+	
 
 }

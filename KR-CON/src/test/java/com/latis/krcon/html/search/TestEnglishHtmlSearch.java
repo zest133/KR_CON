@@ -209,9 +209,27 @@ public class TestEnglishHtmlSearch {
 		String andWordSearch = "Convention for the Safed";
 		String[] queryArr = andWordSearch.split("\\ ");
 		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
-		if(temp.contains("for")){
-			System.out.println("aaa");
+		assertEquals(true, temp.contains("for"));
+
+		
+	}
+	
+	@Test
+	public void checkWord(){
+		String query = "Form of Safety";
+		String[] querys = query.split(" ");
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		for(String word : querys){
+			if(word.endsWith("y")){
+				buffer.append(word.substring(0, word.length()-1)).append(" ");
+			}else{
+				buffer.append(word).append(" ");
+			}
 		}
+		
+		System.out.println(buffer.toString().trim());
 		
 	}
 	

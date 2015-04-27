@@ -13,4 +13,6 @@ public interface HtmlSearchDAO {
 	public ArrayList<SearchResultDTO> advSearch(SearchDTO searchDTO);
 	
 	public FilterDTO getSearchFilterOption();
+	
+	public ArrayList<String> getStopWordList();
 }
