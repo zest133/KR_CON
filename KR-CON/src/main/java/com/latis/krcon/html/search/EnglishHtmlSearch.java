@@ -353,14 +353,25 @@ public class EnglishHtmlSearch {
 				resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
 				
 				
-				String[] categoryIds = doc.get(categoryTreeField).split(".");
+				String[] ids = doc.get(categoryTreeField).split("\\.");
 				
 				StringBuffer buffer = new StringBuffer();
 				
-				buffer.append(rootCategoryTreeName).append("/");
+				buffer.append(rootCategoryTreeName);
 				
-				for(String categoryId : categoryIds){
+				String solasId = doc.get(breadcrumbField).substring(rootCategoryTreeName.length()+1);
+				
+				String subCategory = "";
+				
+				for(String id : ids){
+					if(subCategory.equals("")){
+						subCategory = subCategory + id;
+					}else{
+						subCategory = subCategory + "." + id;
+					}
 					
+					buffer.append("/").append(rootCategoryTreeName).append(".").append(subCategory);
+							
 				}
 				
 				resultDTO.setCategoryTree(buffer.toString());

@@ -33,7 +33,7 @@
 			<c:forEach items="${searchResult}" var="item">
 				<div class="filename">
 					<p>
-						<a href="#">${item.title}</a>
+						<a href="#" onclick="CategoryTree.prototype.openCurrentTree('${item.categoryTree}')" >${item.title}</a>
 					</p>
 					<div class="resultBreadCrumbs">
 						<p>${item.breadcrumbs}</p>

@@ -37,7 +37,7 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 CategoryTree.prototype.openCurrentTree = function(keyPath) {
 	var tree = $("#tocContent").dynatree("getTree");
 
-	tree.loadKeyPath("/folder1/folder1/folder1/folder1", function(node,
+	tree.loadKeyPath(keyPath, function(node,
 			status) {
 		if (status == "loaded") {
 			node.expand();

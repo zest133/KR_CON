@@ -207,6 +207,39 @@ public class TestEnglishHtmlSearch {
 				break;
 
 			}
+			
+			
+			for (ScoreDoc scoreDoc : hits.scoreDocs) {
+				Document doc = searcher.doc(scoreDoc.doc);
+				String categoryTree = convertToText(doc.get("categoryTree"));
+				String rootCategory = "0000.00e0.1530";
+				
+				String solasId = categoryTree.substring(rootCategory.length()+1);
+				
+				String[] ids = solasId.split("\\.");
+				
+				
+				StringBuffer buffer2 = new StringBuffer();
+				
+				buffer2.append(rootCategory);
+				
+				String subCategory = "";
+				
+				for(String id : ids){
+					if(subCategory.equals("")){
+						subCategory = subCategory + id;
+					}else{
+						subCategory = subCategory + "." + id;
+					}
+					
+					buffer2.append("/").append(rootCategory).append(".").append(subCategory);
+							
+				}
+				
+				System.out.println("!");
+				
+
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
