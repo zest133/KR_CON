@@ -36,7 +36,7 @@ public class SynonymDTO {
 		for(String str : this.getSynList()){
 			doc.add(new Field("syn",str,Field.Store.YES,Field.Index.NOT_ANALYZED ));
 		}
-		doc.add(new Field("word",this.getWord(),Field.Store.YES,Field.Index.NOT_ANALYZED ));
+		doc.add(new Field("word",this.getWord(),Field.Store.YES,Field.Index.NO ));
 		return doc;
 	}
 	
