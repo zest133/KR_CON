@@ -5,26 +5,22 @@ function Search(){
 Search.prototype.search = function(pageNum){
 	this.pageNum = pageNum;
 	
-	var data1 = {
-			searchAND: $("#searchinputbox").val()
+	var data = {
+			searchAND: $("#searchinputbox").val(),
+			searchOR: "",
+			searchExact: "",
+			searchNON: "",
+			filterBreradcrumbsList: "",
+			filterTitleList: "",
+			filterLocaleList: ""
 	};
+	this.ajaxSearch(pageNum, data);
 	
-	$.ajax({
-		url: pageNum+"/search.do",
-		type: "post",
-		data: data1,
-		success: function(msg){
-			$(".contents").html(msg);
-		},
-		error: function(msg){
-			
-		}
-	});
 };
 
 Search.prototype.advSearch = function(pageNum){
 	this.pageNum = pageNum;
-	var data1 = {
+	var data = {
 			searchAND: $("#searchAND").val(),
 			searchOR: $("#searchOR").val(),
 			searchExact: $("#searchExact").val(),
@@ -33,7 +29,11 @@ Search.prototype.advSearch = function(pageNum){
 			filterTitleList: $("#filterTitleList").val(),
 			filterLocaleList: $("#filterLocaleList").val()
 	};
+	this.ajaxSearch(pageNum, data);
 	
+};
+
+Search.prototype.ajaxSearch = function(pageNum, data){
 	$.ajax({
 		url: pageNum+"/search.do",
 		type: "post",
@@ -42,7 +42,8 @@ Search.prototype.advSearch = function(pageNum){
 			$(".contents").html(msg);
 		},
 		error: function(msg){
-			
+			console.log(msg);
+			alert("search error");
 		}
 	});
 };

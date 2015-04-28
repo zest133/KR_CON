@@ -17,6 +17,8 @@ public class SearchDTO {
 
 	// sort fieldcolumn name
 	private String sortFileName;
+	
+	private int pageNum;
 
 	public String getAndWordSearch() {
 		return andWordSearch;
@@ -88,6 +90,14 @@ public class SearchDTO {
 
 	public void setCurrentPageNum(int currentPageNum) {
 		this.currentPageNum = currentPageNum;
+	}
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
 	}
 	
 	
