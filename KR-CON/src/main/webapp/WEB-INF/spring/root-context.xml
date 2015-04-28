@@ -40,6 +40,11 @@
 		<property name="searchWord" value="${rootCategoryTreeName}"></property>
 	</bean>
 	
+	
+	<bean class="com.latis.krcon.synonym.search.SynonymSearch" id="synonymSearch"></bean>
+	
+	<bean class="com.latis.krcon.synonym.dao.SynonymSearchDAOImpl" id="synonymSearchDAO"></bean>
+	
 	<bean class="org.apache.lucene.index.TieredMergePolicy" id="tieredMergePolicy" scope="prototype">
 		<property name="maxMergeAtOnce">
 			<value>300</value>

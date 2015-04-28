@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div class="contents" style="padding-left: 270px;">
 	<div class="result">
 		<div class="enterKeyword">
 			<c:if test="${searchKeyword == 'Advanced Search'}">
@@ -13,14 +12,24 @@
 			</c:if>
 		</div>
 		
-		<div class="stopWord">
+		<c:if test="${stopWord != null}">
+			<div class="stopWord">
 				<p> Stop Word: 
-			<c:forEach items="${stopWord}" var="item">
-				${item},
-			</c:forEach>
+					<c:forEach items="${stopWord}" var="item">
+						${item},
+					</c:forEach>
 				</p>
+			</div>
+		</c:if>
 		
-		</div>
+		<c:if test="${ synonym != ''}">
+			<div class="synonymWord">
+				<p>
+					Did you mean: ${synonym}
+				</p>
+			</div>
+		</c:if>
+		
 		
 		<div class="spellCheck">
 		</div>
@@ -92,4 +101,3 @@
 		</div>
 	</div>
  -->
-</div>

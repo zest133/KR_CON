@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 
 import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
+import com.latis.krcon.synonym.dto.SynonymDTO;
 
 @ContextConfiguration(locations={
 "file:src/main/webapp/WEB-INF/spring/root-context.xml"})

@@ -25,7 +25,7 @@ PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://
 		<put-attribute name="right"   value="/WEB-INF/views/base/right/advancedSearch.jsp"/>
 	</definition>
 	
-	<definition name="searchResult" extends="commonAdminPage">
+	<definition name="searchResult" extends="base">
 		<put-attribute name="right"   value="/WEB-INF/views/base/right/searchResult.jsp"/>
 	</definition>
 

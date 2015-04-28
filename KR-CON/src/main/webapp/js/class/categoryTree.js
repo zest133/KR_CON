@@ -71,7 +71,7 @@ $("#btnCollapseAll").click(function() {
 
 CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 		currentCategoryTree) {
-
+	
 	var data1 = {
 		categoryTree : currentCategoryTree
 	};

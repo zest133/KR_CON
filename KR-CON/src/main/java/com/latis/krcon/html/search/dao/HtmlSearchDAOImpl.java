@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.category.search.CategorySearch;
-import com.latis.krcon.html.dto.FilterDTO;
-import com.latis.krcon.html.dto.SearchDTO;
-import com.latis.krcon.html.dto.SearchResultDTO;
+import com.latis.krcon.html.filter.dto.FilterDTO;
 import com.latis.krcon.html.search.EnglishHtmlSearch;
+import com.latis.krcon.html.search.dto.SearchDTO;
+import com.latis.krcon.html.search.dto.SearchResultDTO;
 
 public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 

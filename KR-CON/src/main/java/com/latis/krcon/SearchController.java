@@ -7,13 +7,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.latis.krcon.html.dto.SearchDTO;
-import com.latis.krcon.html.dto.SearchResultDTO;
 import com.latis.krcon.html.search.dao.HtmlSearchDAO;
+import com.latis.krcon.html.search.dto.SearchDTO;
+import com.latis.krcon.html.search.dto.SearchResultDTO;
+import com.latis.krcon.synonym.dao.SynonymSearchDAO;
+import com.latis.krcon.synonym.search.SynonymSearch;
 
 @Controller
 public class SearchController {
@@ -21,35 +25,39 @@ public class SearchController {
 	@Autowired
 	public HtmlSearchDAO htmlSearchDAO;
 	
-	@RequestMapping(value = "/search.do", method = RequestMethod.POST)
-	public String search(Model model, @RequestParam String keyword){
-		
-		System.out.println(keyword);
-		
-		htmlSearchDAO.search(keyword);
-		
-		List<SearchResultDTO> searchResult = htmlSearchDAO.search(keyword);
-		
-		if(searchResult != null){
-			
-			model.addAttribute("searchKeyword", keyword);
-			model.addAttribute("searchResult", searchResult);
-			model.addAttribute("resultSize", searchResult.size());
-			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
-		}
-		
-		return "searchResult";
-	}
+	@Autowired
+	public SynonymSearchDAO synonumSearchDAO;
 	
-	@RequestMapping(value = "/adv_search.do", method = RequestMethod.POST)
-	public String advancedSearch(Model model, 
+//	@RequestMapping(value = "/search.do", method = RequestMethod.POST)
+//	public String search(Model model, @RequestParam String keyword){
+//		
+//		System.out.println(keyword);
+//		
+//		htmlSearchDAO.search(keyword);
+//		
+//		List<SearchResultDTO> searchResult = htmlSearchDAO.search(keyword);
+//		
+//		if(searchResult != null){
+//			model.addAttribute("searchKeyword", keyword);
+//			model.addAttribute("searchResult", searchResult);
+//			model.addAttribute("resultSize", searchResult.size());
+//			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
+//			model.addAttribute("synonym", synonumSearchDAO.checkSynonymWord(keyword));
+//		}
+//		
+//		return "searchResult";
+//	}
+	
+	@RequestMapping(value = "/{pageNum}/search.do")
+	public String search(Model model,
 			@RequestParam String searchAND,
 			@RequestParam String searchOR, 
 			@RequestParam String searchExact, 
 			@RequestParam String searchNON,
 			@RequestParam String filterBreradcrumbsList,
 			@RequestParam String filterTitleList,
-			@RequestParam String filterLocaleList
+			@RequestParam String filterLocaleList,
+			@PathVariable("pageNum") String pageNum
 			){
 		
 //		System.out.println(searchAND);
@@ -81,6 +89,7 @@ public class SearchController {
 			model.addAttribute("searchResult", searchResult);
 			model.addAttribute("resultSize", searchResult.size());
 			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
+			model.addAttribute("synonym", synonumSearchDAO.checkSynonymWord(searchAND));
 		}
 		
 		return "searchResult";

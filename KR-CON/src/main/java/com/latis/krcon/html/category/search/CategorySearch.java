@@ -156,7 +156,7 @@ public class CategorySearch {
 			buffer.append("+");
 			buffer.append(field);
 			buffer.append(":");
-			buffer.append("\"" + term.toString() + "\"");
+			buffer.append(term.toString());
 		}
 		buffer.append(")");
 

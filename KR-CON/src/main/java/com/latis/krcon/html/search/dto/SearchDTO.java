@@ -1,7 +1,9 @@
-package com.latis.krcon.html.dto;
+package com.latis.krcon.html.search.dto;
 
 public class SearchDTO {
-
+	
+	private int currentPageNum;
+	
 	// search word data
 	private String andWordSearch;
 	private String orWordSearch;
@@ -78,6 +80,14 @@ public class SearchDTO {
 
 	public void setSortFileName(String sortFileName) {
 		this.sortFileName = sortFileName;
+	}
+
+	public int getCurrentPageNum() {
+		return currentPageNum;
+	}
+
+	public void setCurrentPageNum(int currentPageNum) {
+		this.currentPageNum = currentPageNum;
 	}
 	
 	

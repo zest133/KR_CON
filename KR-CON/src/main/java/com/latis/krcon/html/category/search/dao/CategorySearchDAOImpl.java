@@ -98,7 +98,8 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		
 		for (Document document : list) {
 			JSONObject jsonObject = new JSONObject();
-
+			
+			jsonObject.put("key", document.get("categoryTree"));
 			jsonObject.put("categoryTree", document.get("categoryTree"));
 			jsonObject.put("title", document.get("categoryTitle"));
 			jsonObject.put("html", document.get("html"));

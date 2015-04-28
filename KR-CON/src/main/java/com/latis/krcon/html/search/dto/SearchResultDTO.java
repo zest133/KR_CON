@@ -1,4 +1,4 @@
-package com.latis.krcon.html.dto;
+package com.latis.krcon.html.search.dto;
 
 public class SearchResultDTO {
 	private String title;

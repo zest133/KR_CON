@@ -39,10 +39,10 @@ import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.latis.krcon.html.dto.SearchDTO;
-import com.latis.krcon.html.dto.SearchResultDTO;
 import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
+import com.latis.krcon.html.search.dto.SearchDTO;
+import com.latis.krcon.html.search.dto.SearchResultDTO;
 import com.latis.krcon.html.sort.HtmlSort;
 
 
@@ -353,13 +353,13 @@ public class EnglishHtmlSearch {
 				resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
 				
 				
-				String[] ids = doc.get(categoryTreeField).split("\\.");
 				
 				StringBuffer buffer = new StringBuffer();
 				
 				buffer.append(rootCategoryTreeName);
 				
-				String solasId = doc.get(breadcrumbField).substring(rootCategoryTreeName.length()+1);
+				String solasId = doc.get(categoryTreeField).substring(rootCategoryTreeName.length()+1);
+				String[] ids = solasId.split("\\.");
 				
 				String subCategory = "";
 				
@@ -437,6 +437,10 @@ public class EnglishHtmlSearch {
 		
 		if(searchDTO.getNotWordSearch() != null && !searchDTO.getNotWordSearch().equals("")){
 			stopList = checkWord(searchDTO.getNotWordSearch(), stopList);
+		}
+		
+		if(stopList.size() == 0){
+			stopList = null;
 		}
 		
 		return stopList;

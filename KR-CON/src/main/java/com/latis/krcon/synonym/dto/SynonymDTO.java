@@ -1,4 +1,4 @@
-package com.latis.krcon.synonym.write;
+package com.latis.krcon.synonym.dto;
 
 import java.util.ArrayList;
 

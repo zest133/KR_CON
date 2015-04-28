@@ -5,7 +5,6 @@
 		<h1>Advanced Search</h1>
 
 		<div>
-			<form action="adv_search.do" method="post">
 				<label>Search Word</label>
 				<ul class="searchOptionsField">
 					<li><label>all these words</label> <input type="text"
@@ -20,25 +19,7 @@
 					<li><label>none of these words</label> <input type="text"
 						id="searchNON" name="searchNON"></li>
 				</ul>
-				<!--
-				public ArrayList<String> breadcrumbsFilter;
-				public ArrayList<String> titleFilter;
-				public ArrayList<String> localeFilter;
 				
-				<c:forEach items="${searchResult}" var="item">
-				<div class="filename">
-					<p>
-						<a href="#">${item.title}</a>
-					</p>
-					<div class="resultBreadCrumbs">
-						<p>${item.breadcrumbs}</p>
-					</div>
-				</div>
-				<div class="resulttext">
-					<p>${item.htmlText}</p>
-				</div>
-			</c:forEach> 
-				 -->
 				<label>Search Filter</label>
 				<ul class="searchOptionsCategory">
 					<li>
@@ -70,24 +51,8 @@
 							<option value="en">en</option>
 						</select>
 					</li>
-					
-					<!-- 
-					
-					<li>
-						<label>Locale</label>
-						
-						<select id="filterLocaleList" name="filterLocaleList">
-							
-							<c:forEach items="${filters.localeFilter}" var="item">
-								<option value="${item}">${item}</option>
-							</c:forEach>
-							
-						</select>
-					</li>
-					-->
 				</ul>
-				<input type="submit" value="Search" id="advabcedSearchButton">
-			</form>
+				<input type="button" value="Search" id="advabcedSearchButton">
 		</div>
 	</div>
 </div>

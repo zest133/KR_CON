@@ -1,4 +1,4 @@
-package com.latis.krcon.html.dto;
+package com.latis.krcon.html.filter.dto;
 
 import java.util.ArrayList;
 

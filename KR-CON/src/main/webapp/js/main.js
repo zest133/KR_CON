@@ -3,6 +3,7 @@ $(document).ready(function(){
 	 * Category
 	 */
 	var categoryTree = new CategoryTree();
+	var search = new Search();
 	
 	/*
 	 * categoryTreeSelector = "";
@@ -24,6 +25,22 @@ $(document).ready(function(){
 	/*
 	 * Search
 	 */
+	
+	$("#searchinputbox").keydown(function(e){
+		if(e.keyCode == "13"){
+			search.search(0);
+		}
+	});
+	
+	
+	$("#searchLink").click(function(){
+		search.search(0);
+	});
+	
+	$("#advabcedSearchButton").click(function(){
+		search.advSearch(0);
+	});
+	
 	
 	$("#advSearchButton").click(function(){
 		document.location.href="advanced_search.do";
