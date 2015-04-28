@@ -43,7 +43,8 @@ $(document).ready(function(){
 	
 	
 	$("#advSearchButton").click(function(){
-		document.location.href="advanced_search.do";
+		
+		search.callAdvanceSearch();
 	});
 	
 });

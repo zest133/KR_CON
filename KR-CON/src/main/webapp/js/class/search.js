@@ -39,6 +39,7 @@ Search.prototype.ajaxSearch = function(pageNum, data){
 		type: "post",
 		data: data,
 		success: function(msg){
+			alert(msg);
 			$(".contents").html(msg);
 		},
 		error: function(msg){
@@ -47,6 +48,23 @@ Search.prototype.ajaxSearch = function(pageNum, data){
 		}
 	});
 };
+
+
+Search.prototype.callAdvanceSearch = function(){
+	$.ajax({
+		url:"advanced_search.do",
+		type: "post",
+		//data: "",
+		success: function(msg){
+			//alert(msg);
+			$(".contents").html(msg);
+		},
+		error: function(msg){
+			console.log(msg);
+			alert("search error");
+		}
+	});
+}
 
 Search.prototype.getPageNum = function(){
 	return this.pageNum;
