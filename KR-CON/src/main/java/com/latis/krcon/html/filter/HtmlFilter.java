@@ -44,13 +44,13 @@ public class HtmlFilter {
 					new TermQuery(new Term("breadcrumb", breadcrumb))));
 			filterList.add(breadcrumbFilter);
 		}
-		if (categoryTitle != null && categoryTitle.equals("") && !categoryTitle.equals("All")) {
+		if (categoryTitle != null && !categoryTitle.equals("") && !categoryTitle.equals("All")) {
 			categoryTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
 					new TermQuery(new Term("categoryTree", categoryTitle))));
 			filterList.add(categoryTitleFilter);
 		}
 		
-		if (locale != null && locale.equals("")) {
+		if (locale != null && !locale.equals("")) {
 			localeTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
 					new TermQuery(new Term("categoryTitle", locale))));
 			filterList.add(localeTitleFilter);

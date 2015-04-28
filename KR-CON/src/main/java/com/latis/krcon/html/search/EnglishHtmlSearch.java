@@ -84,6 +84,9 @@ public class EnglishHtmlSearch {
 	
 	@Value("${highlightTag}")
 	private String highlightTag;
+	
+	@Value("${searchResultSize}")
+	private int searchResultSize;
 
 	public EnglishHtmlSearch() {
 		// TODO Auto-generated constructor stub
@@ -93,7 +96,6 @@ public class EnglishHtmlSearch {
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
 		searcher = new IndexSearcher(reader);
-
 	}
 
 	public void close()  {
@@ -121,6 +123,8 @@ public class EnglishHtmlSearch {
 			htmlSort.addSortList(new SortField(searchDTO.getSortFileName(), SortField.STRING)); //1 번. 
 			
 			Sort sort = htmlSort.getSort();
+			
+			
 			
 			if(filter != null && sort != null){
 				hits = searcher.search(query,filter, searcher.maxDoc(), sort);
@@ -330,6 +334,9 @@ public class EnglishHtmlSearch {
 		TopDocs hits = htmlSearchData();
 		
 		ArrayList<Document> list = dumpHits(searcher, hits, textField);
+		
+		
+		
 		
 		ArrayList<SearchResultDTO> returnList = new ArrayList<SearchResultDTO>();
 		if(list != null){

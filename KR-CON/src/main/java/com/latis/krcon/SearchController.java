@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.latis.krcon.html.search.dao.HtmlSearchDAO;
 import com.latis.krcon.html.search.dto.SearchDTO;
 import com.latis.krcon.html.search.dto.SearchResultDTO;
 import com.latis.krcon.synonym.dao.SynonymSearchDAO;
-import com.latis.krcon.synonym.search.SynonymSearch;
 
 @Controller
 public class SearchController {
@@ -48,7 +46,7 @@ public class SearchController {
 //		return "searchResult";
 //	}
 	
-	@RequestMapping(value = "/{pageNum}/search.do")
+	@RequestMapping(value = "/{pageNum}/search.do", method = RequestMethod.POST)
 	public String search(Model model,
 			@RequestParam String searchAND,
 			@RequestParam String searchOR, 
@@ -59,7 +57,6 @@ public class SearchController {
 			@RequestParam String filterLocaleList,
 			@PathVariable("pageNum") String pageNum
 			){
-		
 //		System.out.println(searchAND);
 //		System.out.println(searchOR);
 //		System.out.println(searchExact);
@@ -78,6 +75,7 @@ public class SearchController {
 		dto.setCategoryTitle(filterTitleList);
 		dto.setLocale(filterLocaleList);
 		
+		dto.setPageNum(Integer.parseInt(pageNum));
 		
 		List<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		
