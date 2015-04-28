@@ -37,7 +37,7 @@ Search.prototype.ajaxSearch = function(pageNum, data){
 	$.ajax({
 		url: pageNum+"/search.do",
 		type: "post",
-		data: data1,
+		data: data,
 		success: function(msg){
 			$(".contents").html(msg);
 		},
