@@ -51,3 +51,11 @@ Search.prototype.ajaxSearch = function(pageNum, data){
 Search.prototype.getPageNum = function(){
 	return this.pageNum;
 };
+
+Search.prototype.checkSearchResultScroll = function(){
+	$(".result")
+};
+
+Search.prototype.moreSearch= function(){
+	
+};

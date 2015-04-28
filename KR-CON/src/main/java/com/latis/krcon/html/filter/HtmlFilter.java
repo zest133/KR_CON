@@ -52,7 +52,7 @@ public class HtmlFilter {
 		
 		if (locale != null && !locale.equals("")) {
 			localeTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term("categoryTitle", locale))));
+					new TermQuery(new Term("localeKey", locale))));
 			filterList.add(localeTitleFilter);
 		}
 		

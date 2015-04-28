@@ -124,8 +124,6 @@ public class EnglishHtmlSearch {
 			
 			Sort sort = htmlSort.getSort();
 			
-			
-			
 			if(filter != null && sort != null){
 				hits = searcher.search(query,filter, searcher.maxDoc(), sort);
 			}else if(filter != null && sort == null){
@@ -273,10 +271,19 @@ public class EnglishHtmlSearch {
 			return null;
 		}
 		docList = new ArrayList<Document>();
-		for (ScoreDoc match : hits.scoreDocs) {
-			Document doc = searcher.doc(match.doc);
-			docList.add(doc);
+		
+		int totalPageCount = (searchDTO.getCurrentPageNum()+1) * searchResultSize;
+		
+		ScoreDoc[] scoreDocs = hits.scoreDocs;
+
+		for (int i = (totalPageCount - searchResultSize); i < totalPageCount ; i++) {
+			docList.add(searcher.doc(scoreDocs[i].doc));
 		}
+		
+//		for (ScoreDoc match : hits.scoreDocs) {
+//			Document doc = searcher.doc(match.doc);
+//			docList.add(doc);
+//		}
 		return docList;
 	}
 
@@ -469,6 +476,8 @@ public class EnglishHtmlSearch {
 		
 		return stopList;
 	}
+	
+	
 	
 
 }
