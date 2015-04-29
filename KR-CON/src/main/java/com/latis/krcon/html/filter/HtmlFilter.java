@@ -17,42 +17,36 @@ public class HtmlFilter {
 	private Filter categoryTitleFilter = null;
 	private Filter localeTitleFilter = null;
 //
-//	@Value("${breadcrumbField}")
-//	private String breadcrumbField;
-//	@Value("${categoryTitleField}")
-//	private String categoryTitleField;
-//	@Value("${localeField}")
-//	private String localeField;
+	@Value("${breadcrumbField}")
+	private String breadcrumbField;
+	@Value("${categoryTitleField}")
+	private String categoryTitleField;
+	@Value("${localeField}")
+	private String localeField;
 	
 	
-//	private String breadcrumb;
-//	private String categoryTitle;
-//	private String locale;
 
 	private ArrayList<Filter> filterList;
 	
 	public HtmlFilter(String breadcrumb, String categoryTitle, String locale) {
 		// TODO Auto-generated constructor stub
-//		this.breadcrumb = breadcrumb;
-//		this.categoryTitle = categoryTitle;
-//		this.locale = locale;
 		
 		filterList = new ArrayList<Filter>();
 		
 		if (breadcrumb != null && !breadcrumb.equals("") && !breadcrumb.equals("All")) {
 			breadcrumbFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term("breadcrumb", breadcrumb))));
+					new TermQuery(new Term(breadcrumbField, breadcrumb))));
 			filterList.add(breadcrumbFilter);
 		}
 		if (categoryTitle != null && !categoryTitle.equals("") && !categoryTitle.equals("All")) {
 			categoryTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term("categoryTree", categoryTitle))));
+					new TermQuery(new Term(categoryTitleField, categoryTitle))));
 			filterList.add(categoryTitleFilter);
 		}
 		
 		if (locale != null && !locale.equals("")) {
 			localeTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term("localeKey", locale))));
+					new TermQuery(new Term(localeField, locale))));
 			filterList.add(localeTitleFilter);
 		}
 		
@@ -64,17 +58,6 @@ public class HtmlFilter {
 	public ChainedFilter getFilter() throws Exception {
 
 		ChainedFilter chain = null;
-//		if(fileNameFilter != null && categoryFilter != null){
-//			chain = new ChainedFilter(new Filter[] { fileNameFilter,
-//					categoryFilter }, ChainedFilter.AND);
-//		}else{
-//			if(fileNameFilter != null){
-//				chain = new ChainedFilter(new Filter[] { fileNameFilter});
-//			}else if(categoryFilter != null){
-//				chain = new ChainedFilter(new Filter[] { categoryFilter});
-//			}
-//		}
-		
 		if(filterList.size() >0 ){
 //			String[] arr = list.toArray(new String[list.size()]);
 			Filter[] filter = filterList.toArray(new Filter[filterList.size()]);

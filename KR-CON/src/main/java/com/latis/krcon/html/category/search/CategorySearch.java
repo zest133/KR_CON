@@ -31,28 +31,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.sort.HtmlSort;
+import com.latis.krcon.query.BuildQuery;
 
 
 public class CategorySearch {
 
-	private String dirPath;
+	
 	
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
 	
-	private String categoryTreeField;
-	
-	private String anonymousData;
-	
 	@Autowired
 	private KeywordAnalyzer analyzer;
 	
-//	private String preFixQueryData;
 	private String searchWord;
 	
 	@Autowired
 	private HtmlSort htmlSort;
+	
+	
+	@Value("${categoryTreeField}")
+	private String categoryTreeField;
+	
+	@Value("${anonymousData}")
+	private String anonymousData;
+	
+	@Value("${fileindex}")
+	private String dirPath;
+	
+	
+	@Autowired
+	private BuildQuery buildQuery;
 	
 	public CategorySearch(){
 		
@@ -91,7 +101,7 @@ public class CategorySearch {
 		ArrayList<Document> list = null;
 		try {
 			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc(), htmlSort.getSort());
-			list = dumpHits(searcher, hits, categoryTreeField);
+			list = getDocumentList(searcher, hits, categoryTreeField);
 			
 			
 		} catch (IOException e) {
@@ -110,11 +120,11 @@ public class CategorySearch {
 	public ArrayList<Document> categorySearchData(String field, String searchWord){
 		ArrayList<Document> returnList =null;
 		try {
-			String queryStr = andAnalyze(searchWord, field, analyzer);
+			String queryStr = buildQuery.categoryMakeQuery(searchWord, field);
 			htmlSort.addSortList(new SortField(categoryTreeField,SortField.STRING));
 			Query query = new QueryParser(Version.LUCENE_36, field, analyzer).parse(queryStr);
 			TopDocs hits = searcher.search(query, searcher.maxDoc(), htmlSort.getSort());
-			returnList = dumpHits(searcher, hits, field);
+			returnList = getDocumentList(searcher, hits, field);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,7 +135,7 @@ public class CategorySearch {
 		return returnList;
 	}
 	
-	private ArrayList<Document> dumpHits(IndexSearcher searcher, TopDocs hits, String fieldName)
+	private ArrayList<Document> getDocumentList(IndexSearcher searcher, TopDocs hits, String fieldName)
 			throws IOException {
 		ArrayList< Document> docList = null; 
 		if (hits.totalHits == 0) {
@@ -135,7 +145,6 @@ public class CategorySearch {
 		docList = new ArrayList<Document>();
 		for (ScoreDoc match : hits.scoreDocs) {
 			Document doc = searcher.doc(match.doc);
-//			System.out.println(match.score + ":" + doc.get(fieldName));
 			docList.add(doc);
 		}
 		return docList;
@@ -144,33 +153,11 @@ public class CategorySearch {
 	
 	
 	
-	private String andAnalyze(String searchWord, String field, Analyzer analyzer)
-			throws IOException {
-		StringBuffer buffer = new StringBuffer();
-
-		TokenStream stream = analyzer.tokenStream(field, new StringReader(
-				searchWord));
-		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-		buffer.append("(");
-		while (stream.incrementToken()) { // C
-			buffer.append("+");
-			buffer.append(field);
-			buffer.append(":");
-			buffer.append(term.toString());
-		}
-		buffer.append(")");
-
-		String output = buffer.toString();
-
-		System.out.println(output);
-
-		return buffer.toString();
-	}
 	
 	public void checkSubCategory(Document document, JSONObject jsonObject)
 			throws IOException, ParseException {
-		String queryStr = andAnalyze(document.get("categoryTree")
-				+ anonymousData, categoryTreeField, analyzer);
+		String queryStr = buildQuery.categoryMakeQuery(document.get(categoryTreeField)
+				+ anonymousData, categoryTreeField);
 
 		Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
 				analyzer).parse(queryStr);
@@ -184,29 +171,11 @@ public class CategorySearch {
 
 	}
 
-	public String getDirPath() {
-		return dirPath;
-	}
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
 	public String getSearchWord() {
 		return searchWord;
 	}
 	public void setSearchWord(String searchWord) {
 		this.searchWord = searchWord;
-	}
-	public String getCategoryTreeField() {
-		return categoryTreeField;
-	}
-	public void setCategoryTreeField(String categoryTreeField) {
-		this.categoryTreeField = categoryTreeField;
-	}
-	public String getAnonymousData() {
-		return anonymousData;
-	}
-	public void setAnonymousData(String anonymousData) {
-		this.anonymousData = anonymousData;
 	}
 
 }

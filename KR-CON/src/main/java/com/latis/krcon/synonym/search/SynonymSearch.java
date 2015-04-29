@@ -23,6 +23,9 @@ import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.latis.krcon.analyzer.CustomKeywordAnalyzer;
+import com.latis.krcon.query.BuildQuery;
+
 public class SynonymSearch {
 	@Value("${synonymindex}")
 	private String dirPath;
@@ -32,7 +35,10 @@ public class SynonymSearch {
 	private IndexReader reader;
 	
 	@Autowired
-	private KeywordAnalyzer analyzer;
+	private CustomKeywordAnalyzer analyzer;
+	
+	@Autowired
+	private BuildQuery buildQuery;
 	
 	@Value("${synField}")
 	private String synField;
@@ -76,8 +82,7 @@ public class SynonymSearch {
 	public ArrayList<Document> synonymSearchData(String field, String searchWord){
 		ArrayList<Document> returnList =null;
 		try {
-			String queryStr = andAnalyze(searchWord, field, analyzer);
-			
+			String queryStr = buildQuery.keywordAnalyzeMakeQuery(searchWord, field);
 			Query query = new QueryParser(Version.LUCENE_36, field, analyzer).parse(queryStr);
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
 			returnList = dumpHits(searcher, hits, wordField);
@@ -108,30 +113,4 @@ public class SynonymSearch {
 	}
 	
 	
-	
-	
-	private String andAnalyze(String searchWord, String field, Analyzer analyzer)
-			throws IOException {
-		StringBuffer buffer = new StringBuffer();
-
-		TokenStream stream = analyzer.tokenStream(field, new StringReader(
-				searchWord));
-		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-		// PositionIncrementAttribute posIncr = stream
-		// .addAttribute(PositionIncrementAttribute.class);
-		buffer.append("(");
-		while (stream.incrementToken()) { // C
-			buffer.append("+");
-			buffer.append(field);
-			buffer.append(":");
-			buffer.append("\"").append(term.toString()).append("\"");
-		}
-		buffer.append(")");
-
-		String output = buffer.toString();
-
-		System.out.println(output);
-
-		return buffer.toString();
-	}
 }
