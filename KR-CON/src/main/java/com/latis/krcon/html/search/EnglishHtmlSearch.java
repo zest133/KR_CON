@@ -408,12 +408,39 @@ public class EnglishHtmlSearch {
 				resultDTO.setTitle(doc.get(categoryTitleField));
 				
 				try {
-					String highlight = getHighlightHTML(doc.get(textField), 
+					
+					/*
+					 * String text = "Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships";
+			String highlight = getHighlightHTML(text, textField,
+					"Regulation", null, null, null);
+
+			int offset = highlight.indexOf(highlightTag);
+			if(offset >= 0){
+				highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+				highlight = highlight.replaceAll("</span>", "");
+				if(offset == 0){
+					highlight = highlight.substring(offset, 100) + "...";
+				}else{
+					highlight = "..." +highlight.substring(offset, offset + 100) + "...";
+				}
+				
+				highlight = getHighlightHTML(highlight, textField,
+						"Regulation", null, null, null);
+			}
+					 */
+					String text = doc.get(textField);
+					
+					String highlight = getHighlightHTML(text, 
 							textField, 
 							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
 							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
 					
 					highlight = substringHighlight(highlight);
+					
+					highlight = getHighlightHTML(highlight, 
+							textField, 
+							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
+							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
 					
 					resultDTO.setHtmlText(highlight);
 				} catch (ParseException e) {
@@ -460,8 +487,26 @@ public class EnglishHtmlSearch {
 	}
 
 	private String substringHighlight(String highlight) {
+		/*
+		 * int offset = highlight.indexOf(highlightTag);
+					if(offset >= 0){
+						highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+						highlight = highlight.replaceAll("</span>", "");
+						if(offset == 0){
+							highlight = highlight.substring(offset, 100) + "...";
+						}else{
+							highlight = "..." +highlight.substring(offset, offset + 100) + "...";
+						}
+						
+						highlight = getHighlightHTML(highlight, textField,
+								"Regulation", null, null, null);
+					}
+		 */
 		int offset = highlight.indexOf(highlightTag);
 		int substringLength = 200;
+		
+		highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+		highlight = highlight.replaceAll("</span>", "");
 		
 		if(offset > 0){
 			if(highlight.length() >= offset + substringLength){
@@ -520,6 +565,8 @@ public class EnglishHtmlSearch {
 		if(stopList.size() == 0){
 			stopList = null;
 		}
+		
+		
 		
 		return stopList;
 	}
