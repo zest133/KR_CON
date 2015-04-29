@@ -74,7 +74,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			ArrayList<Document> list = categorySearch
 					.categorySubTreeSearchData();
 			returnArray = convertJsonArray(list);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 
 			e.printStackTrace();
@@ -124,7 +124,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 				
 				array.add(jsonObject);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {

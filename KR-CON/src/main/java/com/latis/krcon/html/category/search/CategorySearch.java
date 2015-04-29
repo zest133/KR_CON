@@ -1,6 +1,5 @@
 package com.latis.krcon.html.category.search;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -14,6 +13,7 @@ import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -33,95 +33,94 @@ import org.springframework.beans.factory.annotation.Value;
 import com.latis.krcon.html.sort.HtmlSort;
 import com.latis.krcon.query.BuildQuery;
 
-
 public class CategorySearch {
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
-	
+
 	@Autowired
 	private KeywordAnalyzer analyzer;
-	
+
 	private String searchWord;
-	
+
 	@Autowired
 	private HtmlSort htmlSort;
-	
-	
+
 	@Value("${categoryTreeField}")
 	private String categoryTreeField;
-	
+
 	@Value("${anonymousData}")
 	private String anonymousData;
-	
+
 	@Value("${fileindex}")
 	private String dirPath;
-	
-	
+
 	@Autowired
 	private BuildQuery buildQuery;
-	
-	public CategorySearch(){
-		
+
+	public CategorySearch() {
+
 	}
-	
-	public void init() throws IOException{
+
+	public void init() throws IOException {
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
 		searcher = new IndexSearcher(reader);
 	}
-	
-	
-	public void close()  {
+
+	public void close() {
 		try {
-			if(searcher != null)
+			if (searcher != null)
 				searcher.close();
-			if(reader != null)
-				reader.close();
+//			if (reader != null)
+//				reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public ArrayList<Document>  search(){
+
+	public ArrayList<Document> search() {
 		return categorySearchData(categoryTreeField, searchWord);
 	}
-	
-	public ArrayList<Document>  currentSearch(String currentCategoryTree){
+
+	public ArrayList<Document> currentSearch(String currentCategoryTree) {
 		return categorySearchData(categoryTreeField, currentCategoryTree);
 	}
-	
-	public ArrayList<Document> categoryAllSearchData(){
+
+	public ArrayList<Document> categoryAllSearchData() {
 		Query allCategoryQuery = new MatchAllDocsQuery();
-		htmlSort.addSortList(new SortField(categoryTreeField,SortField.STRING));
-		
+		htmlSort.addSortList(new SortField(categoryTreeField, SortField.STRING));
+
 		ArrayList<Document> list = null;
 		try {
-			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc(), htmlSort.getSort());
+			TopDocs hits = searcher.search(allCategoryQuery, searcher.maxDoc(),
+					htmlSort.getSort());
 			list = getDocumentList(searcher, hits, categoryTreeField);
-			
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list;
 	}
-	
-	public ArrayList<Document>  categorySubTreeSearchData(){
+
+	public ArrayList<Document> categorySubTreeSearchData() {
 		String searchWord = this.searchWord + anonymousData;
 		return categorySearchData(categoryTreeField, searchWord);
 	}
-	
-	
-	public ArrayList<Document> categorySearchData(String field, String searchWord){
-		ArrayList<Document> returnList =null;
+
+	public ArrayList<Document> categorySearchData(String field,
+			String searchWord) {
+		ArrayList<Document> returnList = null;
 		try {
 			String queryStr = buildQuery.categoryMakeQuery(searchWord, field);
-			htmlSort.addSortList(new SortField(categoryTreeField,SortField.STRING));
-			Query query = new QueryParser(Version.LUCENE_36, field, analyzer).parse(queryStr);
-			TopDocs hits = searcher.search(query, searcher.maxDoc(), htmlSort.getSort());
+			htmlSort.addSortList(new SortField(categoryTreeField,
+					SortField.STRING));
+			Query query = new QueryParser(Version.LUCENE_36, field, analyzer)
+					.parse(queryStr);
+			TopDocs hits = searcher.search(query, searcher.maxDoc(),
+					htmlSort.getSort());
 			returnList = getDocumentList(searcher, hits, field);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -132,10 +131,10 @@ public class CategorySearch {
 		}
 		return returnList;
 	}
-	
-	private ArrayList<Document> getDocumentList(IndexSearcher searcher, TopDocs hits, String fieldName)
-			throws IOException {
-		ArrayList< Document> docList = null; 
+
+	private ArrayList<Document> getDocumentList(IndexSearcher searcher,
+			TopDocs hits, String fieldName) throws IOException {
+		ArrayList<Document> docList = null;
 		if (hits.totalHits == 0) {
 			System.out.println("No hits");
 			return null;
@@ -147,32 +146,46 @@ public class CategorySearch {
 		}
 		return docList;
 	}
-	
-	
-	
-	
-	
+
 	public void checkSubCategory(Document document, JSONObject jsonObject) {
 		try {
-			String queryStr = buildQuery.categoryMakeQuery(document.get(categoryTreeField)
-					+ anonymousData, categoryTreeField);
+			String queryStr = buildQuery.categoryMakeQuery(
+					document.get(categoryTreeField) + anonymousData,
+					categoryTreeField);
 
 			Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
 					analyzer).parse(queryStr);
-			TopDocs hits = searcher.search(query, searcher.maxDoc());
 			
+//			IndexReader oldReader = searcher.getIndexReader();
+//			try {
+//				if (!oldReader.isCurrent()) {
+//					IndexReader newIndexReader = oldReader.openIfChanged(oldReader);
+//					oldReader.close();
+//					searcher.close();
+//					IndexSearcher searcher2 = new IndexSearcher(newIndexReader);
+////				searcher2.search();
+//				}
+//			} catch (CorruptIndexException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			TopDocs hits = searcher.search(query, searcher.maxDoc());
+
 			if (hits.totalHits == 0) {
 			} else {
 				jsonObject.put("isFolder", "true");
 				jsonObject.put("isLazy", "true");
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		
 	}
 
 	public String getSearchWord() {
