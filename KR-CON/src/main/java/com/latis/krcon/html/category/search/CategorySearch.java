@@ -34,15 +34,17 @@ import com.latis.krcon.html.sort.HtmlSort;
 
 
 public class CategorySearch {
-
+	@Value("${fileindex}")
 	private String dirPath;
 	
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
 	
+	@Value("${categoryTreeField}")
 	private String categoryTreeField;
 	
+	@Value("${anonymousData}")
 	private String anonymousData;
 	
 	@Autowired
@@ -57,6 +59,7 @@ public class CategorySearch {
 	public CategorySearch(){
 		
 	}
+	
 	public void init() throws IOException{
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
@@ -77,7 +80,7 @@ public class CategorySearch {
 	}
 	
 	public ArrayList<Document>  search(){
-		return categorySearchData(categoryTreeField, this.getSearchWord());
+		return categorySearchData(categoryTreeField, searchWord);
 	}
 	
 	public ArrayList<Document>  currentSearch(String currentCategoryTree){
@@ -102,7 +105,7 @@ public class CategorySearch {
 	}
 	
 	public ArrayList<Document>  categorySubTreeSearchData(){
-		String searchWord = this.getSearchWord()+anonymousData;
+		String searchWord = this.searchWord + anonymousData;
 		return categorySearchData(categoryTreeField, searchWord);
 	}
 	
@@ -184,29 +187,12 @@ public class CategorySearch {
 
 	}
 
-	public String getDirPath() {
-		return dirPath;
-	}
-	public void setDirPath(String dirPath) {
-		this.dirPath = dirPath;
-	}
 	public String getSearchWord() {
 		return searchWord;
 	}
+
 	public void setSearchWord(String searchWord) {
 		this.searchWord = searchWord;
 	}
-	public String getCategoryTreeField() {
-		return categoryTreeField;
-	}
-	public void setCategoryTreeField(String categoryTreeField) {
-		this.categoryTreeField = categoryTreeField;
-	}
-	public String getAnonymousData() {
-		return anonymousData;
-	}
-	public void setAnonymousData(String anonymousData) {
-		this.anonymousData = anonymousData;
-	}
-
+	
 }

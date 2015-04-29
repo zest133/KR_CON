@@ -34,10 +34,6 @@
 	<bean class="com.latis.krcon.html.search.EnglishHtmlSearch" id="englishHtmlSearch"></bean>
 	
 	<bean class="com.latis.krcon.html.category.search.CategorySearch" id="categorySearch">
-		<property name="dirPath" value="${fileindex}"></property>
-		<property name="categoryTreeField" value="${categoryTreeField}"></property>
-		<property name="anonymousData" value="${anonymousData}"></property>
-		<property name="searchWord" value="${rootCategoryTreeName}"></property>
 	</bean>
 	
 	

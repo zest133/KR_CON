@@ -20,6 +20,7 @@ public class CustomKeywordAnalyzer extends ReusableAnalyzerBase {
     @Override
     protected TokenStreamComponents createComponents(final String fieldName, final Reader reader) {
         final Tokenizer source = new KeywordTokenizer(reader);
+        
         return new TokenStreamComponents(source, new LowerCaseFilter(this.version, source));
     }
 
