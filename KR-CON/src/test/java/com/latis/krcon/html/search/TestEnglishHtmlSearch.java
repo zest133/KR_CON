@@ -566,16 +566,22 @@ public class TestEnglishHtmlSearch {
 	@Test
 	public void highlightSubstring(){
 		try {
-			String text = "Regulation";
+			String text = "Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships";
 			String highlight = getHighlightHTML(text, textField,
 					"Regulation", null, null, null);
 
-			if(highlight.indexOf(highlightTag) >= 0){
-				if(highlight.indexOf(highlightTag) == 0){
-					highlight = highlight.substring(highlight.indexOf(highlightTag), 20) + "...";
+			int offset = highlight.indexOf(highlightTag);
+			if(offset >= 0){
+				highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+				highlight = highlight.replaceAll("</span>", "");
+				if(offset == 0){
+					highlight = highlight.substring(offset, 100) + "...";
 				}else{
-					highlight = "..." +highlight.substring(highlight.indexOf(highlightTag), highlight.indexOf(highlightTag) + 5) + "...";
+					highlight = "..." +highlight.substring(offset, offset + 100) + "...";
 				}
+				
+				highlight = getHighlightHTML(highlight, textField,
+						"Regulation", null, null, null);
 			}
 			
 			

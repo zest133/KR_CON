@@ -163,4 +163,8 @@ label {
 .contents ul li input, .contents ul li select {
 	width: 400px;
 }
-
+/*
+div.contents div.result_list div:last-child .resulttext p {
+	border-bottom: none;
+}
+*/

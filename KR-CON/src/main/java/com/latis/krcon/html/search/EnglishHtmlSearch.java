@@ -258,11 +258,144 @@ public class EnglishHtmlSearch {
 	
 	public ArrayList<SearchResultDTO> getSearchData() throws IOException{
 		TopDocs hits = htmlSearchData();
+<<<<<<< HEAD
 		this.totalHits = hits.totalHits;
 		ArrayList<SearchResultDTO> list = getDocumentList(searcher, hits, textField);
 		return list;
+=======
+		ArrayList<Document> list = dumpHits(searcher, hits, textField);
+		
+		
+		
+		
+		
+		ArrayList<SearchResultDTO> returnList = new ArrayList<SearchResultDTO>();
+		if(list != null){
+			for(Document doc : list){
+				SearchResultDTO resultDTO = new SearchResultDTO();
+				
+				resultDTO.setTitle(doc.get(categoryTitleField));
+				
+				try {
+					
+					/*
+					 * String text = "Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships";
+			String highlight = getHighlightHTML(text, textField,
+					"Regulation", null, null, null);
+
+			int offset = highlight.indexOf(highlightTag);
+			if(offset >= 0){
+				highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+				highlight = highlight.replaceAll("</span>", "");
+				if(offset == 0){
+					highlight = highlight.substring(offset, 100) + "...";
+				}else{
+					highlight = "..." +highlight.substring(offset, offset + 100) + "...";
+				}
+				
+				highlight = getHighlightHTML(highlight, textField,
+						"Regulation", null, null, null);
+			}
+					 */
+					String text = doc.get(textField);
+					
+					String highlight = getHighlightHTML(text, 
+							textField, 
+							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
+							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
+					
+					highlight = substringHighlight(highlight);
+					
+					highlight = getHighlightHTML(highlight, 
+							textField, 
+							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
+							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
+					
+					resultDTO.setHtmlText(highlight);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
+				
+				
+				
+				StringBuffer buffer = new StringBuffer();
+				
+				buffer.append(rootCategoryTreeName);
+				
+				String solasId = doc.get(categoryTreeField).substring(rootCategoryTreeName.length()+1);
+				String[] ids = solasId.split("\\.");
+				
+				String subCategory = "";
+				
+				for(String id : ids){
+					if(subCategory.equals("")){
+						subCategory = subCategory + id;
+					}else{
+						subCategory = subCategory + "." + id;
+					}
+					
+					buffer.append("/").append(rootCategoryTreeName).append(".").append(subCategory);
+							
+				}
+				
+				resultDTO.setCategoryTree(buffer.toString());
+				
+				returnList.add(resultDTO);
+			}
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(searchDTO.getTotalCount() == -1){
+			map.put("totalCount", hits.totalHits);
+		}
+		map.put("doc", returnList);
+		return map;
+>>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 	}
 
+<<<<<<< HEAD
+=======
+	private String substringHighlight(String highlight) {
+		/*
+		 * int offset = highlight.indexOf(highlightTag);
+					if(offset >= 0){
+						highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+						highlight = highlight.replaceAll("</span>", "");
+						if(offset == 0){
+							highlight = highlight.substring(offset, 100) + "...";
+						}else{
+							highlight = "..." +highlight.substring(offset, offset + 100) + "...";
+						}
+						
+						highlight = getHighlightHTML(highlight, textField,
+								"Regulation", null, null, null);
+					}
+		 */
+		int offset = highlight.indexOf(highlightTag);
+		int substringLength = 200;
+		
+		highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+		highlight = highlight.replaceAll("</span>", "");
+		
+		if(offset > 0){
+			if(highlight.length() >= offset + substringLength){
+				highlight = "..." + highlight.substring(offset, offset + substringLength) + "...";
+			}else{
+				highlight = "..." + highlight.substring(offset, highlight.length());
+			}
+		}else{
+			if(highlight.length() >= substringLength){
+				highlight = highlight.substring(offset, substringLength) + "...";
+			}else{
+				highlight = highlight.substring(offset, highlight.length());
+			}
+		}
+		return highlight;
+	}
+>>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 	
 	
 	public ArrayList<String> compareStopWord(){
@@ -287,6 +420,8 @@ public class EnglishHtmlSearch {
 		if(stopList.size() == 0){
 			stopList = null;
 		}
+		
+		
 		
 		return stopList;
 	}
