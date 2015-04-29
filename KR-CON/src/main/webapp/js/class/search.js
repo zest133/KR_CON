@@ -115,31 +115,10 @@ Search.prototype.checkSearchResultScroll = function(search){
 		
 		if(currentScroll > totalScroll - 525){
 			search.searchData.pageNum = search.searchData.pageNum+1;
-//			search.searchData.totalCount = $("#resultCount").val();
-//			var temp = 0;
-//			if(search.searchData.totalCount != temp){
-//				temp =  search.searchData.totalCount / (25*search.searchData.pageNum);
-//				if(temp >= 1){
-//					search.ajaxSearch(search);
-//				}else{
-//					if(search.searchData.totalCount < 25){
-//						search.tempTotalcount = search.searchData.totalCount;
-//					}else{
-//						temp = search.searchData.totalCount % (25*search.searchData.pageNum);
-//						if(temp >0 && search.tempTotalcount != search.searchData.totalCount){
-//							
-//							search.ajaxSearch(search);
-//						}
-//						search.tempTotalcount = search.searchData.totalCount;
-//						
-//					}
-//				}
-//			}
-			
 			search.searchData.totalCount = $("#resultCount").val();
 			
 			if(search.searchData.totalCount > 25){
-				var requestCount = (25*(search.searchData.pageNum+1));
+				var requestCount = 25*(search.searchData.pageNum+1);
 				var temp = search.searchData.totalCount / requestCount;
 				if(temp >= 1){
 					search.ajaxSearch(search);
