@@ -28,22 +28,25 @@ $(document).ready(function(){
 	
 	$("#searchinputbox").keydown(function(e){
 		if(e.keyCode == "13"){
-			search.search(0);
+			$(document).unbind('scroll');
+			search.search();
 		}
 	});
 	
 	
 	$("#searchLink").click(function(){
-		search.search(0);
+		$(document).unbind('scroll');
+		search.search();
 	});
 	
 	$("#advabcedSearchButton").click(function(){
-		search.advSearch(0);
+		$(document).unbind('scroll');
+		search.advSearch();
 	});
 	
 	
 	$("#advSearchButton").click(function(){
-		
+		$(document).unbind('scroll');
 		search.callAdvanceSearch();
 	});
 	

@@ -45,10 +45,10 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value = "/current_html.do")
-	public @ResponseBody String getCurrentCategoryHTML(@RequestParam String categoryTree) {
+	public @ResponseBody String getCurrentCategoryHTML(@RequestParam String categoryTree, @RequestParam String highlightQuery) {
 //		System.out.println(key);
 		
 		
-		return categorySearchDAO.getCurrentCategoryHTML(categoryTree).toString();
+		return categorySearchDAO.getCurrentCategoryHTML(categoryTree, highlightQuery).toString();
 	}
 }

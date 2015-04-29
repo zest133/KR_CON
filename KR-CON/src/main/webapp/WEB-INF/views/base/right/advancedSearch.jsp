@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="contents" style="padding-left: 270px;">
 	<div>
 		<h1>Advanced Search</h1>
 
@@ -55,16 +54,5 @@
 				<input type="button" value="Search" id="advabcedSearchButton">
 		</div>
 	</div>
-</div>
 
-<style>
-label {
-	display: inline-block;
-	width: 200px;
-}
 
-.contents ul li input, .contents ul li select {
-	width: 400px;
-}
-
-</style>

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
@@ -110,9 +111,7 @@ public class EnglishHtmlSearch {
 		}
 	}
 
-	
 	public TopDocs htmlSearchData() {
-		
 		TopDocs hits = null;
 		try {
 			Query query = totalSearchBuildQuery(textField, searchDTO.getAndWordSearch(), searchDTO.getOrWordSearch(), 
@@ -122,23 +121,67 @@ public class EnglishHtmlSearch {
 			HtmlSort htmlSort = new HtmlSort();
 			htmlSort.addSortList(new SortField(searchDTO.getSortFileName(), SortField.STRING)); //1 번. 
 			
+			
+			
 			Sort sort = htmlSort.getSort();
 			
-			if(filter != null && sort != null){
-				hits = searcher.search(query,filter, searcher.maxDoc(), sort);
-			}else if(filter != null && sort == null){
-				hits = searcher.search(query,filter, searcher.maxDoc());
-			}else if(sort != null && filter == null){
-				hits = searcher.search(query, null, searcher.maxDoc(), sort);
-			}else{
-				hits = searcher.search(query, searcher.maxDoc());
-			}
+			hits = callQuerySearch(query, filter, sort, searchDTO.getPageNum());
 			
 //			String highlight = getHighlightHTML(hits, andWordSearch,null, null, null );
 			
 		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		return hits;
+	}
+//	
+//	public TopDocs htmlSubSearchData(SearchDTO subSearchDTO) {
+//		TopDocs hits = null;
+//		try {
+//			Query query = totalSearchBuildQuery(textField, subSearchDTO.getAndWordSearch(), subSearchDTO.getOrWordSearch(), 
+//					subSearchDTO.getExactWordSearch(), subSearchDTO.getNotWordSearch());
+//			Filter filter = applyChainedFilter(subSearchDTO.getBreadcrumb(), subSearchDTO.getCategoryTitle(), subSearchDTO.getLocale());
+//			
+//			HtmlSort htmlSort = new HtmlSort();
+//			htmlSort.addSortList(new SortField(subSearchDTO.getSortFileName(), SortField.STRING)); //1 번. 
+//			
+//			Sort sort = htmlSort.getSort();
+//			
+//			hits = callQuerySearch(query, filter, sort, subSearchDTO.getPageNum(), -1);
+//			
+////			String highlight = getHighlightHTML(hits, andWordSearch,null, null, null );
+//			
+//		}  catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return hits;
+//	}
+
+	private TopDocs callQuerySearch(Query query, Filter filter, Sort sort, int pageNum
+				) throws IOException {
+		
+		
+		TopDocs hits;
+		int totalPageCount =0;
+		if(pageNum == 0){
+			totalPageCount = searcher.maxDoc();
+		}else{
+			totalPageCount = (pageNum+1) * searchResultSize;
+			if(totalPageCount > searchDTO.getTotalCount()){
+				totalPageCount = searchDTO.getTotalCount();
+			}
+		}
+		
+		if(filter != null && sort != null){
+			hits = searcher.search(query,filter, totalPageCount, sort);
+		}else if(filter != null && sort == null){
+			hits = searcher.search(query,filter, totalPageCount);
+		}else if(sort != null && filter == null){
+			hits = searcher.search(query, null, totalPageCount, sort);
+		}else{
+			hits = searcher.search(query, totalPageCount);
 		}
 		return hits;
 	}
@@ -156,7 +199,9 @@ public class EnglishHtmlSearch {
 			throws CorruptIndexException, IOException, ParseException {
 		String result = null;
 			//
-		Query query = totalSearchBuildQuery(field, andWordSearch, null,
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(andWordSearch).append(" ").append(orWordSearch).append(" ").append(exact).append(" ").append(non);
+		Query query = totalSearchBuildQuery(field, buffer.toString(), null,
 				null, null);
 		result = highlightHTML(englishAnalyzer, text, query,
 				field);
@@ -272,11 +317,21 @@ public class EnglishHtmlSearch {
 		}
 		docList = new ArrayList<Document>();
 		
-		int totalPageCount = (searchDTO.getCurrentPageNum()+1) * searchResultSize;
+		int totalPageCount = (searchDTO.getPageNum()+1) * searchResultSize;
+		
+		if(hits.totalHits < totalPageCount){
+			totalPageCount = hits.totalHits;
+		}
 		
 		ScoreDoc[] scoreDocs = hits.scoreDocs;
-
-		for (int i = (totalPageCount - searchResultSize); i < totalPageCount ; i++) {
+		int compareValue = 0;
+		if(totalPageCount < searchResultSize){
+			compareValue = 0;
+		}else{
+			compareValue = totalPageCount - searchResultSize;
+		}
+		
+		for (int i = compareValue; i < totalPageCount ; i++) {
 			docList.add(searcher.doc(scoreDocs[i].doc));
 		}
 		
@@ -336,11 +391,11 @@ public class EnglishHtmlSearch {
 	
 
 	
-	public ArrayList<SearchResultDTO> getSearchData() throws IOException{
+	public HashMap<String, Object> getSearchData() throws IOException{
 		
 		TopDocs hits = htmlSearchData();
-		
 		ArrayList<Document> list = dumpHits(searcher, hits, textField);
+		
 		
 		
 		
@@ -353,7 +408,9 @@ public class EnglishHtmlSearch {
 				resultDTO.setTitle(doc.get(categoryTitleField));
 				
 				try {
-					String highlight = getHighlightHTML(doc.get(textField), textField, searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
+					String highlight = getHighlightHTML(doc.get(textField), 
+							textField, 
+							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
 							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
 					
 					highlight = substringHighlight(highlight);
@@ -393,23 +450,30 @@ public class EnglishHtmlSearch {
 				returnList.add(resultDTO);
 			}
 		}
-		return returnList;
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(searchDTO.getTotalCount() == -1){
+			map.put("totalCount", hits.totalHits);
+		}
+		map.put("doc", returnList);
+		return map;
 	}
 
 	private String substringHighlight(String highlight) {
-		if(highlight.indexOf(highlightTag) >= 0){
-			if(highlight.indexOf(highlightTag) == 0){
-				if(highlight.length() >= highlight.indexOf(highlightTag) + 200){
-					highlight = highlight.substring(highlight.indexOf(highlightTag), 200) + "...";
-				}else{
-					highlight = highlight.substring(highlight.indexOf(highlightTag), highlight.length());
-				}
+		int offset = highlight.indexOf(highlightTag);
+		int substringLength = 200;
+		
+		if(offset > 0){
+			if(highlight.length() >= offset + substringLength){
+				highlight = "..." + highlight.substring(offset, offset + substringLength) + "...";
 			}else{
-				if(highlight.length() >= highlight.indexOf(highlightTag) + 200){
-					highlight = "..." + highlight.substring(highlight.indexOf(highlightTag), highlight.indexOf(highlightTag) + 200) + "...";
-				}else{
-					highlight = "..." + highlight.substring(highlight.indexOf(highlightTag), highlight.length());
-				}
+				highlight = "..." + highlight.substring(offset, highlight.length());
+			}
+		}else{
+			if(highlight.length() >= substringLength){
+				highlight = highlight.substring(offset, substringLength) + "...";
+			}else{
+				highlight = highlight.substring(offset, highlight.length());
 			}
 		}
 		return highlight;

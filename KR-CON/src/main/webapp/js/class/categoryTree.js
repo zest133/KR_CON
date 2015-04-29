@@ -19,6 +19,7 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 				onActivate : function(node) {
 					// CategoryTree.loadHtmlContent(node.data.html,
 					// contentDivClassName);
+					$(document).unbind('scroll');
 					categoryTree.getCurrentHtmlContent(categoryTree,
 							node.data.categoryTree);
 				},
@@ -72,8 +73,14 @@ $("#btnCollapseAll").click(function() {
 CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 		currentCategoryTree) {
 	
+	var highlightQuery = "";
+	if($("#highlightQuery").val() != null){
+		highlightQuery = $("#highlightQuery").val();
+	}
+	
 	var data1 = {
-		categoryTree : currentCategoryTree
+		categoryTree : currentCategoryTree,
+		highlightQuery: highlightQuery
 	};
 
 	$.ajax({

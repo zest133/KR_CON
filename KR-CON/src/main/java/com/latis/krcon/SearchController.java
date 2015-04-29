@@ -2,6 +2,7 @@ package com.latis.krcon;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class SearchController {
 //		return "searchResult";
 //	}
 	
-	@RequestMapping(value = "/{pageNum}/search.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/search.do", method = RequestMethod.POST)
 	public String search(Model model,
 			@RequestParam String searchAND,
 			@RequestParam String searchOR, 
@@ -55,7 +56,8 @@ public class SearchController {
 			@RequestParam String filterBreradcrumbsList,
 			@RequestParam String filterTitleList,
 			@RequestParam String filterLocaleList,
-			@PathVariable("pageNum") String pageNum
+			@RequestParam String pageNum,
+			@RequestParam String totalCount
 			){
 //		System.out.println(searchAND);
 //		System.out.println(searchOR);
@@ -77,17 +79,30 @@ public class SearchController {
 		
 		dto.setPageNum(Integer.parseInt(pageNum));
 		
-		List<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
+		dto.setTotalCount(Integer.parseInt(totalCount));
 		
+		HashMap<String, Object> searchResult = htmlSearchDAO.advSearch(dto);
+		
+		ArrayList<SearchDTO> list = (ArrayList<SearchDTO>) searchResult.get("doc");
 		
 		
 		if(searchResult != null){
 			
-			model.addAttribute("searchKeyword", "Advanced Search");
-			model.addAttribute("searchResult", searchResult);
-			model.addAttribute("resultSize", searchResult.size());
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(searchAND).append(" ").append(searchOR).append(" ").append(searchExact).append(" ").append(searchNON);
+			
+			model.addAttribute("searchKeyword", searchAND);
+			if(Integer.parseInt(pageNum) == 0){
+				int topDocsTotalCount = (Integer) searchResult.get("totalCount");
+				model.addAttribute("resultSize", topDocsTotalCount);
+			}else{
+				model.addAttribute("resultSize", list.size());
+			}
+			model.addAttribute("searchResult", list);
 			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
 			model.addAttribute("synonym", synonumSearchDAO.checkSynonymWord(searchAND));
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("highlightQuery", buffer.toString());
 		}
 		
 		return "searchResult";

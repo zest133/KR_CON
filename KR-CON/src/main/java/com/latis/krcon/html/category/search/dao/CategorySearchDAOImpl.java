@@ -3,6 +3,7 @@ package com.latis.krcon.html.category.search.dao;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -12,13 +13,24 @@ import org.apache.lucene.util.Version;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.category.search.CategorySearch;
+import com.latis.krcon.html.search.EnglishHtmlSearch;
 
 public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Autowired
 	private CategorySearch categorySearch;
+	
+	@Autowired
+	private EnglishHtmlSearch englishHtmlSearch;
+	
+	@Autowired
+	private EnglishAnalyzer englishAnalyzer;
+	
+	@Value("${rootCategoryTreeName}")
+	private String rootCategoryTreeName;
 	
 	public CategorySearchDAOImpl() {
 		// TODO Auto-generated constructor stub
@@ -30,7 +42,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		JSONArray returnArray = null;
 		try {
 			categorySearch.init();
-			categorySearch.setSearchWord("0000.00e0.1530");
+			categorySearch.setSearchWord(rootCategoryTreeName);
 			ArrayList<Document> list = categorySearch.search();
 
 			returnArray = convertJsonArray(list);
@@ -73,14 +85,14 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 	}
 
 	@Override
-	public String getCurrentCategoryHTML(String selectedCategoryTree) {
+	public String getCurrentCategoryHTML(String selectedCategoryTree, String highlightQuery) {
 		// TODO Auto-generated method stub
 		String returnVal = "";
 		try {
 			categorySearch.init();
 			ArrayList<Document> list = categorySearch
 					.currentSearch(selectedCategoryTree);
-			returnVal = cenvertHtmlText(list);
+			returnVal = convertHtmlText(list, highlightQuery);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,9 +127,28 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		return array;
 	}
 	
-	public String cenvertHtmlText(ArrayList<Document> list){
+	public String convertHtmlText(ArrayList<Document> list, String highlightQuery){
 		
-		return list.get(0).get("html");
+		String returnVal = "";
+		
+		String html = list.get(0).get("html");
+		
+		try {
+			englishHtmlSearch.init();
+			Query query = englishHtmlSearch.totalSearchBuildQuery("html", highlightQuery, null,
+					null, null);
+			returnVal = englishHtmlSearch.highlightHTML(englishAnalyzer, html, query,
+					"html");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return returnVal;
 	}
 
 }

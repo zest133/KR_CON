@@ -196,7 +196,6 @@ public class TestEnglishHtmlSearch {
 					}
 				}
 				
-
 			}
 
 			// html highlight
@@ -563,5 +562,35 @@ public class TestEnglishHtmlSearch {
 	public void setDirPath(String dirPath) {
 		this.dirPath = dirPath;
 	}
+	
+	@Test
+	public void highlightSubstring(){
+		try {
+			String text = "Regulation";
+			String highlight = getHighlightHTML(text, textField,
+					"Regulation", null, null, null);
 
+			if(highlight.indexOf(highlightTag) >= 0){
+				if(highlight.indexOf(highlightTag) == 0){
+					highlight = highlight.substring(highlight.indexOf(highlightTag), 20) + "...";
+				}else{
+					highlight = "..." +highlight.substring(highlight.indexOf(highlightTag), highlight.indexOf(highlightTag) + 5) + "...";
+				}
+			}
+			
+			
+			
+			System.out.println(highlight);
+		} catch (CorruptIndexException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
