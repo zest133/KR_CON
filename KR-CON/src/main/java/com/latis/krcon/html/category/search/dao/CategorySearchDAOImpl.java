@@ -57,9 +57,6 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			// TODO Auto-generated catch block
 
 			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} finally {
 			categorySearch.close();
 		}
@@ -80,9 +77,6 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			categorySearch.close();
@@ -110,25 +104,34 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		return returnVal;
 	}
 
-	public JSONArray convertJsonArray(ArrayList<Document> list)
-			throws IOException, ParseException {
+	public JSONArray convertJsonArray(ArrayList<Document> list){
 		JSONArray array = new JSONArray();
 		
-		for (Document document : list) {
-			JSONObject jsonObject = new JSONObject();
-			
-			jsonObject.put("key", document.get("categoryTree"));
-			jsonObject.put("categoryTree", document.get("categoryTree"));
-			jsonObject.put("title", document.get("categoryTitle"));
-			jsonObject.put("html", document.get("html"));
-
-			categorySearch.checkSubCategory(document, jsonObject);
-
-			// jsonObject.put("isFolder", "true");
-			// jsonObject.put("isLazy", "true");
-
-			array.add(jsonObject);
+		try {
+			categorySearch.init();
+			for (Document document : list) {
+				JSONObject jsonObject = new JSONObject();
+				
+				jsonObject.put("key", document.get("categoryTree"));
+				jsonObject.put("categoryTree", document.get("categoryTree"));
+				jsonObject.put("title", document.get("categoryTitle"));
+				jsonObject.put("html", document.get("html"));
+				
+				categorySearch.checkSubCategory(document, jsonObject);
+				
+				// jsonObject.put("isFolder", "true");
+				// jsonObject.put("isLazy", "true");
+				
+				array.add(jsonObject);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			categorySearch.close();
 		}
+		
+		
 
 		return array;
 	}

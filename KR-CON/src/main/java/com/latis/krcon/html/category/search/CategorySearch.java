@@ -152,21 +152,27 @@ public class CategorySearch {
 	
 	
 	
-	public void checkSubCategory(Document document, JSONObject jsonObject)
-			throws IOException, ParseException {
-		String queryStr = buildQuery.categoryMakeQuery(document.get(categoryTreeField)
-				+ anonymousData, categoryTreeField);
+	public void checkSubCategory(Document document, JSONObject jsonObject) {
+		try {
+			String queryStr = buildQuery.categoryMakeQuery(document.get(categoryTreeField)
+					+ anonymousData, categoryTreeField);
 
-		Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
-				analyzer).parse(queryStr);
-		TopDocs hits = searcher.search(query, searcher.maxDoc());
-
-		if (hits.totalHits == 0) {
-		} else {
-			jsonObject.put("isFolder", "true");
-			jsonObject.put("isLazy", "true");
+			Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
+					analyzer).parse(queryStr);
+			TopDocs hits = searcher.search(query, searcher.maxDoc());
+			
+			if (hits.totalHits == 0) {
+			} else {
+				jsonObject.put("isFolder", "true");
+				jsonObject.put("isLazy", "true");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 	}
 
 	public String getSearchWord() {

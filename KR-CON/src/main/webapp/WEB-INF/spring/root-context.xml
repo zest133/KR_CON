@@ -25,6 +25,10 @@
 		<constructor-arg ref="LUCENE_VERSION" />
 	</bean>	
 	
+	<bean id="customKeywordAnalyzer" class="com.latis.krcon.analyzer.CustomKeywordAnalyzer">
+		<constructor-arg ref="LUCENE_VERSION" />
+	</bean>
+	
 	<bean class="com.latis.krcon.html.parser.HtmlWithTikaParser" id="htmlParsingWithTika" >
 	</bean>
 	
@@ -33,11 +37,15 @@
 	
 	<bean class="com.latis.krcon.html.search.EnglishHtmlSearch" id="englishHtmlSearch"></bean>
 	
-	<bean class="com.latis.krcon.html.category.search.CategorySearch" id="categorySearch">
+	<bean class="com.latis.krcon.html.category.search.CategorySearch" id="categorySearch" scope="prototype">
 	</bean>
 	
+	<bean class="com.latis.krcon.html.search.highlight.HtmlHighlight" id="htmlHighlight">
+	</bean>
 	
 	<bean class="com.latis.krcon.synonym.search.SynonymSearch" id="synonymSearch"></bean>
+	
+	<bean class="com.latis.krcon.query.BuildQuery" id="buildQuery"></bean>
 	
 	<bean class="com.latis.krcon.synonym.dao.SynonymSearchDAOImpl" id="synonymSearchDAO"></bean>
 	
