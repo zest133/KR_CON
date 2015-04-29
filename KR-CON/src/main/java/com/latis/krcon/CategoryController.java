@@ -1,6 +1,5 @@
 package com.latis.krcon;
 
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.latis.krcon.html.category.search.dao.CategorySearchDAO;
 
-
 @Controller
 public class CategoryController {
 
@@ -22,33 +20,44 @@ public class CategoryController {
 	 * [ { "title": "Folder 2", "isFolder": true, "key": "folder2", "children":
 	 * [ {"title": "Sub-item 2.1"} ] }, {"title": "Item 5"} ]
 	 */
-	
+
 	@Autowired
 	public CategorySearchDAO categorySearchDAO;
 
 	@RequestMapping(value = "/root_category.do")
 	public @ResponseBody String getRootCategory() {
-//		ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
-		
-		
-		
-		
-		return categorySearchDAO.getRootCategory().toString();
+		// ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
+
+		String returnVal = categorySearchDAO.getRootCategory().toString();
+
+		categorySearchDAO.close();
+
+		return returnVal;
 	}
 
 	@RequestMapping(value = "/sub_category.do")
 	public @ResponseBody String getSubCategory(@RequestParam String categoryTree) {
-//		System.out.println(key);
-		
-		
-		return categorySearchDAO.getSubCategory(categoryTree).toString();
+		// System.out.println(key);
+
+		String returnVal = categorySearchDAO.getSubCategory(categoryTree)
+				.toString();
+
+		categorySearchDAO.close();
+
+		return returnVal;
 	}
-	
+
 	@RequestMapping(value = "/current_html.do")
-	public @ResponseBody String getCurrentCategoryHTML(@RequestParam String categoryTree, @RequestParam String highlightQuery) {
-//		System.out.println(key);
-		
-		
-		return categorySearchDAO.getCurrentCategoryHTML(categoryTree, highlightQuery).toString();
+	public @ResponseBody String getCurrentCategoryHTML(
+			@RequestParam String categoryTree,
+			@RequestParam String highlightQuery) {
+		// System.out.println(key);
+		String returnVal = categorySearchDAO.getCurrentCategoryHTML(
+				categoryTree, highlightQuery).toString();
+
+		categorySearchDAO.close();
+
+		return returnVal;
+
 	}
 }

@@ -60,6 +60,8 @@ public class HomeController {
 	public String advancedSearch(Model model) {
 
 		model.addAttribute("filters", htmlSearchDAO.getSearchFilterOption());
+		
+		htmlSearchDAO.categorySearchClose();
 
 		return "advancedSearch";
 	}

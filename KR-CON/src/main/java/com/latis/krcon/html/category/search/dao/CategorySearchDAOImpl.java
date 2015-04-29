@@ -58,7 +58,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 			e.printStackTrace();
 		} finally {
-			categorySearch.close();
+//			categorySearch.close();
 		}
 
 		return returnArray;
@@ -79,7 +79,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 			e.printStackTrace();
 		} finally {
-			categorySearch.close();
+//			categorySearch.close();
 		}
 
 		return returnArray;
@@ -98,7 +98,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			categorySearch.close();
+//			categorySearch.close();
 		}
 		
 		return returnVal;
@@ -128,7 +128,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			categorySearch.close();
+//			categorySearch.close();
 		}
 		
 		
@@ -156,5 +156,10 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		
 		return returnVal;
 	}
+	
+	@Override
+	public void close(){
+		categorySearch.close();
+	};
 
 }
