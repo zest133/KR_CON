@@ -1,11 +1,9 @@
 package com.latis.krcon.html.search.dao;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.StopAnalyzer;
+import java.util.ArrayList;
+
 import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,41 +29,11 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 	@Value("${localeField}")
 	private String localeField;
 	
-//	@Override
-//	public ArrayList<SearchResultDTO> search(String keyword) {
-//		// TODO Auto-generated method stub
-//		
-//		ArrayList<SearchResultDTO> returnList = null;
-//		
-//		try {
-//			englishHtmlSearch.init();
-//			
-//			SearchDTO searchDTO = new SearchDTO();
-//			
-//			searchDTO.setAndWordSearch(keyword);
-//			searchDTO.setSortFileName("categoryTree");
-//			
-//			englishHtmlSearch.setSearchDTO(searchDTO);
-//			
-//			returnList = englishHtmlSearch.getSearchData();
-//			
-//			
-//			
-//			
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			englishHtmlSearch.close();
-//		}
-//		
-//		return returnList;
-//	}
 
 	@Override
-	public HashMap<String, Object> advSearch(SearchDTO searchDTO) {
+	public ArrayList<SearchResultDTO> advSearch(SearchDTO searchDTO) {
 		// TODO Auto-generated method stub
-		HashMap<String, Object> returnList = null;
+		ArrayList<SearchResultDTO> returnList = null;
 		
 		try {
 			englishHtmlSearch.init();
@@ -128,25 +96,15 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 	public ArrayList<String> getStopWordList(){
 		return englishHtmlSearch.compareStopWord();
 	}
-//
-//	@Override
-//	public int getSearchResultTotalCount(SearchDTO searchDTO) {
-//		// TODO Auto-generated method stub
-//		
-//		int returnVal = 0;
-//		try {
-//			categorySearch.init();
-//			
-//			returnVal = englishHtmlSearch.htmlSearchData().totalHits;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			categorySearch.close();
-//		}
-//		
-//		return englishHtmlSearch.htmlSearchData().totalHits;
-//	}
+
+	@Override
+	public int getSearchResultTotalCount() {
+		// TODO Auto-generated method stub
+		return englishHtmlSearch.getTotalHits();
+	}
+	
+	 
+	
 	
 
 }

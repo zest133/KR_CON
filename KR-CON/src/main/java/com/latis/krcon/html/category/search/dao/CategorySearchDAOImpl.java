@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.category.search.CategorySearch;
 import com.latis.krcon.html.search.EnglishHtmlSearch;
+import com.latis.krcon.html.search.highlight.HtmlHighlight;
 
 public class CategorySearchDAOImpl implements CategorySearchDAO {
 
@@ -24,13 +25,19 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 	private CategorySearch categorySearch;
 	
 	@Autowired
-	private EnglishHtmlSearch englishHtmlSearch;
+	private EnglishAnalyzer englishAnalyzer;
+	
 	
 	@Autowired
-	private EnglishAnalyzer englishAnalyzer;
+	private HtmlHighlight htmlHighlight;
 	
 	@Value("${rootCategoryTreeName}")
 	private String rootCategoryTreeName;
+	
+	
+	@Value("${htmlField}")
+	private String htmlField;
+	
 	
 	public CategorySearchDAOImpl() {
 		// TODO Auto-generated constructor stub
@@ -107,7 +114,6 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			throws IOException, ParseException {
 		JSONArray array = new JSONArray();
 		
-		
 		for (Document document : list) {
 			JSONObject jsonObject = new JSONObject();
 			
@@ -131,14 +137,11 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		
 		String returnVal = "";
 		
-		String html = list.get(0).get("html");
+		String html = list.get(0).get(htmlField);
 		
 		try {
-			englishHtmlSearch.init();
-			Query query = englishHtmlSearch.totalSearchBuildQuery("html", highlightQuery, null,
-					null, null);
-			returnVal = englishHtmlSearch.highlightHTML(englishAnalyzer, html, query,
-					"html");
+			
+			returnVal = htmlHighlight.getHighlightHTML(englishAnalyzer, html, htmlField, highlightQuery);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

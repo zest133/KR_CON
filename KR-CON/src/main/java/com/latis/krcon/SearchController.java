@@ -81,10 +81,7 @@ public class SearchController {
 		
 		dto.setTotalCount(Integer.parseInt(totalCount));
 		
-		HashMap<String, Object> searchResult = htmlSearchDAO.advSearch(dto);
-		
-		ArrayList<SearchDTO> list = (ArrayList<SearchDTO>) searchResult.get("doc");
-		
+		ArrayList<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		
 		if(searchResult != null){
 			
@@ -93,12 +90,11 @@ public class SearchController {
 			
 			model.addAttribute("searchKeyword", searchAND);
 			if(Integer.parseInt(pageNum) == 0){
-				int topDocsTotalCount = (Integer) searchResult.get("totalCount");
-				model.addAttribute("resultSize", topDocsTotalCount);
+				model.addAttribute("resultSize", htmlSearchDAO.getSearchResultTotalCount());
 			}else{
-				model.addAttribute("resultSize", list.size());
+				model.addAttribute("resultSize", searchResult.size());
 			}
-			model.addAttribute("searchResult", list);
+			model.addAttribute("searchResult", searchResult);
 			model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
 			model.addAttribute("synonym", synonumSearchDAO.checkSynonymWord(searchAND));
 			model.addAttribute("pageNum", pageNum);

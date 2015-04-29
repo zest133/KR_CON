@@ -1,28 +1,17 @@
 package com.latis.krcon.html.search;
 
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.CharReader;
 import org.apache.lucene.analysis.StopAnalyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -30,21 +19,17 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.NullFragmenter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.filter.HtmlFilter;
-import com.latis.krcon.html.parser.CustomQueryParser;
 import com.latis.krcon.html.search.dto.SearchDTO;
 import com.latis.krcon.html.search.dto.SearchResultDTO;
+import com.latis.krcon.html.search.highlight.HtmlHighlight;
 import com.latis.krcon.html.sort.HtmlSort;
+import com.latis.krcon.query.BuildQuery;
 
 
 
@@ -77,18 +62,25 @@ public class EnglishHtmlSearch {
 
 	@Autowired
 	private EnglishAnalyzer englishAnalyzer;
-	@Autowired
-	private StandardAnalyzer standardAnalyzer;
+//	@Autowired
+//	private StandardAnalyzer standardAnalyzer;
 
+	@Autowired
+	private HtmlHighlight htmlHighlight;
+	
+	@Autowired
+	private BuildQuery buildQuery;
 	
 	private SearchDTO searchDTO;
 	
-	@Value("${highlightTag}")
-	private String highlightTag;
+	
 	
 	@Value("${searchResultSize}")
 	private int searchResultSize;
 
+	
+	private int totalHits = 0;
+	
 	public EnglishHtmlSearch() {
 		// TODO Auto-generated constructor stub
 	}
@@ -114,8 +106,8 @@ public class EnglishHtmlSearch {
 	public TopDocs htmlSearchData() {
 		TopDocs hits = null;
 		try {
-			Query query = totalSearchBuildQuery(textField, searchDTO.getAndWordSearch(), searchDTO.getOrWordSearch(), 
-					searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
+			Query query = buildQuery.totalSearchBuildQuery(englishAnalyzer, textField, searchDTO.getAndWordSearch(), searchDTO.getOrWordSearch(), 
+					searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch()); 
 			Filter filter = applyChainedFilter(searchDTO.getBreadcrumb(), searchDTO.getCategoryTitle(), searchDTO.getLocale());
 			
 			HtmlSort htmlSort = new HtmlSort();
@@ -127,7 +119,6 @@ public class EnglishHtmlSearch {
 			
 			hits = callQuerySearch(query, filter, sort, searchDTO.getPageNum());
 			
-//			String highlight = getHighlightHTML(hits, andWordSearch,null, null, null );
 			
 		}  catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -135,30 +126,6 @@ public class EnglishHtmlSearch {
 		}
 		return hits;
 	}
-//	
-//	public TopDocs htmlSubSearchData(SearchDTO subSearchDTO) {
-//		TopDocs hits = null;
-//		try {
-//			Query query = totalSearchBuildQuery(textField, subSearchDTO.getAndWordSearch(), subSearchDTO.getOrWordSearch(), 
-//					subSearchDTO.getExactWordSearch(), subSearchDTO.getNotWordSearch());
-//			Filter filter = applyChainedFilter(subSearchDTO.getBreadcrumb(), subSearchDTO.getCategoryTitle(), subSearchDTO.getLocale());
-//			
-//			HtmlSort htmlSort = new HtmlSort();
-//			htmlSort.addSortList(new SortField(subSearchDTO.getSortFileName(), SortField.STRING)); //1 번. 
-//			
-//			Sort sort = htmlSort.getSort();
-//			
-//			hits = callQuerySearch(query, filter, sort, subSearchDTO.getPageNum(), -1);
-//			
-////			String highlight = getHighlightHTML(hits, andWordSearch,null, null, null );
-//			
-//		}  catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return hits;
-//	}
-
 	private TopDocs callQuerySearch(Query query, Filter filter, Sort sort, int pageNum
 				) throws IOException {
 		
@@ -194,56 +161,6 @@ public class EnglishHtmlSearch {
 		return null;
 	}
 	
-	public String getHighlightHTML(String text, String field, String andWordSearch,
-			String orWordSearch, String exact, String non)
-			throws CorruptIndexException, IOException, ParseException {
-		String result = null;
-			//
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(andWordSearch).append(" ").append(orWordSearch).append(" ").append(exact).append(" ").append(non);
-		Query query = totalSearchBuildQuery(field, buffer.toString(), null,
-				null, null);
-		result = highlightHTML(englishAnalyzer, text, query,
-				field);
-			//System.out.println(result);
-		return result;
-	}
-	
-	public Query totalSearchBuildQuery(String fieldName, String andSearch, String orSearch, String exact, String non) throws IOException, ParseException{
-		BooleanQuery booleanQuery = new BooleanQuery();
-		if (andSearch != null && andSearch != "") {
-			String andQueryStr = andAnalyze(andSearch, fieldName, englishAnalyzer);
-			Query andQuery = new QueryParser(Version.LUCENE_36, fieldName,
-					englishAnalyzer).parse(andQueryStr); // #B
-			booleanQuery.add(andQuery, BooleanClause.Occur.MUST);
-		}
-
-		if (orSearch != null && orSearch != "") {
-			String orQueryStr = orAnalyze(orSearch, fieldName, englishAnalyzer);
-
-			Query orQuery = new QueryParser(Version.LUCENE_36, fieldName,
-					englishAnalyzer).parse(orQueryStr);
-			booleanQuery.add(orQuery, BooleanClause.Occur.MUST);
-		}
-
-		if (exact != null && exact != "") {
-			CustomQueryParser queryParser = new CustomQueryParser(
-					Version.LUCENE_36,fieldName, standardAnalyzer);
-			Query exactQuery = queryParser.parse(exact);
-			booleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
-			
-		}
-
-		if (non != null && non != "") {
-			String notAndQueryStr = orAnalyze(non, fieldName, englishAnalyzer);
-			Query notAndQuery = new QueryParser(Version.LUCENE_36, fieldName,
-					englishAnalyzer).parse(notAndQueryStr);
-			booleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
-		}
-		return booleanQuery;
-		
-		
-	}
 	
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle, String locale) throws Exception{
 		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle, locale);
@@ -253,69 +170,14 @@ public class EnglishHtmlSearch {
 	
 	
 	
-	public String highlightHTML(Analyzer analyzer, String htmlText, Query query,String field) {
-
-		QueryScorer scorer = new QueryScorer(query, field);
-
-		SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(
-				"<span class=\"highlight\">", "</span>");
-
-		Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
-
-		// Nullfragmenter for highlighting entire document.
-		highlighter.setTextFragmenter(new NullFragmenter());
-
-		StringReader strReader = new StringReader(htmlText);
-		TokenStream ts = analyzer.tokenStream(
-				field,
-				new HTMLStripCharFilter(CharReader.get(strReader
-						.markSupported() ? strReader : new BufferedReader(
-						strReader))));
-
-		try {
-
-			String highlightedText = highlighter.getBestFragment(ts, htmlText);
-
-			if (highlightedText != null) {
-				return highlightedText;
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			// LOG.error("Failed to highlight query string "+ query, e);
-		}
-
-		return htmlText;
-
-	}
 	
-	public ArrayList<Document> categorySearchData(String field,
-			String searchWord) {
-		ArrayList<Document> returnList = null;
-		try {
-			String queryStr = andAnalyze(searchWord, field, englishAnalyzer);
-
-			Query query = new QueryParser(Version.LUCENE_36, field,
-					englishAnalyzer).parse(queryStr);
-			TopDocs hits = searcher.search(query, searcher.maxDoc());
-			returnList = dumpHits(searcher, hits, field);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return returnList;
-	}
-
-	private ArrayList<Document> dumpHits(IndexSearcher searcher, TopDocs hits,
+	private ArrayList<SearchResultDTO> getDocumentList(IndexSearcher searcher, TopDocs hits,
 			String fieldName) throws IOException {
-		ArrayList<Document> docList = null;
+		ArrayList<SearchResultDTO> returnList = null;
 		if (hits.totalHits == 0) {
 			return null;
 		}
-		docList = new ArrayList<Document>();
+		returnList = new ArrayList<SearchResultDTO>();
 		
 		int totalPageCount = (searchDTO.getPageNum()+1) * searchResultSize;
 		
@@ -332,53 +194,56 @@ public class EnglishHtmlSearch {
 		}
 		
 		for (int i = compareValue; i < totalPageCount ; i++) {
-			docList.add(searcher.doc(scoreDocs[i].doc));
-		}
-		
-//		for (ScoreDoc match : hits.scoreDocs) {
-//			Document doc = searcher.doc(match.doc);
-//			docList.add(doc);
-//		}
-		return docList;
-	}
-
-	public String andAnalyze(String string, String field, Analyzer analyzer)
-			throws IOException {
-		StringBuffer buffer = new StringBuffer();
-
-		string = checkWord(string);
-		
-		TokenStream stream = analyzer.tokenStream(field, new StringReader(
-				string));
-		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-		buffer.append("(");
-		while (stream.incrementToken()) { // C
+			Document doc =  searcher.doc(scoreDocs[i].doc);
+			SearchResultDTO resultDTO = new SearchResultDTO();
 			
-			buffer.append("+");
-			buffer.append(term.toString()).append("* ");
+			resultDTO.setTitle(doc.get(categoryTitleField));
+			
+			try {
+				String highlight = htmlHighlight.getHighlightHTML(englishAnalyzer, doc.get(textField), 
+						textField, 
+						searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
+						searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
+				
+				highlight = htmlHighlight.substringHighlight(highlight);
+				
+				resultDTO.setHtmlText(highlight);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
+			
+			
+			
+			StringBuffer buffer = new StringBuffer();
+			
+			buffer.append(rootCategoryTreeName);
+			
+			String solasId = doc.get(categoryTreeField).substring(rootCategoryTreeName.length()+1);
+			String[] ids = solasId.split("\\.");
+			
+			String subCategory = "";
+			
+			for(String id : ids){
+				if(subCategory.equals("")){
+					subCategory = subCategory + id;
+				}else{
+					subCategory = subCategory + "." + id;
+				}
+				
+				buffer.append("/").append(rootCategoryTreeName).append(".").append(subCategory);
+						
+			}
+			
+			resultDTO.setCategoryTree(buffer.toString());
+			
+			returnList.add(resultDTO);
 		}
-		buffer.append(")");
-
-		return buffer.toString();
+		return returnList;
 	}
 
-	public String orAnalyze(String string, String field, Analyzer analyzer)
-			throws IOException {
-		StringBuffer buffer = new StringBuffer();
-
-		string = checkWord(string);
-		
-		TokenStream stream = analyzer.tokenStream(field, new StringReader(
-				string));
-		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-		buffer.append("(");
-		while (stream.incrementToken()) { // C
-			buffer.append(term.toString()).append("* ");
-		}
-		buffer.append(")");
-
-		return buffer.toString();
-	}
 	
 	public SearchDTO getSearchDTO() {
 		return searchDTO;
@@ -391,158 +256,14 @@ public class EnglishHtmlSearch {
 	
 
 	
-	public HashMap<String, Object> getSearchData() throws IOException{
-		
+	public ArrayList<SearchResultDTO> getSearchData() throws IOException{
 		TopDocs hits = htmlSearchData();
-		ArrayList<Document> list = dumpHits(searcher, hits, textField);
-		
-		
-		
-		
-		
-		ArrayList<SearchResultDTO> returnList = new ArrayList<SearchResultDTO>();
-		if(list != null){
-			for(Document doc : list){
-				SearchResultDTO resultDTO = new SearchResultDTO();
-				
-				resultDTO.setTitle(doc.get(categoryTitleField));
-				
-				try {
-					
-					/*
-					 * String text = "Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships";
-			String highlight = getHighlightHTML(text, textField,
-					"Regulation", null, null, null);
+		this.totalHits = hits.totalHits;
+		ArrayList<SearchResultDTO> list = getDocumentList(searcher, hits, textField);
+		return list;
 
-			int offset = highlight.indexOf(highlightTag);
-			if(offset >= 0){
-				highlight = highlight.replaceAll("<span class=\"highlight\">", "");
-				highlight = highlight.replaceAll("</span>", "");
-				if(offset == 0){
-					highlight = highlight.substring(offset, 100) + "...";
-				}else{
-					highlight = "..." +highlight.substring(offset, offset + 100) + "...";
-				}
-				
-				highlight = getHighlightHTML(highlight, textField,
-						"Regulation", null, null, null);
-			}
-					 */
-					String text = doc.get(textField);
-					
-					String highlight = getHighlightHTML(text, 
-							textField, 
-							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
-							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
-					
-					highlight = substringHighlight(highlight);
-					
-					highlight = getHighlightHTML(highlight, 
-							textField, 
-							searchDTO.getAndWordSearch() ,searchDTO.getOrWordSearch(),
-							searchDTO.getExactWordSearch(), searchDTO.getNotWordSearch());
-					
-					resultDTO.setHtmlText(highlight);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
-				
-				
-				
-				StringBuffer buffer = new StringBuffer();
-				
-				buffer.append(rootCategoryTreeName);
-				
-				String solasId = doc.get(categoryTreeField).substring(rootCategoryTreeName.length()+1);
-				String[] ids = solasId.split("\\.");
-				
-				String subCategory = "";
-				
-				for(String id : ids){
-					if(subCategory.equals("")){
-						subCategory = subCategory + id;
-					}else{
-						subCategory = subCategory + "." + id;
-					}
-					
-					buffer.append("/").append(rootCategoryTreeName).append(".").append(subCategory);
-							
-				}
-				
-				resultDTO.setCategoryTree(buffer.toString());
-				
-				returnList.add(resultDTO);
-			}
-		}
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(searchDTO.getTotalCount() == -1){
-			map.put("totalCount", hits.totalHits);
-		}
-		map.put("doc", returnList);
-		return map;
 	}
 
-	private String substringHighlight(String highlight) {
-		/*
-		 * int offset = highlight.indexOf(highlightTag);
-					if(offset >= 0){
-						highlight = highlight.replaceAll("<span class=\"highlight\">", "");
-						highlight = highlight.replaceAll("</span>", "");
-						if(offset == 0){
-							highlight = highlight.substring(offset, 100) + "...";
-						}else{
-							highlight = "..." +highlight.substring(offset, offset + 100) + "...";
-						}
-						
-						highlight = getHighlightHTML(highlight, textField,
-								"Regulation", null, null, null);
-					}
-		 */
-		int offset = highlight.indexOf(highlightTag);
-		int substringLength = 200;
-		
-		highlight = highlight.replaceAll("<span class=\"highlight\">", "");
-		highlight = highlight.replaceAll("</span>", "");
-		
-		if(offset > 0){
-			if(highlight.length() >= offset + substringLength){
-				highlight = "..." + highlight.substring(offset, offset + substringLength) + "...";
-			}else{
-				highlight = "..." + highlight.substring(offset, highlight.length());
-			}
-		}else{
-			if(highlight.length() >= substringLength){
-				highlight = highlight.substring(offset, substringLength) + "...";
-			}else{
-				highlight = highlight.substring(offset, highlight.length());
-			}
-		}
-		return highlight;
-	}
-	
-	public String checkWord(String query){
-		
-		String[] querys = query.split(" ");
-		
-		StringBuffer buffer = new StringBuffer();
-		
-		for(String word : querys){
-			if(word.endsWith("y")){
-				buffer.append(word.substring(0, word.length()-1)).append(" ");
-			}else{
-				buffer.append(word).append(" ");
-			}
-		}
-		
-		
-		
-		return buffer.toString().trim();
-	}
-	
 	public ArrayList<String> compareStopWord(){
 		ArrayList<String> stopList = new ArrayList<String>();
 		
@@ -586,6 +307,14 @@ public class EnglishHtmlSearch {
 		
 		
 		return stopList;
+	}
+
+	public int getTotalHits() {
+		return totalHits;
+	}
+
+	public void setTotalHits(int totalHits) {
+		this.totalHits = totalHits;
 	}
 	
 	
