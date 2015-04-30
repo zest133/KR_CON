@@ -13,6 +13,7 @@ import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -71,8 +72,10 @@ public class CategorySearch {
 		try {
 			if (searcher != null)
 				searcher.close();
-			if (reader != null)
-				reader.close();
+
+//			if (reader != null)
+//				reader.close();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -156,6 +159,27 @@ public class CategorySearch {
 
 			Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
 					analyzer).parse(queryStr);
+<<<<<<< HEAD
+=======
+			
+//			IndexReader oldReader = searcher.getIndexReader();
+//			try {
+//				if (!oldReader.isCurrent()) {
+//					IndexReader newIndexReader = oldReader.openIfChanged(oldReader);
+//					oldReader.close();
+//					searcher.close();
+//					IndexSearcher searcher2 = new IndexSearcher(newIndexReader);
+////				searcher2.search();
+//				}
+//			} catch (CorruptIndexException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+>>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
 
 			if (hits.totalHits == 0) {
@@ -163,13 +187,12 @@ public class CategorySearch {
 				jsonObject.put("isFolder", "true");
 				jsonObject.put("isLazy", "true");
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		
 	}
 
 	public String getSearchWord() {
