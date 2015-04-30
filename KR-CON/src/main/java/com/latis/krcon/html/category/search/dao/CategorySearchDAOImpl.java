@@ -108,7 +108,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		JSONArray array = new JSONArray();
 		
 		try {
-			categorySearch.init();
+//			categorySearch.init();
 			for (Document document : list) {
 				JSONObject jsonObject = new JSONObject();
 				

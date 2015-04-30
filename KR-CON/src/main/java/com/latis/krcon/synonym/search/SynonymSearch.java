@@ -34,8 +34,8 @@ public class SynonymSearch {
 	private Directory dir;
 	private IndexReader reader;
 	
-	@Autowired
-	private CustomKeywordAnalyzer analyzer;
+//	@Autowired
+//	private CustomKeywordAnalyzer analyzer;
 	
 	@Autowired
 	private BuildQuery buildQuery;
@@ -49,16 +49,37 @@ public class SynonymSearch {
 	
 	
 	public void init() throws IOException{
-		dir = FSDirectory.open(new File(dirPath));
-		reader = IndexReader.open(dir);
-		searcher = new IndexSearcher(reader);
+		
+		if(reader != null){
+			
+			IndexReader oldReader = searcher.getIndexReader();
+			if (!oldReader.isCurrent()) {
+				IndexReader newIndexReader = IndexReader.openIfChanged(oldReader);
+				oldReader.close();
+				searcher.close();
+				IndexSearcher searcher2 = new IndexSearcher(newIndexReader);
+				searcher = searcher2;
+//			searcher2.search();
+			}
+		}else{
+			
+			dir = FSDirectory.open(new File(dirPath));
+			reader = IndexReader.open(dir);
+			searcher = new IndexSearcher(reader);
+		}
+		
+		
+		
+//		dir = FSDirectory.open(new File(dirPath));
+//		reader = IndexReader.open(dir);
+//		searcher = new IndexSearcher(reader);
 	}
 	
 	public void close(){
 		try {
-			if(reader != null){
-				reader.close();
-			}
+//			if(reader != null){
+//				reader.close();
+//			}
 			if(searcher != null){
 				searcher.close();
 			}
@@ -82,8 +103,9 @@ public class SynonymSearch {
 	public ArrayList<Document> synonymSearchData(String field, String searchWord){
 		ArrayList<Document> returnList =null;
 		try {
+//			private CustomKeywordAnalyzer analyzer;
 			String queryStr = buildQuery.keywordAnalyzeMakeQuery(searchWord, field);
-			Query query = new QueryParser(Version.LUCENE_36, field, analyzer).parse(queryStr);
+			Query query = new QueryParser(Version.LUCENE_36, field, new CustomKeywordAnalyzer(Version.LUCENE_36)).parse(queryStr);
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
 			returnList = dumpHits(searcher, hits, wordField);
 		} catch (IOException e) {

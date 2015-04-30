@@ -75,7 +75,7 @@ wordField=word
 	
 	@Test
 	public void testSearch(){
-		String searchWord = "Life BOATS";
+		String searchWord = "life boats";
 		
 		ArrayList<Document> list =  synonymSearchData(synField, searchWord);
 		

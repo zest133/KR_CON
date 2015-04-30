@@ -105,19 +105,22 @@ public class HtmlHighlight {
 	
 	public String substringHighlight(String highlight) {
 		int offset = highlight.indexOf(highlightStartTag);
-		int substringLength = 200;
-		
-		if(offset > 0){
-			if(highlight.length() >= offset + substringLength){
-				highlight = "..." + highlight.substring(offset, offset + substringLength) + "...";
+		if(offset > -1){
+			
+			int substringLength = 200;
+			
+			if(offset > 0){
+				if(highlight.length() >= offset + substringLength){
+					highlight = "..." + highlight.substring(offset, offset + substringLength) + "...";
+				}else{
+					highlight = "..." + highlight.substring(offset, highlight.length());
+				}
 			}else{
-				highlight = "..." + highlight.substring(offset, highlight.length());
-			}
-		}else{
-			if(highlight.length() >= substringLength){
-				highlight = highlight.substring(offset, substringLength) + "...";
-			}else{
-				highlight = highlight.substring(offset, highlight.length());
+				if(highlight.length() >= substringLength){
+					highlight = highlight.substring(offset, substringLength) + "...";
+				}else{
+					highlight = highlight.substring(offset, highlight.length());
+				}
 			}
 		}
 		return highlight;

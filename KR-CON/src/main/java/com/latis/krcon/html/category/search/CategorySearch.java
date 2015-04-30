@@ -63,9 +63,36 @@ public class CategorySearch {
 	}
 
 	public void init() throws IOException {
-		dir = FSDirectory.open(new File(dirPath));
-		reader = IndexReader.open(dir);
-		searcher = new IndexSearcher(reader);
+
+		// if(searcher != null){
+		// IndexReader oldReader = searcher.getIndexReader();
+		// if(!oldReader.isCurrent()) {
+		// System.out.println("dddd");
+		// }
+		// }
+
+		// dir = FSDirectory.open(new File(dirPath));
+		// reader = IndexReader.open(dir);
+		// searcher = new IndexSearcher(reader);
+
+		if (reader != null) {
+
+			IndexReader oldReader = searcher.getIndexReader();
+			if (!oldReader.isCurrent()) {
+				IndexReader newIndexReader = IndexReader
+						.openIfChanged(oldReader);
+				oldReader.close();
+				searcher.close();
+				IndexSearcher searcher2 = new IndexSearcher(newIndexReader);
+				searcher = searcher2;
+				// searcher2.search();
+			}
+		} else {
+
+			dir = FSDirectory.open(new File(dirPath));
+			reader = IndexReader.open(dir);
+			searcher = new IndexSearcher(reader);
+		}
 	}
 
 	public void close() {
@@ -81,7 +108,6 @@ public class CategorySearch {
 			e.printStackTrace();
 		}
 
-		
 	}
 
 	public ArrayList<Document> search() {
@@ -172,7 +198,6 @@ public class CategorySearch {
 			e.printStackTrace();
 		}
 
-		
 	}
 
 	public String getSearchWord() {
