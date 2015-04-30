@@ -159,27 +159,7 @@ public class CategorySearch {
 
 			Query query = new QueryParser(Version.LUCENE_36, categoryTreeField,
 					analyzer).parse(queryStr);
-<<<<<<< HEAD
-=======
-			
-//			IndexReader oldReader = searcher.getIndexReader();
-//			try {
-//				if (!oldReader.isCurrent()) {
-//					IndexReader newIndexReader = oldReader.openIfChanged(oldReader);
-//					oldReader.close();
-//					searcher.close();
-//					IndexSearcher searcher2 = new IndexSearcher(newIndexReader);
-////				searcher2.search();
-//				}
-//			} catch (CorruptIndexException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
->>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
+
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
 
 			if (hits.totalHits == 0) {
