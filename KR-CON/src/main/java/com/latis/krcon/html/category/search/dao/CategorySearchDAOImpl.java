@@ -47,6 +47,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		try {
 			categorySearch.init();
 			categorySearch.setSearchWord(rootCategoryTreeName);
+			System.out.println("categorySearchDAO:50 getRootCategory() ============ " + rootCategoryTreeName);
 			ArrayList<Document> list = categorySearch.search();
 
 			returnArray = convertJsonArray(list);
