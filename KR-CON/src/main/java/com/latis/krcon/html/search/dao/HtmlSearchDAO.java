@@ -15,5 +15,4 @@ public interface HtmlSearchDAO {
 	
 	public int getSearchResultTotalCount();
 	
-	public void categorySearchClose();
 }

@@ -157,9 +157,5 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		return returnVal;
 	}
 	
-	@Override
-	public void close(){
-		categorySearch.close();
-	};
 
 }

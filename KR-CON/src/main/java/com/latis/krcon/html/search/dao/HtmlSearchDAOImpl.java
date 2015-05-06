@@ -103,10 +103,6 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 		return englishHtmlSearch.getTotalHits();
 	}
 	
-	@Override
-	public void categorySearchClose(){
-		categorySearch.close();
-	}
 	
 
 }
