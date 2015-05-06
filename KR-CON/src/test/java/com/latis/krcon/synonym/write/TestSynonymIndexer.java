@@ -160,6 +160,7 @@ private Directory dir = null;
 		JSONObject jsonObject = (JSONObject) obj;
  
 		
+		@SuppressWarnings("unchecked")
 		Iterator<String> keys =  jsonObject.keySet().iterator();
 		while(keys.hasNext()){
 			String key = keys.next();

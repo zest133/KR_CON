@@ -176,6 +176,7 @@ public class CategorySearch {
 		return docList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void checkSubCategory(Document document, JSONObject jsonObject) {
 		try {
 			String queryStr = buildQuery.categoryMakeQuery(

@@ -23,22 +23,19 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Autowired
 	private CategorySearch categorySearch;
-	
+
 	@Autowired
 	private EnglishAnalyzer englishAnalyzer;
-	
-	
+
 	@Autowired
 	private HtmlHighlight htmlHighlight;
-	
+
 	@Value("${rootCategoryTreeName}")
 	private String rootCategoryTreeName;
-	
-	
+
 	@Value("${htmlField}")
 	private String htmlField;
-	
-	
+
 	public CategorySearchDAOImpl() {
 		// TODO Auto-generated constructor stub
 	}
@@ -58,7 +55,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 			e.printStackTrace();
 		} finally {
-//			categorySearch.close();
+			// categorySearch.close();
 		}
 
 		return returnArray;
@@ -79,14 +76,15 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 			e.printStackTrace();
 		} finally {
-//			categorySearch.close();
+			// categorySearch.close();
 		}
 
 		return returnArray;
 	}
 
 	@Override
-	public String getCurrentCategoryHTML(String selectedCategoryTree, String highlightQuery) {
+	public String getCurrentCategoryHTML(String selectedCategoryTree,
+			String highlightQuery) {
 		// TODO Auto-generated method stub
 		String returnVal = "";
 		try {
@@ -98,55 +96,55 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-//			categorySearch.close();
+			// categorySearch.close();
 		}
-		
+
 		return returnVal;
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray convertJsonArray(ArrayList<Document> list){
+	public JSONArray convertJsonArray(ArrayList<Document> list) {
 		JSONArray array = new JSONArray();
-		
+
 		try {
-//			categorySearch.init();
+			// categorySearch.init();
 			for (Document document : list) {
 				JSONObject jsonObject = new JSONObject();
-				
+
 				jsonObject.put("key", document.get("categoryTree"));
 				jsonObject.put("categoryTree", document.get("categoryTree"));
 				jsonObject.put("title", document.get("categoryTitle"));
 				jsonObject.put("html", document.get("html"));
-				
+
 				categorySearch.checkSubCategory(document, jsonObject);
-				
+
 				// jsonObject.put("isFolder", "true");
 				// jsonObject.put("isLazy", "true");
-				
+
 				array.add(jsonObject);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-//			categorySearch.close();
+			// categorySearch.close();
 		}
-		
-		
 
 		return array;
 	}
-	
-	public String convertHtmlText(ArrayList<Document> list, String highlightQuery){
-		
+
+	public String convertHtmlText(ArrayList<Document> list,
+			String highlightQuery) {
+
 		String returnVal = "";
-		
+
 		String html = list.get(0).get(htmlField);
-		
+
 		try {
-			
-			returnVal = htmlHighlight.getHighlightHTML(englishAnalyzer, html, htmlField, highlightQuery);
-			
+
+			returnVal = htmlHighlight.getHighlightHTML(englishAnalyzer, html,
+					htmlField, highlightQuery);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,7 +152,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return returnVal;
 	}
 }

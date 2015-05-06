@@ -191,6 +191,7 @@ public class TestCategorySearch {
 		this.preFixQueryData = preFixQueryData;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void buildRootCategory() throws IOException, ParseException{
 		String searchWord = "0000.00e0.1530.????";
@@ -230,6 +231,7 @@ public class TestCategorySearch {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkSubCategory(Document document, JSONObject jsonObject) throws IOException,
 			ParseException {
 		String queryStr = andAnalyze(document.get("categoryTree")+anonymousData, categoryTreeField, analyzer);
