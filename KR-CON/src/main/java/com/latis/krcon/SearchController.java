@@ -85,6 +85,8 @@ public class SearchController {
 		
 		ArrayList<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		
+		
+		
 //		if(searchResult != null){
 			
 			StringBuffer buffer = new StringBuffer();
