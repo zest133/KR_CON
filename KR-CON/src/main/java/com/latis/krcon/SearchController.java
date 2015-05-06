@@ -69,8 +69,10 @@ public class SearchController {
 		dto.setOrWordSearch(searchOR);
 		
 		if(!searchExact.equals("")){
-			dto.setExactWordSearch("\"" + searchExact + "\"");
+			searchExact = "\"" + searchExact + "\"";
 		}
+		
+		dto.setExactWordSearch(searchExact);
 		dto.setNotWordSearch(searchNON);
 		
 		dto.setBreadcrumb(filterBreradcrumbsList);

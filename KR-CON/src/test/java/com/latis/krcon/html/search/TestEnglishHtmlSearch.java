@@ -1,12 +1,9 @@
 package com.latis.krcon.html.search;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
@@ -17,7 +14,6 @@ import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
@@ -39,7 +35,6 @@ import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.NullFragmenter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.search.highlight.TokenSources;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -55,6 +50,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 import com.latis.krcon.html.sort.HtmlSort;
+import com.latis.krcon.query.BuildQuery;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -87,12 +83,15 @@ public class TestEnglishHtmlSearch {
 	private String breadcrumb;
 	private String categoryTitle;
 	private String locale;
-	@Value("${highlightTag}")
+
+	@Value("${highlightStartTag}")
 	private String highlightTag;
-	
-	
+
 	@Autowired
 	private HtmlFilter htmlFilter;
+	
+	@Autowired
+	private BuildQuery buildQuery;
 
 	@Before
 	public void setup() throws IOException {
@@ -191,15 +190,21 @@ public class TestEnglishHtmlSearch {
 				String text = convertToText(doc.get(textField));
 				String highlight = getHighlightHTML(text, textField,
 						andWordSearch, null, null, null);
-				
-				if(highlight.indexOf(highlightTag) >= 0){
-					if(highlight.indexOf(highlightTag) == 0){
-						highlight = highlight.substring(highlight.indexOf(highlightTag), 200) + "...";
-					}else{
-						highlight = "..." +highlight.substring(highlight.indexOf(highlightTag), highlight.indexOf(highlightTag) + 200) + "...";
+
+				if (highlight.indexOf(highlightTag) >= 0) {
+					if (highlight.indexOf(highlightTag) == 0) {
+						highlight = highlight.substring(
+								highlight.indexOf(highlightTag), 200)
+								+ "...";
+					} else {
+						highlight = "..."
+								+ highlight.substring(
+										highlight.indexOf(highlightTag),
+										highlight.indexOf(highlightTag) + 200)
+								+ "...";
 					}
 				}
-				
+
 			}
 
 			// html highlight
@@ -210,37 +215,36 @@ public class TestEnglishHtmlSearch {
 				break;
 
 			}
-			
-			
+
 			for (ScoreDoc scoreDoc : hits.scoreDocs) {
 				Document doc = searcher.doc(scoreDoc.doc);
 				String categoryTree = convertToText(doc.get("categoryTree"));
 				String rootCategory = "0000.00e0.1530";
-				
-				String solasId = categoryTree.substring(rootCategory.length()+1);
-				
+
+				String solasId = categoryTree
+						.substring(rootCategory.length() + 1);
+
 				String[] ids = solasId.split("\\.");
-				
-				
+
 				StringBuffer buffer2 = new StringBuffer();
-				
+
 				buffer2.append(rootCategory);
-				
+
 				String subCategory = "";
-				
-				for(String id : ids){
-					if(subCategory.equals("")){
+
+				for (String id : ids) {
+					if (subCategory.equals("")) {
 						subCategory = subCategory + id;
-					}else{
+					} else {
 						subCategory = subCategory + "." + id;
 					}
-					
-					buffer2.append("/").append(rootCategory).append(".").append(subCategory);
-							
+
+					buffer2.append("/").append(rootCategory).append(".")
+							.append(subCategory);
+
 				}
-				
+
 				System.out.println("!");
-				
 
 			}
 
@@ -252,32 +256,26 @@ public class TestEnglishHtmlSearch {
 
 	@Test
 	public void pagingNavigation() throws IOException, ParseException {
-		
+
 		int pageNum = 0;
 		int pagingCount = 20;
-		int totalPagingCount = (pageNum+1)*pagingCount;
-		
-		
-		
+		int totalPagingCount = (pageNum + 1) * pagingCount;
+
 		String andWordSearch = "Convention for the Safe";
 		String orWordSearch = "Wireless network setup";
 		String exactWordSearch = "\"international voyage Issued under\"";
 		String notWordSearch = "Wireless network setup";
-		
-		
+
 		ArrayList<Document> luceneDocuments = new ArrayList<Document>();
 
-		
-		
 		Query query = totalSearchBuildQuery(textField, null, null,
 				exactWordSearch, null);
-		
 
 		TopDocs hits = searcher.search(query, totalPagingCount);
-		
+
 		ScoreDoc[] scoreDocs = hits.scoreDocs;
 
-		for (int i = (totalPagingCount - pagingCount); i < totalPagingCount ; i++) {
+		for (int i = (totalPagingCount - pagingCount); i < totalPagingCount; i++) {
 			luceneDocuments.add(searcher.doc(scoreDocs[i].doc));
 		}
 	}
@@ -286,28 +284,26 @@ public class TestEnglishHtmlSearch {
 	public void compareStopWord() {
 		String andWordSearch = "Convention for the Safed";
 		String[] queryArr = andWordSearch.split("\\ ");
-		CharArraySet temp =   (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+		CharArraySet temp = (CharArraySet) StopAnalyzer.ENGLISH_STOP_WORDS_SET;
 		assertEquals(true, temp.contains("for"));
 
-		
 	}
-	
+
 	@Test
-	public void checkWord(){
+	public void checkWord() {
 		String query = "Form of Safety";
 		String[] querys = query.split(" ");
-		
+
 		StringBuffer buffer = new StringBuffer();
-		
-		for(String word : querys){
-			if(word.endsWith("y")){
-				buffer.append(word.substring(0, word.length()-1)).append(" ");
-			}else{
+
+		for (String word : querys) {
+			if (word.endsWith("y")) {
+				buffer.append(word.substring(0, word.length() - 1)).append(" ");
+			} else {
 				buffer.append(word).append(" ");
 			}
 		}
-		
-		
+
 	}
 
 	public String convertToText(String text) {
@@ -383,8 +379,8 @@ public class TestEnglishHtmlSearch {
 
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle,
 			String locale) throws Exception {
-//		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
-//				locale);
+		// HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
+		// locale);
 		htmlFilter.setFilter(breadcrumb, categoryTitle, locale);
 
 		return htmlFilter.getFilter();
@@ -567,30 +563,30 @@ public class TestEnglishHtmlSearch {
 	public void setDirPath(String dirPath) {
 		this.dirPath = dirPath;
 	}
-	
+
 	@Test
-	public void highlightSubstring(){
+	public void highlightSubstring() {
 		try {
 			String text = "Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships Regulation 16Ventilation systems in ships";
-			String highlight = getHighlightHTML(text, textField,
-					"Regulation", null, null, null);
+			String highlight = getHighlightHTML(text, textField, "Regulation",
+					null, null, null);
 
 			int offset = highlight.indexOf(highlightTag);
-			if(offset >= 0){
-				highlight = highlight.replaceAll("<span class=\"highlight\">", "");
+			if (offset >= 0) {
+				highlight = highlight.replaceAll("<span class=\"highlight\">",
+						"");
 				highlight = highlight.replaceAll("</span>", "");
-				if(offset == 0){
+				if (offset == 0) {
 					highlight = highlight.substring(offset, 100) + "...";
-				}else{
-					highlight = "..." +highlight.substring(offset, offset + 100) + "...";
+				} else {
+					highlight = "..."
+							+ highlight.substring(offset, offset + 100) + "...";
 				}
-				
+
 				highlight = getHighlightHTML(highlight, textField,
 						"Regulation", null, null, null);
 			}
-			
-			
-			
+
 			System.out.println(highlight);
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
@@ -602,6 +598,21 @@ public class TestEnglishHtmlSearch {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	@Test
+	public void queryStringTest() {
+		String andWordSearch = "cross-sectional";
+		String orWordSearch = "Wireless network setup";
+		String exactWordSearch = "\"cross-sectional\"";
+		String notWordSearch = "Wireless network setup";
+
+		try {
+			String andString = buildQuery.andMakeQuery(andWordSearch, textField, englishAnalyzer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
