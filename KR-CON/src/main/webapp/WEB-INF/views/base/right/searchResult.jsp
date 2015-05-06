@@ -49,10 +49,21 @@
 				<div>
 					<div class="filename">
 						<p>
-							<a href="#" onclick="CategoryTree.prototype.openCurrentTree('${item.categoryTree}')" >${item.title}</a>
+							<a href="#" 
+								onclick="CategoryTree.prototype.openCurrentTree('${item.categoryTree}'); return false;" >
+									${item.title}
+							</a>
 						</p>
 						<div class="resultBreadCrumbs">
 							<p>${item.breadcrumbs}</p>
+						</div>
+					</div>
+					<div class="otherInfo">
+						<div class="rank">
+							<p></p>
+						</div>
+						<div class="view">
+							<p></p>
 						</div>
 					</div>
 					<div class="resulttext">

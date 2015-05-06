@@ -74,7 +74,7 @@ public class EnglishHtmlSearch {
 	private int searchResultSize;
 
 	private int totalHits = 0;
-
+	
 	public EnglishHtmlSearch() {
 		// TODO Auto-generated constructor stub
 	}
@@ -210,14 +210,31 @@ public class EnglishHtmlSearch {
 			resultDTO.setTitle(doc.get(categoryTitleField));
 
 			try {
+//				String highlight = htmlHighlight.getHighlightHTML(
+//						englishAnalyzer, doc.get(textField), textField,
+//						searchDTO.getAndWordSearch(),
+//						searchDTO.getOrWordSearch(),
+//						searchDTO.getExactWordSearch(),
+//						searchDTO.getNotWordSearch());
+//
+//				highlight = htmlHighlight.substringHighlight(highlight);
+				
 				String highlight = htmlHighlight.getHighlightHTML(
 						englishAnalyzer, doc.get(textField), textField,
 						searchDTO.getAndWordSearch(),
 						searchDTO.getOrWordSearch(),
 						searchDTO.getExactWordSearch(),
 						searchDTO.getNotWordSearch());
+				
 
 				highlight = htmlHighlight.substringHighlight(highlight);
+
+				highlight = htmlHighlight.getHighlightHTML(
+						englishAnalyzer, highlight, textField,
+						searchDTO.getAndWordSearch(),
+						searchDTO.getOrWordSearch(),
+						searchDTO.getExactWordSearch(),
+						searchDTO.getNotWordSearch());
 
 				resultDTO.setHtmlText(highlight);
 			} catch (ParseException e) {
