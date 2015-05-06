@@ -45,8 +45,13 @@ public class HtmlFilter {
 		}
 		
 		if (locale != null && !locale.equals("")) {
-			localeTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
-					new TermQuery(new Term(localeField, locale))));
+			localeTitleFilter = new CachingWrapperFilter(
+				new QueryWrapperFilter(
+					new TermQuery(
+						new Term(localeField, locale)
+					)
+				)
+			);
 			filterList.add(localeTitleFilter);
 		}
 		

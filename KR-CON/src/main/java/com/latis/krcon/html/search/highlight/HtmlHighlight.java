@@ -106,6 +106,8 @@ public class HtmlHighlight {
 	public String substringHighlight(String highlight) {
 		int offset = highlight.indexOf(highlightStartTag);
 		if(offset > -1){
+			highlight = highlight.replaceAll(highlightStartTag, "");
+			highlight = highlight.replaceAll(highlightEndTag, "");
 			
 			int substringLength = 200;
 			

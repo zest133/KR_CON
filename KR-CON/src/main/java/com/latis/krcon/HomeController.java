@@ -61,7 +61,7 @@ public class HomeController {
 
 		model.addAttribute("filters", htmlSearchDAO.getSearchFilterOption());
 		
-		htmlSearchDAO.categorySearchClose();
+//		htmlSearchDAO.categorySearchClose();
 
 		return "advancedSearch";
 	}

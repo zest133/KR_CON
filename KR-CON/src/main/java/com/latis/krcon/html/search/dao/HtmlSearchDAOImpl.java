@@ -84,11 +84,9 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-//			categorySearch.close();
+			categorySearch.close();
 		}
-		
-		
-		
+
 		return dto;
 	}
 	
@@ -103,10 +101,10 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 		return englishHtmlSearch.getTotalHits();
 	}
 	
-	@Override
-	public void categorySearchClose(){
-		categorySearch.close();
-	}
+//	@Override
+//	public void categorySearchClose(){
+//		categorySearch.close();
+//	}
 	
 
 }

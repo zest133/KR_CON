@@ -79,8 +79,7 @@ public class CategorySearch {
 
 			IndexReader oldReader = searcher.getIndexReader();
 			if (!oldReader.isCurrent()) {
-				IndexReader newIndexReader = IndexReader
-						.openIfChanged(oldReader);
+				IndexReader newIndexReader = IndexReader.openIfChanged(oldReader);
 				oldReader.close();
 				searcher.close();
 				IndexSearcher searcher2 = new IndexSearcher(newIndexReader);

@@ -14,9 +14,13 @@ function Search(){
 };
 
 Search.prototype.search = function(){
-	this.dataReset();
-	this.searchData.searchAND = $("#searchinputbox").val();
-	this.ajaxSearch(this);
+	
+	if($.trim($("#searchinputbox").val()) != ""){
+		this.dataReset();
+		this.searchData.searchAND = $("#searchinputbox").val();
+		this.ajaxSearch(this);
+	}
+	
 	
 };
 
@@ -60,7 +64,7 @@ Search.prototype.ajaxSearch = function(search){
 			}
 		},
 		error: function(msg){
-			console.log(msg);
+			//console.log(msg);
 			alert("search error");
 		}
 	});
@@ -83,7 +87,7 @@ Search.prototype.callAdvanceSearch = function(){
 			
 		},
 		error: function(msg){
-			console.log(msg);
+			//console.log(msg);
 			alert("search error");
 		}
 	});
@@ -111,19 +115,20 @@ Search.prototype.checkSearchResultScroll = function(search){
 		var totalScroll = $("body").prop("scrollHeight") - 525;
 		var currentScroll = $("body").scrollTop();
 		
-		console.log(totalScroll + ", " +currentScroll);
+		//console.log(totalScroll + ", " +currentScroll);
 		
-		if(currentScroll > totalScroll - 525){
+		if(currentScroll > totalScroll * 0.85){
 			search.searchData.pageNum = search.searchData.pageNum+1;
 			search.searchData.totalCount = $("#resultCount").val();
 			
-			if(search.searchData.totalCount > 25){
+			if(search.searchData.totalCount > 100){
 				var requestCount = 25*(search.searchData.pageNum+1);
 				var temp = search.searchData.totalCount / requestCount;
+				console.log("requestCount="+requestCount+", totalCount="+search.searchData.totalCount);
 				if(temp >= 1){
 					search.ajaxSearch(search);
 				}else{
-					if((requestCount - search.searchData.totalCount) < 25){
+					if((requestCount - search.searchData.totalCount) < 100){
 						search.ajaxSearch(search);
 					}
 				}
