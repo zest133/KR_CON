@@ -35,6 +35,9 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Value("${htmlField}")
 	private String htmlField;
+	
+	@Value("${fileindex}")
+	private String dirPath;
 
 	public CategorySearchDAOImpl() {
 		// TODO Auto-generated constructor stub
@@ -47,7 +50,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		try {
 			categorySearch.init();
 			categorySearch.setSearchWord(rootCategoryTreeName);
-			System.out.println("categorySearchDAO:50 getRootCategory() ============ " + rootCategoryTreeName);
+			System.out.println("categorySearchDAO:50 getRootCategory() ============ " + dirPath);
 			ArrayList<Document> list = categorySearch.search();
 
 			returnArray = convertJsonArray(list);
