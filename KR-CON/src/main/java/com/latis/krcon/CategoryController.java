@@ -21,6 +21,7 @@ public class CategoryController {
 	@Autowired
 	public CategorySearchDAO categorySearchDAO;
 
+	
 	@RequestMapping(value = "/root_category.do")
 	public @ResponseBody String getRootCategory() {
 		// ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
