@@ -275,9 +275,9 @@ public class TestEnglishHtmlSearch {
 
 		ScoreDoc[] scoreDocs = hits.scoreDocs;
 
-		for (int i = (totalPagingCount - pagingCount); i < totalPagingCount; i++) {
-			luceneDocuments.add(searcher.doc(scoreDocs[i].doc));
-		}
+//		for (int i = (totalPagingCount - pagingCount); i < totalPagingCount; i++) {
+//			luceneDocuments.add(searcher.doc(scoreDocs[i].doc));
+//		}
 	}
 
 	@Test
