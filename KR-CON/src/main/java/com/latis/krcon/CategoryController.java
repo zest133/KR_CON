@@ -29,7 +29,7 @@ public class CategoryController {
 		// ArrayList<JSONObject> returnList = new ArrayList<JSONObject>();
 
 		String returnVal = categorySearchDAO.getRootCategory().toString();
-
+ 
 		return returnVal;
 	}
 
