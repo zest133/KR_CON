@@ -89,6 +89,10 @@ public class TestEnglishHtmlSearch {
 	private String locale;
 	@Value("${highlightTag}")
 	private String highlightTag;
+	
+	
+	@Autowired
+	private HtmlFilter htmlFilter;
 
 	@Before
 	public void setup() throws IOException {
@@ -379,8 +383,9 @@ public class TestEnglishHtmlSearch {
 
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle,
 			String locale) throws Exception {
-		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
-				locale);
+//		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
+//				locale);
+		htmlFilter.setFilter(breadcrumb, categoryTitle, locale);
 
 		return htmlFilter.getFilter();
 	}

@@ -127,12 +127,12 @@ public class BuildQuery {
 		searchWord = this.stringReplace(searchWord);
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("(");
+//		buffer.append("(");
 		buffer.append("+");
 		buffer.append(field);
 		buffer.append(":");
 		buffer.append("\"").append(searchWord).append("\"");
-		buffer.append(")");
+//		buffer.append(")");
 
 		String output = buffer.toString();
 
@@ -193,13 +193,11 @@ public class BuildQuery {
 	}
 
 	public String checkWord(String query) {
-
 		String[] querys = query.split(" ");
 
 		StringBuffer buffer = new StringBuffer();
 		
 		for (String word : querys) {
-//			word = this.stringReplace(word);
 			if (word.endsWith("y")) {
 				buffer.append(word.substring(0, word.length() - 1)).append(" ");
 			} else {

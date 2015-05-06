@@ -94,20 +94,20 @@ public class CategorySearch {
 		}
 	}
 
-	public void close() {
-		try {
-			if (searcher != null)
-				searcher.close();
-
+//	public void close() {
+//		try {
 //			if (reader != null)
 //				reader.close();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+//			if (searcher != null)
+//				searcher.close();
+//
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	public ArrayList<Document> search() {
 		return categorySearchData(categoryTreeField, searchWord);

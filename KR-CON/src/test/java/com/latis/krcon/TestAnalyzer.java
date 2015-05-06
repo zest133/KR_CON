@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.latis.krcon.analyzer.CustomKeywordAnalyzer;
+
 @ContextConfiguration(locations={
 "file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -88,7 +90,7 @@ wordField=word
 	public ArrayList<Document> synonymSearchData(String field, String searchWord){
 		ArrayList<Document> returnList =null;
 		try {
-			String queryStr = keywordAnalyzeQuery(searchWord, field, analyzer);
+			String queryStr = keywordAnalyzeQuery(searchWord, field);
 			
 			Query query = new QueryParser(Version.LUCENE_36, field, analyzer).parse(queryStr);
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
@@ -122,7 +124,7 @@ wordField=word
 	
 	
 	
-	private String keywordAnalyzeQuery(String searchWord, String field, Analyzer analyzer)
+	private String keywordAnalyzeQuery(String searchWord, String field)
 			throws IOException {
 		StringBuffer buffer = new StringBuffer();
 

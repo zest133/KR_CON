@@ -2,13 +2,8 @@ package com.latis.krcon.synonym.search;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.KeywordAnalyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
@@ -104,10 +99,13 @@ public class SynonymSearch {
 		ArrayList<Document> returnList =null;
 		try {
 //			private CustomKeywordAnalyzer analyzer;
+			System.out.println(dirPath);
 			String queryStr = buildQuery.keywordAnalyzeMakeQuery(searchWord, field);
 			Query query = new QueryParser(Version.LUCENE_36, field, new CustomKeywordAnalyzer(Version.LUCENE_36)).parse(queryStr);
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
 			returnList = dumpHits(searcher, hits, wordField);
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

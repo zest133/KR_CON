@@ -6,5 +6,5 @@ public interface CategorySearchDAO {
 	public JSONArray getRootCategory();
 	public JSONArray getSubCategory(String selectedCategoryTree);
 	public String getCurrentCategoryHTML(String selectedCategoryTree, String highlightQuery);
-//	public void close();
+
 }
