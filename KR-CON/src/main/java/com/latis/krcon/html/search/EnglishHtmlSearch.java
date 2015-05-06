@@ -75,6 +75,12 @@ public class EnglishHtmlSearch {
 
 	private int totalHits = 0;
 	
+	@Value("${localeField}")
+	private String localeField;
+	
+	@Autowired
+	private HtmlFilter htmlFilter;
+	
 	public EnglishHtmlSearch() {
 		// TODO Auto-generated constructor stub
 	}
@@ -175,8 +181,10 @@ public class EnglishHtmlSearch {
 
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle,
 			String locale) throws Exception {
-		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
-				locale);
+//		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
+//				locale);
+		
+		htmlFilter.setFilter(breadcrumb, categoryTitle, locale);
 
 		return htmlFilter.getFilter();
 	}

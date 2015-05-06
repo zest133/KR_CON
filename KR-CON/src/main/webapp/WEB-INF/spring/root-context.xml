@@ -68,5 +68,7 @@
 	
 	<bean class="com.latis.krcon.html.search.dao.HtmlSearchDAOImpl" id="htmlSearchDAO"></bean>
 	
+	<bean class="com.latis.krcon.html.filter.HtmlFilter" id="htmlFilter"></bean>
+	
 	<context:component-scan base-package="com.latis.krcron"></context:component-scan>
 </beans>

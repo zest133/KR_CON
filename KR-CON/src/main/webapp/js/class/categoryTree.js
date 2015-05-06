@@ -29,7 +29,7 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 						data : {
 							categoryTree : node.data.categoryTree
 						},
-						debugLazyDelay : 100
+						debugLazyDelay : 75
 					});
 				}
 			});

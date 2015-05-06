@@ -30,7 +30,7 @@ public class CategoryController {
 
 		String returnVal = categorySearchDAO.getRootCategory().toString();
 
-		categorySearchDAO.close();
+//		categorySearchDAO.close();
 
 		return returnVal;
 	}
@@ -42,7 +42,7 @@ public class CategoryController {
 		String returnVal = categorySearchDAO.getSubCategory(categoryTree)
 				.toString();
 
-		categorySearchDAO.close();
+//		categorySearchDAO.close();
 
 		return returnVal;
 	}
@@ -55,7 +55,7 @@ public class CategoryController {
 		String returnVal = categorySearchDAO.getCurrentCategoryHTML(
 				categoryTree, highlightQuery).toString();
 
-		categorySearchDAO.close();
+//		categorySearchDAO.close();
 
 		return returnVal;
 

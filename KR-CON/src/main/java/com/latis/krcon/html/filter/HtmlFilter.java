@@ -28,9 +28,37 @@ public class HtmlFilter {
 
 	private ArrayList<Filter> filterList;
 	
-	public HtmlFilter(String breadcrumb, String categoryTitle, String locale) {
-		// TODO Auto-generated constructor stub
-		
+//	public HtmlFilter(String breadcrumb, String categoryTitle, String locale) {
+//		// TODO Auto-generated constructor stub
+//		
+//		filterList = new ArrayList<Filter>();
+//		
+//		if (breadcrumb != null && !breadcrumb.equals("") && !breadcrumb.equals("All")) {
+//			breadcrumbFilter = new CachingWrapperFilter(new QueryWrapperFilter(
+//					new TermQuery(new Term(breadcrumbField, breadcrumb))));
+//			filterList.add(breadcrumbFilter);
+//		}
+//		if (categoryTitle != null && !categoryTitle.equals("") && !categoryTitle.equals("All")) {
+//			categoryTitleFilter = new CachingWrapperFilter(new QueryWrapperFilter(
+//					new TermQuery(new Term(categoryTitleField, categoryTitle))));
+//			filterList.add(categoryTitleFilter);
+//		}
+//		
+//		if (locale != null && !locale.equals("")) {
+//			localeTitleFilter = new CachingWrapperFilter(
+//				new QueryWrapperFilter(
+//					new TermQuery(
+//						new Term(localeField, locale)
+//					)
+//				)
+//			);
+//			filterList.add(localeTitleFilter);
+//		}
+//		
+//		
+//	}
+	
+	public void setFilter(String breadcrumb, String categoryTitle, String locale) {
 		filterList = new ArrayList<Filter>();
 		
 		if (breadcrumb != null && !breadcrumb.equals("") && !breadcrumb.equals("All")) {
@@ -54,8 +82,6 @@ public class HtmlFilter {
 			);
 			filterList.add(localeTitleFilter);
 		}
-		
-		
 	}
 
 	

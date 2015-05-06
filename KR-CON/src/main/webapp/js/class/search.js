@@ -122,7 +122,7 @@ Search.prototype.checkSearchResultScroll = function(search){
 			search.searchData.totalCount = $("#resultCount").val();
 			
 			if(search.searchData.totalCount > 100){
-				var requestCount = 25*(search.searchData.pageNum+1);
+				var requestCount = 100*(search.searchData.pageNum+1);
 				var temp = search.searchData.totalCount / requestCount;
 				console.log("requestCount="+requestCount+", totalCount="+search.searchData.totalCount);
 				if(temp >= 1){

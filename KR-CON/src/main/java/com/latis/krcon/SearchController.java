@@ -83,7 +83,7 @@ public class SearchController {
 		
 		ArrayList<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		
-		if(searchResult != null){
+//		if(searchResult != null){
 			
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(searchAND).append(" ").append(searchOR).append(" ").append(searchExact).append(" ").append(searchNON);
@@ -99,7 +99,7 @@ public class SearchController {
 			model.addAttribute("synonym", synonumSearchDAO.checkSynonymWord(searchAND));
 			model.addAttribute("pageNum", pageNum);
 			model.addAttribute("highlightQuery", buffer.toString());
-		}
+//		}
 		
 		return "searchResult";
 		
