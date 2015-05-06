@@ -610,6 +610,8 @@ public class TestEnglishHtmlSearch {
 
 		try {
 			String andString = buildQuery.andMakeQuery(andWordSearch, textField, englishAnalyzer);
+			String orString = buildQuery.orMakeQuery(andWordSearch, textField, englishAnalyzer);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
