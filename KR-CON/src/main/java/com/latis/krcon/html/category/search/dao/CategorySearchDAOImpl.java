@@ -104,6 +104,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		return returnVal;
 	}
 
+	@SuppressWarnings("unchecked")
 	public JSONArray convertJsonArray(ArrayList<Document> list){
 		JSONArray array = new JSONArray();
 		
