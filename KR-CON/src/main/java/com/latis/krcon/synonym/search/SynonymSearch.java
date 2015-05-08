@@ -15,6 +15,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -22,6 +24,9 @@ import com.latis.krcon.analyzer.CustomKeywordAnalyzer;
 import com.latis.krcon.query.BuildQuery;
 
 public class SynonymSearch {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SynonymSearch.class);
+	
 	@Value("${synonymindex}")
 	private String dirPath;
 	
@@ -99,7 +104,6 @@ public class SynonymSearch {
 		ArrayList<Document> returnList =null;
 		try {
 //			private CustomKeywordAnalyzer analyzer;
-			System.out.println(dirPath);
 			String queryStr = buildQuery.keywordAnalyzeMakeQuery(searchWord, field);
 			Query query = new QueryParser(Version.LUCENE_36, field, new CustomKeywordAnalyzer(Version.LUCENE_36)).parse(queryStr);
 			TopDocs hits = searcher.search(query, searcher.maxDoc());
@@ -120,13 +124,12 @@ public class SynonymSearch {
 			throws IOException {
 		ArrayList< Document> docList = null; 
 		if (hits.totalHits == 0) {
-			System.out.println("No hits");
+			logger.info("No hits");
 			return null;
 		}
 		docList = new ArrayList<Document>();
 		for (ScoreDoc match : hits.scoreDocs) {
 			Document doc = searcher.doc(match.doc);
-			System.out.println(match.score + ":" + doc.get(fieldName));
 			docList.add(doc);
 		}
 		return docList;

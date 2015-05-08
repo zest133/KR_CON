@@ -109,13 +109,11 @@ wordField=word
 			throws IOException {
 		ArrayList< Document> docList = null; 
 		if (hits.totalHits == 0) {
-			System.out.println("No hits");
 			return null;
 		}
 		docList = new ArrayList<Document>();
 		for (ScoreDoc match : hits.scoreDocs) {
 			Document doc = searcher.doc(match.doc);
-			System.out.println(match.score + ":" + doc.get(fieldName));
 			docList.add(doc);
 		}
 		return docList;
@@ -144,7 +142,6 @@ wordField=word
 
 		String output = buffer.toString();
 
-		System.out.println(output);
 
 		return buffer.toString();
 	}

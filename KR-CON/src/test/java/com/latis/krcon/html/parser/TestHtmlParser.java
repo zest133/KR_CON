@@ -17,6 +17,8 @@ import org.apache.tika.sax.LinkContentHandler;
 import org.apache.tika.sax.TeeContentHandler;
 import org.apache.tika.sax.ToHTMLContentHandler;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -27,7 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Matchers.*;
 
 public class TestHtmlParser {
-
+	private static final Logger logger = LoggerFactory.getLogger(TestHtmlParser.class);
 	@Test
 	public void testHtmlParser() throws IOException, SAXException,
 			TikaException {
@@ -53,11 +55,6 @@ public class TestHtmlParser {
 		ParseContext parseContext = new ParseContext();
 		HtmlParser parser = new HtmlParser();
 		parser.parse(input, teeHandler, metadata, parseContext);
-		System.out.println("title:\n" + metadata.get("title"));
-		System.out.println("links:\n" + linkHandler.getLinks());
-		System.out.println("text:\n" + textHandler.toString());
-
-		System.out.println("html:\n" + toHTMLHandler.toString());
 	}
 
 	@Test
@@ -71,12 +68,7 @@ public class TestHtmlParser {
 		// Html parser
 		HtmlParser htmlparser = new HtmlParser();
 		htmlparser.parse(input, handler, metadata, pcontext);
-		System.out.println("Contents of the document:" + handler.toString());
-		System.out.println("Metadata of the document:");
 		String[] metadataNames = metadata.names();
 
-		for (String name : metadataNames) {
-			System.out.println(name + ":   " + metadata.get(name));
-		}
 	}
 }

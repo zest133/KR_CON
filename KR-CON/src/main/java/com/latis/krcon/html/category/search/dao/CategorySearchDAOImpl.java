@@ -6,21 +6,20 @@ import java.util.ArrayList;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.util.Version;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.category.search.CategorySearch;
-import com.latis.krcon.html.search.EnglishHtmlSearch;
 import com.latis.krcon.html.search.highlight.HtmlHighlight;
 
 public class CategorySearchDAOImpl implements CategorySearchDAO {
 
+	private static final Logger logger = LoggerFactory.getLogger(CategorySearchDAOImpl.class);
+	
 	@Autowired
 	private CategorySearch categorySearch;
 
@@ -50,14 +49,13 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		try {
 			categorySearch.init();
 			categorySearch.setSearchWord(rootCategoryTreeName);
-			System.out.println("categorySearchDAO:50 getRootCategory() ============ " + dirPath);
 			ArrayList<Document> list = categorySearch.search();
 
 			returnArray = convertJsonArray(list);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-
-			e.printStackTrace();
+			
+			logger.error(e.getMessage());
 		} finally {
 			// categorySearch.close();
 		}
@@ -78,7 +76,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 
-			e.printStackTrace();
+			logger.error(e.getMessage());;
 		} finally {
 			// categorySearch.close();
 		}
@@ -98,7 +96,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			returnVal = convertHtmlText(list, highlightQuery);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());;
 		} finally {
 			// categorySearch.close();
 		}
@@ -129,7 +127,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());;
 		} finally {
 			// categorySearch.close();
 		}
@@ -151,10 +149,10 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());;
 		}
 
 		return returnVal;

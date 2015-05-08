@@ -158,8 +158,6 @@ public class TestEnglishHtmlSearch {
 					.toString());
 
 			for (ScoreDoc scoreDoc : hits.scoreDocs) {
-				System.out.println("text : " + " "
-						+ searcher.doc(scoreDoc.doc).get("text"));
 				TermFreqVector tfvector = reader.getTermFreqVector(
 						scoreDoc.doc, "text");
 				TermPositionVector tpvector = (TermPositionVector) tfvector;
@@ -173,13 +171,10 @@ public class TestEnglishHtmlSearch {
 							.getOffsets(termidx);
 
 					for (int j = 0; j < termposx.length; j++) {
-						System.out.println("termpos : " + termposx[j]);
 					}
 					for (int j = 0; j < tvoffsetinfo.length; j++) {
 						int offsetStart = tvoffsetinfo[j].getStartOffset();
 						int offsetEnd = tvoffsetinfo[j].getEndOffset();
-						System.out.println("offsets : " + offsetStart + " "
-								+ offsetEnd);
 					}
 				}
 			}
@@ -244,7 +239,6 @@ public class TestEnglishHtmlSearch {
 
 				}
 
-				System.out.println("!");
 
 			}
 
@@ -322,7 +316,6 @@ public class TestEnglishHtmlSearch {
 		Query query = totalSearchBuildQuery(field, andWordSearch, null, null,
 				null);
 		result = highlightHTML(englishAnalyzer, text, query, field);
-		System.out.println(result);
 		return result;
 	}
 
@@ -447,14 +440,11 @@ public class TestEnglishHtmlSearch {
 			String fieldName) throws IOException {
 		ArrayList<Document> docList = null;
 		if (hits.totalHits == 0) {
-			System.out.println("No hits");
 			return null;
 		}
 		docList = new ArrayList<Document>();
 		for (ScoreDoc match : hits.scoreDocs) {
 			Document doc = searcher.doc(match.doc);
-			System.out.println(match.score + ":" + doc.get(fieldName));
-			docList.add(doc);
 		}
 		return docList;
 	}
@@ -479,7 +469,6 @@ public class TestEnglishHtmlSearch {
 
 		String output = buffer.toString();
 
-		System.out.println(output);
 
 		return buffer.toString();
 	}
@@ -504,7 +493,6 @@ public class TestEnglishHtmlSearch {
 
 		String output = buffer.toString();
 
-		System.out.println(output);
 
 		return buffer.toString();
 	}
@@ -522,7 +510,6 @@ public class TestEnglishHtmlSearch {
 			list.add(term.toString());
 			System.out.print("[" + term.toString() + "] "); // B
 		}
-		System.out.println();
 		return list;
 	}
 
@@ -587,7 +574,6 @@ public class TestEnglishHtmlSearch {
 						"Regulation", null, null, null);
 			}
 
-			System.out.println(highlight);
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

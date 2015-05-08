@@ -2,18 +2,10 @@ package com.latis.krcon.html.category.search;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import javassist.compiler.Parser;
-
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.KeywordAnalyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -27,6 +19,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -34,6 +28,7 @@ import com.latis.krcon.html.sort.HtmlSort;
 import com.latis.krcon.query.BuildQuery;
 
 public class CategorySearch {
+	private static final Logger logger = LoggerFactory.getLogger(CategorySearch.class);
 	private IndexSearcher searcher;
 	private Directory dir;
 	private IndexReader reader;
@@ -67,7 +62,6 @@ public class CategorySearch {
 		// if(searcher != null){
 		// IndexReader oldReader = searcher.getIndexReader();
 		// if(!oldReader.isCurrent()) {
-		// System.out.println("dddd");
 		// }
 		// }
 
@@ -94,21 +88,6 @@ public class CategorySearch {
 		}
 	}
 
-//	public void close() {
-//		try {
-//			if (reader != null)
-//				reader.close();
-//			if (searcher != null)
-//				searcher.close();
-//
-//
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
-
 	public ArrayList<Document> search() {
 		return categorySearchData(categoryTreeField, searchWord);
 	}
@@ -129,7 +108,7 @@ public class CategorySearch {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return list;
 	}
@@ -153,10 +132,10 @@ public class CategorySearch {
 			returnList = getDocumentList(searcher, hits, field);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return returnList;
 	}
@@ -165,7 +144,7 @@ public class CategorySearch {
 			TopDocs hits, String fieldName) throws IOException {
 		ArrayList<Document> docList = null;
 		if (hits.totalHits == 0) {
-			System.out.println("No hits");
+			logger.info("No hits");
 			return null;
 		}
 		docList = new ArrayList<Document>();
@@ -195,7 +174,7 @@ public class CategorySearch {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 	}
