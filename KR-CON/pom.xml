@@ -329,7 +329,6 @@
 								<include>*.properties</include>
 								<include>*.xml</include>
 							</includes>
-							<targetPath>WEB-INF/config</targetPath>
 							<filtering>true</filtering>
 						</resource>
 					</webResources>
