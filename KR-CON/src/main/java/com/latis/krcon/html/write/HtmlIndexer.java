@@ -2,7 +2,6 @@ package com.latis.krcon.html.write;
 
 
 import java.io.File;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,16 +23,19 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.tika.exception.TikaException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
 import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
+import com.latis.krcon.html.search.highlight.HtmlHighlight;
 
 
 
 public class HtmlIndexer {
-
+	private static final Logger logger = LoggerFactory.getLogger(HtmlIndexer.class);
 	
 	private Directory dir = null;
 	
@@ -116,10 +118,10 @@ public class HtmlIndexer {
 			writer.addDocument(dto.convetDocument());
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	

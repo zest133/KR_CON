@@ -20,6 +20,8 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -31,7 +33,7 @@ import com.latis.krcon.html.sort.HtmlSort;
 import com.latis.krcon.query.BuildQuery;
 
 public class EnglishHtmlSearch {
-
+	private static final Logger logger = LoggerFactory.getLogger(EnglishHtmlSearch.class);
 	@Value("${fileindex}")
 	private String dirPath;
 
@@ -115,7 +117,7 @@ public class EnglishHtmlSearch {
 //				reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -140,7 +142,7 @@ public class EnglishHtmlSearch {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return hits;
 	}
@@ -247,7 +249,7 @@ public class EnglishHtmlSearch {
 				resultDTO.setHtmlText(highlight);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 
 			resultDTO.setBreadcrumbs(doc.get(breadcrumbField));

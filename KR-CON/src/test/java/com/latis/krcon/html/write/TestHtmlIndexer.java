@@ -26,6 +26,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,14 +36,15 @@ import org.xml.sax.SAXException;
 
 import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
+import com.latis.krcon.html.search.TestEnglishHtmlSearch;
 
 @ContextConfiguration(locations={
 "file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestHtmlIndexer {
-
+	private static final Logger logger = LoggerFactory.getLogger(TestHtmlIndexer.class);
 	
-private Directory dir = null;
+	private Directory dir = null;
 	
 //	@Autowired
 //	private WhitespaceAnalyzer whitespaceAnalyer;
@@ -92,10 +95,10 @@ private Directory dir = null;
 			writer.addDocument(dto.convetDocument());
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	
@@ -162,11 +165,11 @@ private Directory dir = null;
 			
 	 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	 
 		

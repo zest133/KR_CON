@@ -16,13 +16,16 @@ import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.NullFragmenter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.latis.krcon.html.search.dao.HtmlSearchDAOImpl;
 import com.latis.krcon.query.BuildQuery;
 
 public class HtmlHighlight {
-
+	private static final Logger logger = LoggerFactory.getLogger(HtmlHighlight.class);
 	@Value("${highlightStartTag}")
 	private String highlightStartTag;
 	
@@ -69,7 +72,7 @@ public class HtmlHighlight {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			// LOG.error("Failed to highlight query string "+ query, e);
 		}
 

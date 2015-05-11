@@ -23,7 +23,6 @@ public class LoggerTest {
 			Log4jConfigurer.initLogging("classpath:log4j.properties");
 			
 		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
 		

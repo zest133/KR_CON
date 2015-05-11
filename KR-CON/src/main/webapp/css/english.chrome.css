@@ -368,3 +368,7 @@ div.contents div.result_list div:last-child .resulttext p {
   	top: 50%;
   	left: 50%;
 }
+
+div.contents ul {
+  margin: 15px 0px 15px;
+}
