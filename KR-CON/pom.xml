@@ -326,6 +326,7 @@
 							<filtering>true</filtering>
 						</resource>
 					</webResources>
+                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
 				</configuration>
 			</plugin>
 

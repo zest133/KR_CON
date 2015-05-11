@@ -101,7 +101,6 @@ public class HtmlIndexer {
 	public void lockChecker() throws IOException, InterruptedException {
 		while(dir.fileExists(IndexWriter.WRITE_LOCK_NAME)){
 //			dir.clearLock(name);
-//			System.out.println("lock");
 			Thread.sleep(10);
 		}
 	}

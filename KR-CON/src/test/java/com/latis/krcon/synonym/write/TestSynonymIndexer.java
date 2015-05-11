@@ -123,7 +123,6 @@ private Directory dir = null;
 	public void lockChecker() throws IOException, InterruptedException {
 		while(dir.fileExists(IndexWriter.WRITE_LOCK_NAME)){
 //			dir.clearLock(name);
-//			System.out.println("lock");
 			Thread.sleep(10);
 		}
 	}
@@ -180,7 +179,6 @@ private Directory dir = null;
 //		Iterator<String> keys =  jsonObj.keys();
 //		while(keys.hasNext()){
 //			String key = keys.next();
-//			System.out.println(key);
 //		}
 		
 //		htmlParser.setPath("html/toc.json");

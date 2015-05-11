@@ -157,7 +157,6 @@ wordField=word
 
 		String output = buffer.toString();
 
-		System.out.println(output);
 
 		return buffer.toString();
 	}

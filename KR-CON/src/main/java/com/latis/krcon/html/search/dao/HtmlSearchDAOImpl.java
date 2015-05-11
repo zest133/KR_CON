@@ -1,10 +1,11 @@
 package com.latis.krcon.html.search.dao;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 
 import org.apache.lucene.document.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -16,6 +17,8 @@ import com.latis.krcon.html.search.dto.SearchResultDTO;
 
 public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 
+	private static final Logger logger = LoggerFactory.getLogger(HtmlSearchDAOImpl.class);
+	
 	@Autowired
 	public EnglishHtmlSearch englishHtmlSearch;
 	
@@ -45,7 +48,7 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 			returnList = englishHtmlSearch.getSearchData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} finally {
 			englishHtmlSearch.close();
 		}
