@@ -33,8 +33,6 @@ public class CategoryController {
 			@RequestParam String highlightQuery) {
 		String returnVal = categorySearchDAO.getCurrentCategoryHTML(
 				categoryTree, highlightQuery).toString();
-
-
 		return returnVal;
 
 	}
