@@ -274,7 +274,7 @@ ul.dynatree-container {
 	border: none;
 	height: 100%;
 }
-
+/*
 ul.searchOptionsField li, ul.searchOptionsCategory li {
 	list-style: none !important;
 	padding-bottom: 15px;
@@ -396,3 +396,4 @@ div.advancedSearch {
 .result_list > div:hover{
 	background-color: rgb(247, 247, 247);
 }
+*/
