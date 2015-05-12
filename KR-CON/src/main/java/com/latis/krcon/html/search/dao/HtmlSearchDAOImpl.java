@@ -85,7 +85,7 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 			dto.setLocaleFilter(localeFilter);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} finally {
 		}
 

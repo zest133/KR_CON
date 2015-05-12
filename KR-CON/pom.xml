@@ -247,6 +247,11 @@
 			<artifactId>lucene-test-framework</artifactId>
 			<version>3.6.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>4.5.4</version>
+		</dependency>
 
 	</dependencies>
 
@@ -336,7 +341,6 @@
 								<include>*.properties</include>
 								<include>*.xml</include>
 							</includes>
-							<targetPath>WEB-INF/config</targetPath>
 							<filtering>true</filtering>
 						</resource>
 					</webResources>

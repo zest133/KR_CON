@@ -26,17 +26,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.latis.krcon.analyzer.CustomKeywordAnalyzer;
+import com.latis.krcon.html.search.EnglishHtmlSearch;
 
 @ContextConfiguration(locations={
 "file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestAnalyzer {
-
+	private static final Logger logger = LoggerFactory.getLogger(TestAnalyzer.class);
 	
 	@Value("${fileindex}")
 	private String dirPath;
@@ -101,10 +104,10 @@ wordField=word
 			returnList = dumpHits(searcher, hits, wordField);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return returnList;
 	}

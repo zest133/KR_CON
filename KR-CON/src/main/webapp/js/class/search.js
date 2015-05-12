@@ -25,6 +25,7 @@ Search.prototype.search = function(){
 };
 
 Search.prototype.advSearch = function(){
+	
 	this.dataReset("advance");
 	
 	this.searchData.searchAND = $("#searchAND").val();
@@ -54,7 +55,26 @@ Search.prototype.ajaxSearch = function(search){
 		type: "post",
 		data: search.searchData,
 		beforeSend: function(){
-			
+			var opts = {
+				lines : 13, // The number of lines to draw
+				length : 20, // The length of each line
+				width : 10, // The line thickness
+				radius : 30, // The radius of the inner circle
+				corners : 1, // Corner roundness (0..1)
+				rotate : 0, // The rotation offset
+				direction : 1, // 1: clockwise, -1: counterclockwise
+				color : '#000', // #rgb or #rrggbb
+				speed : 1, // Rounds per second
+				trail : 60, // Afterglow percentage
+				shadow : false, // Whether to render a shadow
+				hwaccel : false, // Whether to use hardware acceleration
+				className : 'spinner', // The CSS class to assign to the spinner
+				zIndex : 2e9, // The z-index (defaults to 2000000000)
+				top : 'auto', // Top position relative to parent in px
+				left : 'auto' // Left position relative to parent in px
+			};
+			var target = document.getElementById('graph_area');
+			var spinner = new Spinner(opts).spin(target);
 		},
 		success: function(msg){
 //			alert(msg);
@@ -62,6 +82,8 @@ Search.prototype.ajaxSearch = function(search){
 			if(search.searchData.pageNum == 0){
 				search.checkSearchResultScroll(search);
 			}
+			
+			$("#graph_area").html("");
 		},
 		error: function(msg){
 			//console.log(msg);
@@ -70,7 +92,7 @@ Search.prototype.ajaxSearch = function(search){
 	});
 };
 
-
+/*
 Search.prototype.callAdvanceSearch = function(){
 	$.ajax({
 		url:"advanced_search.do",
@@ -92,6 +114,7 @@ Search.prototype.callAdvanceSearch = function(){
 		}
 	});
 }
+*/
 
 Search.prototype.getPageNum = function(){
 	return this.searchData.pageNum;

@@ -261,47 +261,139 @@ div.toc p b {
 	color: #076eb0;
 }
 
-ul.searchOptions li {
+
+#tocContent {
+	height: 90%;
+}
+
+div#tocDiv{
+	border-right: 2px solid #076eb0;
+}
+
+ul.dynatree-container {
+	border: none;
+	height: 100%;
+}
+/*
+ul.searchOptionsField li, ul.searchOptionsCategory li {
 	list-style: none !important;
-	border-bottom: 1px solid #ddd;
 	padding-bottom: 15px;
 	margin-bottom: 15px;
 }
 
-ul.searchOptions label {
+ul.searchOptionsField label, ul.searchOptionsCategory label {
 	display: inline-block;
 	width: 300px;
 }
 
-label {
-	display: inline-block;
-	width: 200px;
+li label {
+	color: #076eb0;	
 }
 
-.contents ul li input, .contents ul li select {
+div>label {
+	font-size: 25px;
+}
+
+.advancedSearchTitle {
+	font-size: 30px;
+}
+
+.advancedSearch ul li input, .advancedSearch ul li select {
 	width: 400px;
 }
-/*
-div.contents div.result_list div:last-child .resulttext p {
-	border-bottom: none;
+
+.optionDiv {
+	width: 725px;
+	border-bottom: 1px solid #ddd;
+	margin-top: 10px;
 }
-*/
-#advSearchButton {
+
+.buttonDiv {
+	width: 725px;
+	text-align: right;
+}
+
+#advabcedSearchButton {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: #076eb0;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #0b0e07;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 15px;
+	padding: 9px 23px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #263666;
+}
+
+#advabcedSearchButton:hover {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0688fa
+		), color-stop(1, #2dabf9));
+	background: -moz-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+	background: -webkit-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+	background: -o-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+	background: -ms-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+	background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0688fa',
+		endColorstr='#2dabf9', GradientType=0);
+	background-color: #0688fa;
+}
+
+#advabcedSearchButton:active {
+	position: relative;
+	top: 1px;
+}
+
+#slideAdvSearchButton {
 	display: block;
 	width: 24px;
 	height: 24px;
 	overflow: hidden;
-	float: left;
+	float: right;
 	background: url(images/gear.png);
 	background-size: 24px;
 	text-indent: -9999px;
 	border: none;
 	opacity: 0.6;
 	margin-top: 12px;
-	margin-left: -15px;
+	margin-left: -5px;
 	outline: none;
+	margin-right: 20px;
 }
 
-#advSearchButton:hover {
+#slideAdvSearchButton:hover {
 	opacity: 1.0;
 }
+
+#graph_area {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+}
+
+div.advancedSearch ul {
+	margin: 15px 0px 15px;
+}
+
+div.advancedSearch {
+	display: none;
+	width: 730px;
+	position: fixed;
+	top: 52px;
+	right: 0px;
+	padding: 30px 15px 15px 30px;
+	background-color: white;
+	border: 2px solid #076eb0;
+	border-top: none;
+	border-right: none;
+}
+
+.result_list > div:hover{
+	background-color: rgb(247, 247, 247);
+}
+*/

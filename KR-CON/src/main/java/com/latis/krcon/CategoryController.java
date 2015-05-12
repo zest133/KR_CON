@@ -13,21 +13,20 @@ public class CategoryController {
 
 	@Autowired
 	public CategorySearchDAO categorySearchDAO;
-
 	
 	@RequestMapping(value = "/root_category.do")
 	public @ResponseBody String getRootCategory() {
 		String returnVal = categorySearchDAO.getRootCategory().toString();
- 
 		return returnVal;
 	}
+	
+	
+	
 
 	@RequestMapping(value = "/sub_category.do")
 	public @ResponseBody String getSubCategory(@RequestParam String categoryTree) {
 		String returnVal = categorySearchDAO.getSubCategory(categoryTree)
 				.toString();
-
-
 		return returnVal;
 	}
 
@@ -37,8 +36,6 @@ public class CategoryController {
 			@RequestParam String highlightQuery) {
 		String returnVal = categorySearchDAO.getCurrentCategoryHTML(
 				categoryTree, highlightQuery).toString();
-
-
 		return returnVal;
 
 	}

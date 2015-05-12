@@ -42,11 +42,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.latis.krcon.html.category.search.TestCategorySearch;
 import com.latis.krcon.html.filter.HtmlFilter;
 import com.latis.krcon.html.parser.CustomQueryParser;
 import com.latis.krcon.html.sort.HtmlSort;
@@ -61,7 +64,7 @@ import static org.mockito.Matchers.*;
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/root-context.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestEnglishHtmlSearch {
-
+	private static final Logger logger = LoggerFactory.getLogger(TestEnglishHtmlSearch.class);
 	// private String dirPath = "D:/dev/HtmlIndex";
 	@Value("${fileindex}")
 	private String dirPath;
@@ -244,7 +247,7 @@ public class TestEnglishHtmlSearch {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -428,10 +431,10 @@ public class TestEnglishHtmlSearch {
 			returnList = dumpHits(searcher, hits, field);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return returnList;
 	}
@@ -576,13 +579,13 @@ public class TestEnglishHtmlSearch {
 
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 	}
@@ -600,7 +603,7 @@ public class TestEnglishHtmlSearch {
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 }
