@@ -21,14 +21,15 @@ public class HomeController {
 
 	@RequestMapping(value = { "/", "/main.do" }, method = RequestMethod.GET)
 	public String home(Model model) {
+		model.addAttribute("filters", htmlSearchDAO.getSearchFilterOption());
 		return "content";
 	}
 
-	@RequestMapping(value = "/advanced_search.do", method = RequestMethod.POST)
-	public String advancedSearch(Model model) {
-
-		model.addAttribute("filters", htmlSearchDAO.getSearchFilterOption());
-		return "advancedSearch";
-	}
+//	@RequestMapping(value = "/advanced_search.do", method = RequestMethod.POST)
+//	public String advancedSearch(Model model) {
+//
+//		model.addAttribute("filters", htmlSearchDAO.getSearchFilterOption());
+//		return "advancedSearch";
+//	}
 
 }

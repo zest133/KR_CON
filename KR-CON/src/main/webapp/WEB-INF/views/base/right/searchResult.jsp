@@ -58,6 +58,7 @@
 							<p>${item.breadcrumbs}</p>
 						</div>
 					</div>
+					<!-- 
 					<div class="otherInfo">
 						<div class="rank">
 							<p></p>
@@ -66,6 +67,7 @@
 							<p></p>
 						</div>
 					</div>
+					 -->
 					<div class="resulttext">
 						<p>${item.htmlText}</p>
 					</div>

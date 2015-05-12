@@ -25,6 +25,7 @@ Search.prototype.search = function(){
 };
 
 Search.prototype.advSearch = function(){
+	
 	this.dataReset("advance");
 	
 	this.searchData.searchAND = $("#searchAND").val();
@@ -91,7 +92,7 @@ Search.prototype.ajaxSearch = function(search){
 	});
 };
 
-
+/*
 Search.prototype.callAdvanceSearch = function(){
 	$.ajax({
 		url:"advanced_search.do",
@@ -113,6 +114,7 @@ Search.prototype.callAdvanceSearch = function(){
 		}
 	});
 }
+*/
 
 Search.prototype.getPageNum = function(){
 	return this.searchData.pageNum;

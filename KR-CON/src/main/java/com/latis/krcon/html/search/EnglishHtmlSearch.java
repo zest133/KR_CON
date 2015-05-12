@@ -193,6 +193,7 @@ public class EnglishHtmlSearch {
 
 	private ArrayList<SearchResultDTO> getDocumentList(IndexSearcher searcher,
 			TopDocs hits, String fieldName) throws IOException {
+
 		ArrayList<SearchResultDTO> returnList = null;
 		if (hits.totalHits == 0) {
 			return null;
@@ -210,7 +211,11 @@ public class EnglishHtmlSearch {
 		if (totalPageCount < searchResultSize) {
 			compareValue = 0;
 		} else {
-			compareValue = totalPageCount - searchResultSize;
+			if(totalPageCount == hits.totalHits){
+				compareValue = totalPageCount - (totalPageCount - searchDTO.getPageNum() * searchResultSize);
+			}else{
+				compareValue = totalPageCount - searchResultSize;
+			}
 		}
 
 		for (int i = compareValue; i < totalPageCount; i++) {

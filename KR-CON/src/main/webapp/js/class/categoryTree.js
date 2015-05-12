@@ -20,6 +20,7 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 					// CategoryTree.loadHtmlContent(node.data.html,
 					// contentDivClassName);
 					$(document).unbind('scroll');
+					$( ".advancedSearch" ).slideUp();
 					categoryTree.getCurrentHtmlContent(categoryTree,
 							node.data.categoryTree);
 				},

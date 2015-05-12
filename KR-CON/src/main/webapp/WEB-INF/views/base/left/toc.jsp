@@ -10,6 +10,7 @@
 </div>
 <div class="header">
 	<div class="headerWrap">
+		<input type="button" value="Advanced Search" id="slideAdvSearchButton">
 		<div class="searchWrap">
 			<div class="search_from_valign">
 				<input id="searchinputbox" type="text" name="keyword">
@@ -17,7 +18,6 @@
 			<input id="searchLink" type="button" title="Search" alt="Search">
 		</div>
 		
-		<input type="button" value="Advanced Search" id="advSearchButton">
 		<!-- 
 		<form class="searchWrap" action="search.do" method="post">
 			<div class="search_from_valign">
@@ -35,20 +35,3 @@
 		 -->
 	</div>
 </div>
-
-<style>
-
-#tocContent {
-	height: 90%;
-	
-}
-
-div#tocDiv{
-	border-right: 1px solid grey;
-}
-
-ul.dynatree-container {
-	border: none;
-	height: 100%;
-}
-</style>
