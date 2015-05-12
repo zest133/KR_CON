@@ -205,6 +205,13 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.12</version>
 		</dependency>
+		<!-- guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+
 
 		<!-- JSON Object -->
 		<dependency>
@@ -227,6 +234,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -234,6 +242,12 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-test-framework</artifactId>
+			<version>3.6.2</version>
+		</dependency>
+
 	</dependencies>
 
 
@@ -326,9 +340,10 @@
 							<filtering>true</filtering>
 						</resource>
 					</webResources>
-                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
+					<warSourceDirectory>src/main/webapp</warSourceDirectory>
 				</configuration>
 			</plugin>
+
 
 		</plugins>
 		<resources>

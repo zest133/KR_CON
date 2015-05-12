@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
@@ -32,6 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xml.sax.SAXException;
 
+import com.latis.krcon.CustomSimpleAnalyzer;
 import com.latis.krcon.html.dto.HtmlDTO;
 import com.latis.krcon.html.parser.HtmlWithTikaParser;
 
@@ -49,6 +51,11 @@ private Directory dir = null;
 	@Autowired
 	private StandardAnalyzer standardAynalyzer;
 	
+	
+	private CustomSimpleAnalyzer customAnalyzer;
+	
+	private WhitespaceAnalyzer whitespaceAnalyzer;
+	
 	private IndexWriter writer;
 	
 	@Autowired
@@ -65,9 +72,11 @@ private Directory dir = null;
 	public void setup() throws IOException, InterruptedException{
 //		String path = "D:/dev/HtmlIndex";
 		
+		whitespaceAnalyzer = new WhitespaceAnalyzer(Version.LUCENE_36);
+		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
-				standardAynalyzer);
+				whitespaceAnalyzer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);

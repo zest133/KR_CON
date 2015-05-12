@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -37,7 +38,7 @@ import com.latis.krcon.analyzer.CustomKeywordAnalyzer;
 public class TestAnalyzer {
 
 	
-	@Value("${synonymindex}")
+	@Value("${fileindex}")
 	private String dirPath;
 	
 	private IndexSearcher searcher;
@@ -57,13 +58,16 @@ wordField=word
 	private String wordField;
 	
 	
+	@Value("${htmlField}")
+	private String htmlField;
 	
 	
-	private CustomKeywordAnalyzer analyzer ;
+	private CustomSimpleAnalyzer analyzer ;
+	private WhitespaceAnalyzer whitespaceAnalyzer;
 	
 	@Before
 	public void setup() throws IOException{
-		analyzer = new CustomKeywordAnalyzer(Version.LUCENE_36);
+		whitespaceAnalyzer = new WhitespaceAnalyzer(Version.LUCENE_36);
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
 		searcher = new IndexSearcher(reader);
@@ -77,9 +81,9 @@ wordField=word
 	
 	@Test
 	public void testSearch(){
-		String searchWord = "life boats";
+		String searchWord = "<";
 		
-		ArrayList<Document> list =  synonymSearchData(synField, searchWord);
+		ArrayList<Document> list =  synonymSearchData(htmlField, searchWord);
 		
 		assertEquals(1, list.size());
 		//fail();
