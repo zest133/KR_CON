@@ -199,13 +199,13 @@ div.contents .enterKeyword p{margin:0px 0 20px 0; padding:0px; display: block; f
 div.contents .enterKeyword p span{color: #076eb0;}
 div.contents .resultcount p{margin:0px 0 20px 0; padding:0px; display: block; color: #076eb0; font-size: 20px;}
 div.contents .result {margin:0px 0 0 0; display: block;}
-div.contents .result_list{border-top:1px solid #dadada; }
+div.contents .result:first-child .result_list{border-top:1px solid #dadada; }
 div.contents p.no_result{font-size: 16px; padding:30px 10px; border-top:1px solid #ccc; border-top:1px solid #ccc; }
 div.contents .filename {display: block; }
 div.contents .filename p {margin: 0 10px 0 0; color: #5A75A0;}
 div.contents .filename p a {color: #076eb0; font-size:21px;}
 //div.contents .filename p a:visited {color:#9E9FA4;}
-div.contents .resulttext p {padding: 0 10px 20px; color: #666; border-bottom:1px solid #dadada; }
+div.contents .resulttext p {padding: 0 0px 20px; color: #666; border-bottom:1px solid #dadada; }
 div.contents .keyword {font-size: 16px; color: #333; font-weight: bold;}
 
 div.contents .result_list > div {
@@ -249,6 +249,7 @@ div.informaltable table p.tab4 {padding-left: 2cm;}
 .highlight{
 	color:#000;
 	background:#FFFF00;
+	font-style: italic;
 }
 
 .footnote .para{

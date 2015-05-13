@@ -44,6 +44,7 @@ CategoryTree.prototype.openCurrentTree = function(keyPath) {
 		if (status == "loaded") {
 			node.expand();
 		} else if (status == "ok") {
+			node.deactivate();
 			node.activate();
 		}
 	});
