@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="css/english.chrome.css">
 <script type="text/javascript" src="js/jquery-2.1.3.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 
@@ -15,6 +14,7 @@
 <script type="text/javascript" src="js/class/spin.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 
+<link rel="stylesheet" type="text/css" href="css/english.chrome.css">
 </head>
 <body>
 

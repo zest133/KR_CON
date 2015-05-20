@@ -261,13 +261,17 @@ div.toc p b {
 	color: #076eb0;
 }
 
-
 #tocContent {
-	height: 90%;
+	height: 100%;
+	padding-top: 50px;
+	overflow-x: hidden;
+	overflow-y: hidden;
 }
 
-div#tocDiv{
+div#tocDiv {
 	border-right: 2px solid #076eb0;
+	overflow-x: auto;
+	overflow-y: hidden;
 }
 
 ul.dynatree-container {
@@ -287,7 +291,7 @@ ul.searchOptionsField label, ul.searchOptionsCategory label {
 }
 
 li label {
-	color: #076eb0;	
+	color: #076eb0;
 }
 
 div>label {
@@ -331,7 +335,7 @@ div>label {
 	text-shadow: 0px 1px 0px #263666;
 }
 
-#advabcedSearchButton:hover {	
+#advabcedSearchButton:hover {
 	background-color: #068ADF;
 }
 
@@ -347,7 +351,7 @@ div>label {
 	overflow: hidden;
 	float: right;
 	background: url(images/gear.png);
-	background-size: 24px;	
+	background-size: 24px;
 	border: none;
 	opacity: 0.6;
 	margin-top: 12px;
@@ -389,15 +393,25 @@ div.advancedSearch {
 	border-right: none;
 }
 
-.result_list > div {
+.result_list>div {
 	padding-left: 10px;
 }
 
-.result_list > div:hover{
+.result_list>div:hover {
 	background-color: rgb(247, 247, 247);
 }
 
-div.contents .filename .resultBreadCrumbs p {
+div.contents {
+	position: fixed;
+	//overflow-y: auto;
+	left: 270px;
+	top: 52px;
+	padding: 30px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.filename .resultBreadCrumbs p {
 	text-indent: 10px;
 	margin-top: 5px;
 	font-size: 15px;
@@ -441,6 +455,7 @@ div.contents .filename .resultBreadCrumbs p {
 	min-width: 184px;
 	padding: 3px 5px;
 	font-size: 16px;
+	border: none;
 }
 
 #searchLink {
@@ -458,4 +473,21 @@ div.contents .filename .resultBreadCrumbs p {
 #searchLink:active {
 	position: relative;
 	top: 1px;
+}
+
+.otherInfo{
+	text-align: right;
+	margin-right: 30px;
+}
+
+.otherInfo label{
+	font-size: 15px;
+}
+
+.rank{
+	color: lightgreen;
+}
+
+.view{
+	color: orange;
 }

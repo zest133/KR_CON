@@ -1,5 +1,5 @@
 
-body { margin:0px; padding:0 0 60px 0; border:0px;   }
+body { margin:0px; padding:0 0 0 0; border:0px;   }
 body, p, td, li, dt, dd{ font-family:  Arial, Helvetica, sans-serif, simsun; }
 
 /*
@@ -11,9 +11,9 @@ body, p, td, li, dt, dd{ font-family:  Arial, Helvetica, sans-serif, simsun; }
 	div.contents {  margin:140px 40px 40px 40px; display: block; max-width: 1000px;}
 }
 */
-
+/*
 div.contents {  margin:90px 40px 40px 40px; display: block; max-width: 1000px;}
-
+*/
 /* headerNav */
 
 .headerNav { display: block; height: 50px; float: left; padding-left:2px; background: url(images/header_nav_part.png) left no-repeat; margin-left: 10px; z-index:9999;}
@@ -195,20 +195,20 @@ div.contents .note ol li ol li ul li, div.contents .caution ol li ol li ul li, d
 
 /* search results */
 
-div.contents .enterKeyword p{margin:0px 0 20px 0; padding:0px; display: block; font-size: 30px;}
-div.contents .enterKeyword p span{color: #076eb0;}
-div.contents .resultcount p{margin:0px 0 20px 0; padding:0px; display: block; color: #076eb0; font-size: 20px;}
-div.contents .result {margin:0px 0 0 0; display: block;}
-div.contents .result:first-child .result_list{border-top:1px solid #dadada; }
-div.contents p.no_result{font-size: 16px; padding:30px 10px; border-top:1px solid #ccc; border-top:1px solid #ccc; }
-div.contents .filename {display: block; }
-div.contents .filename p {margin: 0 10px 0 0; color: #5A75A0;}
-div.contents .filename p a {color: #076eb0; font-size:21px;}
+.enterKeyword p{margin:0px 0 20px 0; padding:0px; display: block; font-size: 30px;}
+.enterKeyword p span{color: #076eb0;}
+.resultcount p{margin:0px 0 20px 0; padding:0px; display: block; color: #076eb0; font-size: 20px;}
+.result {margin:0px 0 0 0; display: block;}
+.result:first-child .result_list{border-top:1px solid #dadada; }
+p.no_result{font-size: 16px; padding:30px 10px; border-top:1px solid #ccc; border-top:1px solid #ccc; }
+.filename {display: block; }
+.filename p {margin: 0 10px 0 0; color: #5A75A0;}
+.filename p a {color: #076eb0; font-size:21px;}
 //div.contents .filename p a:visited {color:#9E9FA4;}
-div.contents .resulttext p {padding: 0 0px 20px; color: #666; border-bottom:1px solid #dadada; }
-div.contents .keyword {font-size: 16px; color: #333; font-weight: bold;}
+.resulttext p {padding: 0 0px 20px; color: #666; border-bottom:1px solid #dadada; }
+.keyword {font-size: 16px; color: #333; font-weight: bold;}
 
-div.contents .result_list > div {
+.result_list > div {
 	padding-top: 20px;
 }
 

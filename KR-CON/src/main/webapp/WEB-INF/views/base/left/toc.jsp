@@ -1,12 +1,9 @@
-<div id="tocDiv" style="overflow-x: hidden;">
-	<div class="empty"></div>
-	<div style="overflow-y: auto; overflow-x: hidden; height: 100%;">
+<div id="tocDiv" >
 		<!-- 
 		<button id="btnLoadKeyPath">Load node by path</button>
 		<button id="btnCollapseAll">Collapse All</button>
 	 -->
 		<div id="tocContent"></div>
-	</div>
 </div>
 <div class="header">
 	<div class="headerWrap">
@@ -18,19 +15,13 @@
 			</div>
 			<input id="searchLink" type="button" >
 		</div>
-		
-		
-		
 		 -->
-
+		 
 		<div id="search">
 			<input type="search" name="search" id="searchinputbox"> <input
 				id="searchLink" type="button" value="Search" class="button"
 				title="Search" alt="Search">
 		</div>
-
-
-
 
 		<!-- 
 		<form class="searchWrap" action="search.do" method="post">

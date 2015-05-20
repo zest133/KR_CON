@@ -3,12 +3,6 @@ function CategoryTree() {
 	var categoryDivSelector = "";
 	var contentDivSelector = "";
 };
-/*
- * $("#tocContent").dynatree({ initAjax : { url : "root_category.do" },
- * onActivate : function(node) { loadHtmlContent(node.data.html); }, onLazyRead :
- * function(node) { node.appendAjax({ url : "sub_category.do", data : {
- * categoryTree : node.data.categoryTree } }); } });
- */
 
 CategoryTree.prototype.buildTree = function(categoryTree) {
 	$("#" + categoryTree.categoryTreeSelector).dynatree(
@@ -17,8 +11,6 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 					url : "root_category.do"
 				},
 				onActivate : function(node) {
-					// CategoryTree.loadHtmlContent(node.data.html,
-					// contentDivClassName);
 					$(document).unbind('scroll');
 					$( ".advancedSearch" ).slideUp();
 					categoryTree.getCurrentHtmlContent(categoryTree,
@@ -44,26 +36,12 @@ CategoryTree.prototype.openCurrentTree = function(keyPath) {
 		if (status == "loaded") {
 			node.expand();
 		} else if (status == "ok") {
-			node.deactivate();
+			//node.deactivate();
 			node.activate();
 		}
 	});
 };
 
-//
-//$("#btnLoadKeyPath").click(
-//		function() {
-//			var tree = $("#tocContent").dynatree("getTree");
-//
-//			tree.loadKeyPath("/folder1/folder1/folder1/folder1", function(node,
-//					status) {
-//				if (status == "loaded") {
-//					node.expand();
-//				} else if (status == "ok") {
-//					node.activate();
-//				}
-//			});
-//		});
 
 $("#btnCollapseAll").click(function() {
 	$("#tocContent").dynatree("getRoot").visit(function(node) {
@@ -80,32 +58,16 @@ CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 		highlightQuery = $("#highlightQuery").val();
 	}
 	
-	var data1 = {
-		categoryTree : currentCategoryTree,
-		highlightQuery: highlightQuery
-	};
-
-	$.ajax({
-		url : "current_html.do",
-		data : data1,
-		success : function(msg) {
-			categoryTree.loadHtmlContent(categoryTree, msg);
-		},
-		error : function(msg) {
-
-		}
-	});
-
-	// current_html.do
-	/*
-	 * request html
-	 */
-
-	// CategoryTree.loadHtmlContent(node.data.html, contentDivClassName);
-};
-
-CategoryTree.prototype.loadHtmlContent = function(categoryTree, htmlText) {
-	$("." + categoryTree.contentDivSelector).html(htmlText);
+	
+	if(highlightQuery == ""){
+		highlightQuery = "@";
+	}
+	
+	$("#frameFormCategoryTree").val(currentCategoryTree);
+	$("#frameFormHighlightQuery").val(highlightQuery);
+	
+	$("#categoryFrameForm").submit();
+	
 };
 
 CategoryTree.prototype.setLayoutResizable = function(categoryTree) {
@@ -115,7 +77,7 @@ CategoryTree.prototype.setLayoutResizable = function(categoryTree) {
 
 	$("#" + categoryTree.categoryDivSelector).resize(
 			function() {
-				$("." + categoryTree.contentDivSelector).css("padding-left",
+				$("." + categoryTree.contentDivSelector).css("left",
 						$("#" + categoryTree.categoryDivSelector).width());
 			});
 };

@@ -178,6 +178,8 @@ public class CategorySearch {
 		}
 
 	}
+	
+	
 
 	public String getSearchWord() {
 		return searchWord;

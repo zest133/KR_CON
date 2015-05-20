@@ -5,6 +5,8 @@ public class SearchResultDTO {
 	private String htmlText;
 	private String breadcrumbs;
 	private String categoryTree;
+	private int rank;
+	private int view;
 	
 	public String getTitle() {
 		return title;
@@ -29,6 +31,18 @@ public class SearchResultDTO {
 	}
 	public void setCategoryTree(String categoryTree) {
 		this.categoryTree = categoryTree;
+	}
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	public int getView() {
+		return view;
+	}
+	public void setView(int view) {
+		this.view = view;
 	}
 	
 	

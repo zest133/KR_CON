@@ -3,6 +3,7 @@ package com.latis.krcon.html.search;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.StopAnalyzer;
@@ -259,39 +260,50 @@ public class EnglishHtmlSearch {
 
 			resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
 
-			StringBuffer buffer = new StringBuffer();
-
-			buffer.append(rootCategoryTreeName);
-
-			
-			
 			String categoryTreeId = doc.get(categoryTreeField);
-			if(!categoryTreeId.equals(rootCategoryTreeName)){
-				String solasId = doc.get(categoryTreeField).substring(rootCategoryTreeName.length() + 1);
-				String[] ids = solasId.split("\\.");
-				
-				String subCategory = "";
-				
-				for (String id : ids) {
-					if (subCategory.equals("")) {
-						subCategory = subCategory + id;
-					} else {
-						subCategory = subCategory + "." + id;
-					}
-					
-					buffer.append("/").append(rootCategoryTreeName).append(".")
-					.append(subCategory);
-					
-				}
-				
-				resultDTO.setCategoryTree(buffer.toString());
-			}else{
-				resultDTO.setCategoryTree(rootCategoryTreeName);
-			}
+
+			String categoryTree = buildCategoryTreePath(categoryTreeId);
+			
+			resultDTO.setCategoryTree(categoryTree);
+			
+			Random random = new Random();
+			
+			resultDTO.setRank(random.nextInt(100));
+			resultDTO.setView(random.nextInt(50));
 
 			returnList.add(resultDTO);
 		}
 		return returnList;
+	}
+
+	public String buildCategoryTreePath(String categoryTreeId) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(rootCategoryTreeName);
+
+		String categoryTree = "";
+		
+		if(!categoryTreeId.equals(rootCategoryTreeName)){
+			String solasId = categoryTreeId.substring(rootCategoryTreeName.length() + 1);
+			String[] ids = solasId.split("\\.");
+			
+			String subCategory = "";
+			
+			for (String id : ids) {
+				if (subCategory.equals("")) {
+					subCategory = subCategory + id;
+				} else {
+					subCategory = subCategory + "." + id;
+				}
+				
+				buffer.append("/").append(rootCategoryTreeName).append(".")
+				.append(subCategory);
+			}
+			
+			categoryTree = buffer.toString();
+		}else{
+			categoryTree = rootCategoryTreeName;
+		}
+		return categoryTree;
 	}
 
 	public SearchDTO getSearchDTO() {
