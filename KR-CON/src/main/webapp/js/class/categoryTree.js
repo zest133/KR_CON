@@ -10,8 +10,14 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 				initAjax : {
 					url : "root_category.do"
 				},
-				onActivate : function(node) {
+				onClick : function(node) {
 					node.deactivate();
+					$("iframe").contents().find("#highlightQuery").val("");
+				},
+				
+				onActivate : function(node) {
+					//
+					node.focus();
 					$(document).unbind('scroll');
 					$( ".advancedSearch" ).slideUp();
 					categoryTree.getCurrentHtmlContent(categoryTree,
