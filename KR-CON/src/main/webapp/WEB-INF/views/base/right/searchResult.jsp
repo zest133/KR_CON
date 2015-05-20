@@ -33,7 +33,7 @@
 			<div class="synonymWord">
 				<p>
 					Did you mean: <a href="#"
-						onclick="Search.prototype.synonymSearch()">${synonym}</a> <input
+						onclick="parent.Search.prototype.synonymSearch()">${synonym}</a> <input
 						type="hidden" id="synonym" value="${synonym }">
 				</p>
 			</div>

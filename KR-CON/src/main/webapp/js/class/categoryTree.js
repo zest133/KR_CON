@@ -11,6 +11,7 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 					url : "root_category.do"
 				},
 				onActivate : function(node) {
+					node.deactivate();
 					$(document).unbind('scroll');
 					$( ".advancedSearch" ).slideUp();
 					categoryTree.getCurrentHtmlContent(categoryTree,
@@ -33,10 +34,10 @@ CategoryTree.prototype.openCurrentTree = function(keyPath) {
 
 	tree.loadKeyPath(keyPath, function(node,
 			status) {
+		node.deactivate();
 		if (status == "loaded") {
 			node.expand();
-		} else if (status == "ok") {
-			//node.deactivate();
+		} else if (status == "ok") {			
 			node.activate();
 		}
 	});
@@ -54,8 +55,8 @@ CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 		currentCategoryTree) {
 	
 	var highlightQuery = "";
-	if($("#highlightQuery").val() != null){
-		highlightQuery = $("#highlightQuery").val();
+	if($("iframe").contents().find("#highlightQuery").val() != null){
+		highlightQuery = $("iframe").contents().find("#highlightQuery").val();
 	}
 	
 	

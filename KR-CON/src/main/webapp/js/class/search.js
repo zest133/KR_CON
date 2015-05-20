@@ -43,8 +43,7 @@ Search.prototype.advSearch = function(){
 
 Search.prototype.synonymSearch = function(){
 	this.dataReset("advance");
-	this.searchData.searchAND = $("#synonym").val();
-	
+	this.searchData.searchAND = $("iframe").contents().find("#synonym").val();
 	this.ajaxSearch(this);
 };
 
