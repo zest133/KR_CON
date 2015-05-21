@@ -55,5 +55,6 @@ public class CustomQueryParser extends QueryParser {
 
 		return query;
 	}
+	
 
 }

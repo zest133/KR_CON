@@ -11,13 +11,13 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.miscellaneous.PatternAnalyzer;
 import org.apache.lucene.util.Version;
 import org.junit.Test;
-import org.apache.lucene.search.AssertingIndexSearcher;
-public class PatternAnalyzerTest extends BaseTokenStreamTestCase {
+public class PatternAnalyzerTest {
 
 	/**
 	 * Test PatternAnalyzer when it is configured with a non-word pattern.
 	 * Behavior can be similar to SimpleAnalyzer (depending upon options)
 	 */
+	@Test
 	public void testNonWordPattern() throws IOException {
 		// Split on non-letter pattern, do not lowercase, no stopwords
 		PatternAnalyzer a = new PatternAnalyzer(Version.LUCENE_36,
@@ -37,6 +37,7 @@ public class PatternAnalyzerTest extends BaseTokenStreamTestCase {
 	 * Test PatternAnalyzer when it is configured with a whitespace pattern.
 	 * Behavior can be similar to WhitespaceAnalyzer (depending upon options)
 	 */
+	@Test
 	public void testWhitespacePattern() throws IOException {
 		// Split on whitespace patterns, do not lowercase, no stopwords
 		PatternAnalyzer a = new PatternAnalyzer(Version.LUCENE_36,
@@ -57,10 +58,15 @@ public class PatternAnalyzerTest extends BaseTokenStreamTestCase {
 	 * Test PatternAnalyzer when it is configured with a custom pattern. In this
 	 * case, text is tokenized on the comma ","
 	 */
+	@Test
 	public void testCustomPattern() throws IOException {
 		// Split on comma, do not lowercase, no stopwords
 		PatternAnalyzer a = new PatternAnalyzer(Version.LUCENE_36,
 				Pattern.compile(","), false, null);
+		
+		
+		
+		
 		check(a, "Here,Are,some,Comma,separated,words,", new String[] { "Here",
 				"Are", "some", "Comma", "separated", "words" });
 
@@ -74,6 +80,7 @@ public class PatternAnalyzerTest extends BaseTokenStreamTestCase {
 	/**
 	 * Test PatternAnalyzer against a large document.
 	 */
+	@Test
 	public void testHugeDocument() throws IOException {
 		StringBuilder document = new StringBuilder();
 		// 5000 a's
@@ -108,18 +115,19 @@ public class PatternAnalyzerTest extends BaseTokenStreamTestCase {
 	private void check(PatternAnalyzer analyzer, String document,
 			String expected[]) throws IOException {
 		// ordinary analysis of a Reader
-		assertAnalyzesTo(analyzer, document, expected);
+//		BaseTokenStreamTestCase.assertAnalyzesTo(analyzer, document, expected);
 
 		
 		// analysis with a "FastStringReader"
 //		TokenStream ts = analyzer.tokenStream("dummy",new StringReader(new PatternAnalyzer.FastStringReader(document)));
 		TokenStream ts = analyzer.tokenStream("dummy",new StringReader(document));
-		assertTokenStreamContents(ts, expected);
+//		BaseTokenStreamTestCase.assertTokenStreamContents(ts, expected);
 
 		// analysis of a String, uses PatternAnalyzer.tokenStream(String,
 		// String)
 		TokenStream ts2 = analyzer.tokenStream("dummy", new StringReader(document));
-		assertTokenStreamContents(ts2, expected);
+		BaseTokenStreamTestCase.assertTokenStreamContents(ts2, expected);
+		System.out.println("dddd");
 	}
 
 }

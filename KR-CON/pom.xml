@@ -253,6 +253,12 @@
 			<version>4.5.4</version>
 		</dependency>
 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+			<version>4.7</version>
+		</dependency>
+
 	</dependencies>
 
 
