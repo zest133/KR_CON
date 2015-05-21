@@ -21,9 +21,6 @@ public class CategoryController {
 		String returnVal = categorySearchDAO.getRootCategory().toString();
 		return returnVal;
 	}
-	
-	
-	
 
 	@RequestMapping(value = "/sub_category.do")
 	public @ResponseBody String getSubCategory(@RequestParam String categoryTree) {

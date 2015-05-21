@@ -122,7 +122,7 @@ public class TestHtmlIndexer {
 	
 	@Test
 	public void testAddDocument() throws CorruptIndexException, IOException, SAXException, TikaException{
-		URL url = this.getClass().getClassLoader().getResource("html/test.json"); // 이부분 수정. 
+		URL url = this.getClass().getClassLoader().getResource("html/kr-con.json"); // 이부분 수정. 
 		String path = url.getPath();
 		File file = new File(path);
 		
