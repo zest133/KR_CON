@@ -1,27 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="graph_area"></div>
-<div class="contents">
-	<iframe name="iframe" src="" frameborder=0 class="contentsFrame" src="" width=100% height=100% ></iframe>
-</div>
-
-<div style="display: hidden;">
-	<form id="categoryFrameForm" action="current_html.do" target="iframe" method="post">
-		<input type="text" id="frameFormCategoryTree" name="categoryTree">
-		<input type="text" id="frameFormHighlightQuery" name="highlightQuery">
-	</form>
-	
-	<form id="searchFrameForm" action="search.do" target="iframe" method="post">
-		<input type="text" id="frameFormSearchAND" name="searchAND">
-		<input type="text" id="frameFormSearchOR" name="searchOR">
-		<input type="text" id="frameFormSearchExact" name="searchExact">
-		<input type="text" id="frameFormSearchNON" name="searchNON">
-		<input type="text" id="frameFormFilterBreradcrumbsList" name="filterBreradcrumbsList">
-		<input type="text" id="frameFormFilterTitleList" name="filterTitleList">
-		<input type="text" id="frameFormFilterLocaleList" name="filterLocaleList">
-		<input type="text" id="frameFormPageNum" name="pageNum">
-		<input type="text" id="frameFormTotalCount" name="totalCount">
-	</form>
-</div>
+<div class="contents" style="padding-left: 270px;"></div>
 
 <div class="advancedSearch">
 	<h1 class="advancedSearchTitle">Advanced Search</h1>

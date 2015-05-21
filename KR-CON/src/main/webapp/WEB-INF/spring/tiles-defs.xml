@@ -21,6 +21,10 @@ PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://
 		<put-attribute name="right"   value="/WEB-INF/views/base/right/content.jsp"/>
 	</definition>
 	
+	<definition name="frameContent" extends="base">
+		<put-attribute name="right"   value="/WEB-INF/views/base/right/frameContent.jsp"/>
+	</definition>
+	
 	<definition name="advancedSearch" extends="base">
 		<put-attribute name="right"   value="/WEB-INF/views/base/right/advancedSearch.jsp"/>
 	</definition>

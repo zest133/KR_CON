@@ -2,6 +2,8 @@ package com.latis.krcon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,13 +32,41 @@ public class CategoryController {
 		return returnVal;
 	}
 
-	@RequestMapping(value = "/current_html.do")
-	public @ResponseBody String getCurrentCategoryHTML(
+//	@RequestMapping(value = "{categoryTree}/{highlightQuery}/current_html.do")
+//	public String getCurrentCategoryHTML(
+//			@PathVariable String categoryTree,
+//			@PathVariable String highlightQuery,
+//			Model model) {
+//		
+//		
+//		String html = categorySearchDAO.getCurrentCategoryHTML(
+//				categoryTree, highlightQuery).toString();
+//		
+//		html = html.trim();
+//		
+//		categoryTree = categorySearchDAO.buildCategoryPath(categoryTree);
+//		
+//		model.addAttribute("html", html);
+//		model.addAttribute("categoryTree", categoryTree);
+//		return "frameContent";
+//	}
+	
+	@RequestMapping(value = "current_html.do")
+	public String getCurrentCategoryHTML(
 			@RequestParam String categoryTree,
-			@RequestParam String highlightQuery) {
-		String returnVal = categorySearchDAO.getCurrentCategoryHTML(
+			@RequestParam String highlightQuery,
+			Model model) {
+		
+		
+		String html = categorySearchDAO.getCurrentCategoryHTML(
 				categoryTree, highlightQuery).toString();
-		return returnVal;
-
+		
+		html = html.trim();
+		
+		categoryTree = categorySearchDAO.buildCategoryPath(categoryTree);
+		
+		model.addAttribute("html", html);
+		model.addAttribute("categoryTree", categoryTree);
+		return "frameContent";
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.latis.krcon.html.category.search.CategorySearch;
+import com.latis.krcon.html.search.EnglishHtmlSearch;
 import com.latis.krcon.html.search.highlight.HtmlHighlight;
 
 public class CategorySearchDAOImpl implements CategorySearchDAO {
@@ -28,6 +29,9 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Autowired
 	private HtmlHighlight htmlHighlight;
+	
+	@Autowired
+	private EnglishHtmlSearch englishHtmlSearch;
 
 	@Value("${rootCategoryTreeName}")
 	private String rootCategoryTreeName;
@@ -93,6 +97,11 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 			categorySearch.init();
 			ArrayList<Document> list = categorySearch
 					.currentSearch(selectedCategoryTree);
+			
+			if(highlightQuery == "@"){
+				highlightQuery = "";
+			}
+			
 			returnVal = convertHtmlText(list, highlightQuery);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -149,12 +158,18 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			logger.error(e.getMessage());;
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			logger.error(e.getMessage());;
+			logger.error(e.getMessage());
 		}
 
 		return returnVal;
+	}
+
+	@Override
+	public String buildCategoryPath(String categoryTree) {
+		// TODO Auto-generated method stub
+		return englishHtmlSearch.buildCategoryTreePath(categoryTree);
 	}
 }

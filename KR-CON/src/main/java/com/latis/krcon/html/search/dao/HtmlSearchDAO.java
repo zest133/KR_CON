@@ -14,5 +14,7 @@ public interface HtmlSearchDAO {
 	public ArrayList<String> getStopWordList();
 	
 	public int getSearchResultTotalCount();
+	
+	public String getQueryString();
 
 }

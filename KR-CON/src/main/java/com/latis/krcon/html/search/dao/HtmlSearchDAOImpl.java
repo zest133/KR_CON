@@ -103,6 +103,12 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 		return englishHtmlSearch.getTotalHits();
 	}
 
+	@Override
+	public String getQueryString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }
