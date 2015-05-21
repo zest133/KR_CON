@@ -262,21 +262,21 @@ div.toc p b {
 }
 
 #tocContent {
+	//height: calc(100% - 55px);
 	height: 100%;
-	padding-top: 50px;
+	padding-top: 55px;
+	padding-left: 5px;
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
 
 div#tocDiv {
-	border-right: 2px solid #076eb0;
-	overflow-x: auto;
-	overflow-y: hidden;
+	border-right: 2px solid #076eb0;	
 }
 
 ul.dynatree-container {
 	border: none;
-	height: 100%;
+	height: 99%;
 }
 
 ul.searchOptionsField li, ul.searchOptionsCategory li {
@@ -456,6 +456,7 @@ div.contents {
 	padding: 3px 5px;
 	font-size: 16px;
 	border: none;
+	margin-top: 2px;
 }
 
 #searchLink {
@@ -491,4 +492,9 @@ div.contents {
 .view{
 	color: orange;
 
+}
+
+html, body{
+	width: 100%;
+	height: 100%;
 }

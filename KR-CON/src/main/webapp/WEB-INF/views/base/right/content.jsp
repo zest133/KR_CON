@@ -4,7 +4,7 @@
 	<iframe name="iframe" src="" frameborder=0 class="contentsFrame" src="" width=100% height=100% ></iframe>
 </div>
 
-<div style="display: hidden;">
+<div style="display: none;">
 	<form id="categoryFrameForm" action="current_html.do" target="iframe" method="post">
 		<input type="text" id="frameFormCategoryTree" name="categoryTree">
 		<input type="text" id="frameFormHighlightQuery" name="highlightQuery">
@@ -47,7 +47,7 @@
 		<div class="optionDiv">
 			<label>Search Filter</label>
 			<ul class="searchOptionsCategory">
-				<li><label>Breadcrumbs</label> <select
+				<li><label>Category</label> <select
 					id="filterBreradcrumbsList" name="filterBreradcrumbsList">
 
 						<c:forEach items="${filters.breadcrumbsFilter}" var="item">
@@ -66,7 +66,7 @@
 				</select></li>
 				<li><label>Locale</label> <select id="filterLocaleList"
 					name="filterLocaleList">
-						<option value="en">en</option>
+						<option value="en">EN</option>
 				</select></li>
 			</ul>
 		</div>

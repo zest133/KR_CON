@@ -79,7 +79,7 @@ CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 
 CategoryTree.prototype.setLayoutResizable = function(categoryTree) {
 	$("#" + categoryTree.categoryDivSelector).resizable({
-		handles : 'e, w'
+		handles : 'e'
 	});
 
 	$("#" + categoryTree.categoryDivSelector).resize(
