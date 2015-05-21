@@ -65,8 +65,8 @@ public class SpanQueryTests {
 	@Before
 	public void setUp() throws Exception {
 //		Directory dir = new RAMDirectory();
-		analyzer = new CustomSimpleAnalyzer(Version.LUCENE_36);
-		
+//		analyzer = new CustomSimpleAnalyzer(Version.LUCENE_36);
+		analyzer = new XMLAnalyzer();
 		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,analyzer);
@@ -94,7 +94,7 @@ public class SpanQueryTests {
 			doc.add(new Field("id", String.valueOf(id++), Field.Store.YES,
 					Field.Index.NOT_ANALYZED));
 			doc.add(new Field("content", content, Field.Store.YES,
-					Field.Index.ANALYZED,TermVector.WITH_POSITIONS_OFFSETS));
+					Field.Index.ANALYZED,TermVector.WITH_OFFSETS));
 			writer.addDocument(doc);
 			id++;
 		}
