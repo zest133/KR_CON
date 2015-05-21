@@ -426,6 +426,12 @@
 				<environment>song</environment>
 			</properties>
 		</profile>
+		<profile>
+			<id>kei</id>
+			<properties>
+				<environment>kei</environment>
+			</properties>
+		</profile>
 	</profiles>
 
 </project>

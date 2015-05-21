@@ -189,7 +189,7 @@ public class TestHtmlIndexer {
 //		}
 		
 //		htmlParser.setPath("html/toc.json");
-		File[] files = htmlParser.getFileList();
+	//	File[] files = htmlParser.getFileList();
 		
 		
 	}
