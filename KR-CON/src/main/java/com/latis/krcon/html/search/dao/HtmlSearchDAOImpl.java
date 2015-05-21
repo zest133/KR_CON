@@ -77,7 +77,7 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 			for(Document doc : allList){
 				breadcrumbsFilter.add(doc.get(breadcrumbField));
 				titleFilter.add(doc.get(categoryTitleField));
-				localeFilter.add(doc.get(localeField));
+				localeFilter.add(doc.get(localeField).toUpperCase());
 			}
 			
 			dto.setBreadcrumbsFilter(breadcrumbsFilter);

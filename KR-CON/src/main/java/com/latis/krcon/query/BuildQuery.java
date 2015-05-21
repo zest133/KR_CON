@@ -196,7 +196,7 @@ public class BuildQuery {
 		StringBuffer buffer = new StringBuffer();
 		
 		for (String word : querys) {
-			if (word.endsWith("y")) {
+			if (word.toLowerCase().endsWith("y")) {
 				buffer.append(word.substring(0, word.length() - 1)).append(" ");
 			} else {
 				buffer.append(word).append(" ");
