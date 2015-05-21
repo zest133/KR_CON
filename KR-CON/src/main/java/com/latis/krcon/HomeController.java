@@ -24,6 +24,8 @@ public class HomeController {
 		model.addAttribute("filters", htmlSearchDAO.getSearchFilterOption());
 		return "content";
 	}
+	
+	
 
 //	@RequestMapping(value = "/advanced_search.do", method = RequestMethod.POST)
 //	public String advancedSearch(Model model) {

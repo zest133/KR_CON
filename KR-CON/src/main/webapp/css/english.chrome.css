@@ -400,82 +400,6 @@ div.advancedSearch {
 .result_list>div:hover {
 	background-color: rgb(247, 247, 247);
 }
-<<<<<<< HEAD
-*/
-div.advancedSearch {
-	position: fixed;
-	right: 0;
-	border: 1px solid;
-	top: 51px;
-	padding: 20px 35px 20px 35px;
-}
-
-div.advancedSearch label, div.advancedSearch input, div.advancedSearch select
-	{
-	width: 200px;
-	display: inline-block;
-}
-
-.optionDiv {
-	margin-top: 10px;
-	border-bottom: solid 1px;
-	padding-bottom: 30px;
-	padding-top: 30px;
-}
-
-.optionDiv>label {
-	font-weight: bold;
-}
-
-.buttonDiv {
-	margin-top: 10px;
-	text-align: right;
-}
-
-#advabcedSearchButton {
-	background: #3498db;
-	background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-	background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-	background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-	background-image: -o-linear-gradient(top, #3498db, #2980b9);
-	background-image: linear-gradient(to bottom, #3498db, #2980b9);
-	-webkit-border-radius: 28;
-	-moz-border-radius: 28;
-	border-radius: 28px;
-	font-family: Arial;
-	color: #ffffff;
-	font-size: 16px;
-	padding: 5px 20px 5px 20px;
-	text-decoration: none;
-	width: 110px;
-}
-
-#advabcedSearchButton:hover {
-	background: #3cb0fd;
-	background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-	background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-	background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-	background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-	background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-	text-decoration: none;
-}
-
-.advancedSearch li {
-	color: #076eb0;
-	padding-top: 15px;
-}
-
-.headerWrap #slideAdvSearchButton {
-	float: right;
-	margin: 11px 10px 19px 1px;
-	background: url("./images/gear.png") no-repeat;
-	background-size: 25px;
-	font-size: 0px;
-	width: 28px;
-	height: 28px;
-	outline: none;
-	border: none;
-=======
 
 div.contents {
 	position: fixed;
@@ -566,5 +490,5 @@ div.contents {
 
 .view{
 	color: orange;
->>>>>>> branch 'master' of https://latisrnd.visualstudio.com/DefaultCollection/_git/KR-CON
+
 }
