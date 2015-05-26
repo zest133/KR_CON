@@ -59,7 +59,7 @@ public class SearchController {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(searchAND).append(" ").append(searchOR).append(" ").append(searchExact).append(" ").append(searchNON);
 		
-		model.addAttribute("searchKeyword", searchAND);
+		model.addAttribute("searchKeyword", htmlSearchDAO.getQueryString());
 		if(Integer.parseInt(pageNum) == 0){
 			model.addAttribute("resultSize", htmlSearchDAO.getSearchResultTotalCount());
 		}else{

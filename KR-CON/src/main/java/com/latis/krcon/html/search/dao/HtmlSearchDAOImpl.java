@@ -75,7 +75,12 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 			localeFilter.add("All");
 			
 			for(Document doc : allList){
-				breadcrumbsFilter.add(doc.get(breadcrumbField));
+				
+				String breadcrumbs = doc.get(breadcrumbField);
+				
+				breadcrumbs = breadcrumbs.replaceAll("KRCON/KR-CON (English)/", "");
+				
+				breadcrumbsFilter.add(breadcrumbs);
 				titleFilter.add(doc.get(categoryTitleField));
 				localeFilter.add(doc.get(localeField).toUpperCase());
 			}
@@ -106,7 +111,7 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 	@Override
 	public String getQueryString() {
 		// TODO Auto-generated method stub
-		return null;
+		return englishHtmlSearch.getQueryString();
 	}
 
 	

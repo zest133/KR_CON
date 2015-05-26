@@ -257,8 +257,12 @@ public class EnglishHtmlSearch {
 				// TODO Auto-generated catch block
 				logger.error(e.getMessage());
 			}
+			
+			String breadcrumbs = doc.get(breadcrumbField);
+			
+			breadcrumbs = breadcrumbs.replace("KRCON/KR-CON (English)/SOLAS 1974 ***/", "");
 
-			resultDTO.setBreadcrumbs(doc.get(breadcrumbField));
+			resultDTO.setBreadcrumbs(breadcrumbs);
 
 			String categoryTreeId = doc.get(categoryTreeField);
 
@@ -375,6 +379,62 @@ public class EnglishHtmlSearch {
 
 	public void setTotalHits(int totalHits) {
 		this.totalHits = totalHits;
+	}
+	
+	public String getQueryString(){
+		StringBuilder builder = new StringBuilder();
+		
+		if (searchDTO.getAndWordSearch() != null
+				&& !searchDTO.getAndWordSearch().equals("")) {
+			
+			builder.append("AND (");
+			String[] words = searchDTO.getAndWordSearch().split(" ");
+			for(int i = 0; i < words.length; i ++){
+				String word = words[i];
+				builder.append(word);
+				if(i != words.length - 1){
+					builder.append(" AND ");
+				}
+			}
+			builder.append(")");
+		}
+
+		if (searchDTO.getOrWordSearch() != null
+				&& !searchDTO.getOrWordSearch().equals("")) {
+			builder.append(" AND (");
+			String[] words = searchDTO.getOrWordSearch().split(" ");
+			for(int i = 0; i < words.length; i ++){
+				String word = words[i];
+				builder.append(word);
+				if(i != words.length - 1){
+					builder.append(" OR ");
+				}
+			}
+			builder.append(")");
+		}
+
+		if (searchDTO.getExactWordSearch() != null
+				&& !searchDTO.getExactWordSearch().equals("")) {
+			builder.append(" AND (");
+			builder.append(searchDTO.getExactWordSearch());
+			builder.append(")");
+		}
+
+		if (searchDTO.getNotWordSearch() != null
+				&& !searchDTO.getNotWordSearch().equals("")) {
+			builder.append(" NOT (");
+			String[] words = searchDTO.getNotWordSearch().split(" ");
+			for(int i = 0; i < words.length; i ++){
+				String word = words[i];
+				builder.append(word);
+				if(i != words.length - 1){
+					builder.append(" AND ");
+				}
+			}
+			builder.append(")");
+		}
+		
+		return builder.toString();
 	}
 
 }
