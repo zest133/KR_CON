@@ -387,13 +387,13 @@ public class EnglishHtmlSearch {
 		if (searchDTO.getAndWordSearch() != null
 				&& !searchDTO.getAndWordSearch().equals("")) {
 			
-			builder.append("AND (");
+			builder.append("(");
 			String[] words = searchDTO.getAndWordSearch().split(" ");
 			for(int i = 0; i < words.length; i ++){
 				String word = words[i];
 				builder.append(word);
 				if(i != words.length - 1){
-					builder.append(" AND ");
+					builder.append(" <span class='queryRegex'>AND</span> ");
 				}
 			}
 			builder.append(")");
@@ -401,13 +401,18 @@ public class EnglishHtmlSearch {
 
 		if (searchDTO.getOrWordSearch() != null
 				&& !searchDTO.getOrWordSearch().equals("")) {
-			builder.append(" AND (");
+			
+			if(!builder.toString().equals("")){
+				builder.append(" <span class='queryRegex'>AND</span>"); 
+			}
+			
+			builder.append("(");
 			String[] words = searchDTO.getOrWordSearch().split(" ");
 			for(int i = 0; i < words.length; i ++){
 				String word = words[i];
 				builder.append(word);
 				if(i != words.length - 1){
-					builder.append(" OR ");
+					builder.append(" <span class='queryRegex'>OR</span> ");
 				}
 			}
 			builder.append(")");
@@ -415,20 +420,25 @@ public class EnglishHtmlSearch {
 
 		if (searchDTO.getExactWordSearch() != null
 				&& !searchDTO.getExactWordSearch().equals("")) {
-			builder.append(" AND (");
+			
+			if(!builder.toString().equals("")){
+				builder.append(" <span class='queryRegex'>AND</span>"); 
+			}
+			
+			builder.append("(\"");
 			builder.append(searchDTO.getExactWordSearch());
-			builder.append(")");
+			builder.append("\")");
 		}
 
 		if (searchDTO.getNotWordSearch() != null
 				&& !searchDTO.getNotWordSearch().equals("")) {
-			builder.append(" NOT (");
+			builder.append(" <span class='queryRegex'>NOT</span>(");
 			String[] words = searchDTO.getNotWordSearch().split(" ");
 			for(int i = 0; i < words.length; i ++){
 				String word = words[i];
 				builder.append(word);
 				if(i != words.length - 1){
-					builder.append(" AND ");
+					builder.append(" <span class='queryRegex'>AND</span> ");
 				}
 			}
 			builder.append(")");
