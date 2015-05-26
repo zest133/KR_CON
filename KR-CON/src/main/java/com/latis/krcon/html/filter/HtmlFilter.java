@@ -62,7 +62,7 @@ public class HtmlFilter {
 		filterList = new ArrayList<Filter>();
 		
 		if (breadcrumb != null && !breadcrumb.equals("") && !breadcrumb.equals("All")) {
-			breadcrumb = "KRCON/KR-CON (English)/SOLAS 1974 ***/" + breadcrumb;
+			breadcrumb = "KRCON/KR-CON (English)/" + breadcrumb;
 			
 			breadcrumbFilter = new CachingWrapperFilter(new QueryWrapperFilter(
 					new TermQuery(new Term(breadcrumbField, breadcrumb))));
