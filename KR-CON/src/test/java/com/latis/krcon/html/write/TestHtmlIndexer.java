@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.CorruptIndexException;
@@ -59,6 +60,8 @@ public class TestHtmlIndexer {
 	
 	private WhitespaceAnalyzer whitespaceAnalyzer;
 	
+	private SimpleAnalyzer simpleAnalyzer;
+	
 	private IndexWriter writer;
 	
 	@Autowired
@@ -75,11 +78,13 @@ public class TestHtmlIndexer {
 	public void setup() throws IOException, InterruptedException{
 //		String path = "D:/dev/HtmlIndex";
 		
-		customAnalyzer = new CustomSimpleAnalyzer(Version.LUCENE_36);
+//		customAnalyzer = new CustomSimpleAnalyzer(Version.LUCENE_36);
+		
+		simpleAnalyzer = new SimpleAnalyzer(Version.LUCENE_36);
 		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
-				customAnalyzer);
+				simpleAnalyzer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
