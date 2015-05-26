@@ -6,9 +6,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.lucene.analysis.CharTokenizer;
 import org.apache.lucene.analysis.KeywordTokenizer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.ReusableAnalyzerBase;
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
@@ -32,6 +34,8 @@ public class CustomSimpleAnalyzer extends ReusableAnalyzerBase {
 	protected TokenStreamComponents createComponents(final String fieldName,
 			final Reader reader) {
 		
+		
+		
 		WhitespaceTokenizer tokenStream = new WhitespaceTokenizer(version,
 				reader);
 		CharTermAttribute term = tokenStream
@@ -51,11 +55,13 @@ public class CustomSimpleAnalyzer extends ReusableAnalyzerBase {
 		String[] MY_WORDS = new String[] {}; 
 		Set mySet = new HashSet(Arrays.asList(MY_WORDS));
 		result = new StopFilter(version, result, mySet);
+		
 //		result = new StopFilter(enableStopPositionIncrements, result, stopSet);
 		
 		return new TokenStreamComponents(tokenStream, result);
 //		return result;
 	}
+	
 	
 	
 
