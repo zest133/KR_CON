@@ -78,7 +78,7 @@ public class HtmlSearchDAOImpl implements HtmlSearchDAO{
 				
 				String breadcrumbs = doc.get(breadcrumbField);
 				
-				breadcrumbs = breadcrumbs.replaceAll("KRCON/KR-CON (English)/", "");
+				breadcrumbs = breadcrumbs.replace("KRCON/KR-CON (English)/", "");
 				
 				breadcrumbsFilter.add(breadcrumbs);
 				titleFilter.add(doc.get(categoryTitleField));

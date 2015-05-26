@@ -18,6 +18,7 @@ Search.prototype.search = function(){
 	if($.trim($("#searchinputbox").val()) != ""){
 		this.dataReset();
 		this.searchData.searchAND = $("#searchinputbox").val();
+		$("#searchinputbox").val("");
 		this.ajaxSearch(this);
 	}
 	

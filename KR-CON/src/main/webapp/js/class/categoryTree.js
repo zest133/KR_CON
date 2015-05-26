@@ -85,6 +85,6 @@ CategoryTree.prototype.setLayoutResizable = function(categoryTree) {
 	$("#" + categoryTree.categoryDivSelector).resize(
 			function() {
 				$("." + categoryTree.contentDivSelector).css("left",
-						$("#" + categoryTree.categoryDivSelector).width());
+						Number($("#" + categoryTree.categoryDivSelector).width()) + 20);
 			});
 };
