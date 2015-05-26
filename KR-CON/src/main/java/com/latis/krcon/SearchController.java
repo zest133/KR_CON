@@ -42,9 +42,9 @@ public class SearchController {
 		dto.setAndWordSearch(searchAND);
 		dto.setOrWordSearch(searchOR);
 		
-		if(!searchExact.equals("")){
-			searchExact = "\"" + searchExact + "\"";
-		}
+//		if(!searchExact.equals("")){
+//			searchExact = "\"" + searchExact + "\"";
+//		}
 		
 		dto.setExactWordSearch(searchExact);
 		dto.setNotWordSearch(searchNON);		

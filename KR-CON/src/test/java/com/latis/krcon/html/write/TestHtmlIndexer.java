@@ -75,11 +75,11 @@ public class TestHtmlIndexer {
 	public void setup() throws IOException, InterruptedException{
 //		String path = "D:/dev/HtmlIndex";
 		
-		whitespaceAnalyzer = new WhitespaceAnalyzer(Version.LUCENE_36);
+		customAnalyzer = new CustomSimpleAnalyzer(Version.LUCENE_36);
 		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
-				whitespaceAnalyzer);
+				customAnalyzer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);

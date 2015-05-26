@@ -26,10 +26,10 @@ public class BuildQuery {
 			String andSearch, String orSearch, String exact, String non)
 			throws IOException, ParseException {
 		BooleanQuery booleanQuery = new BooleanQuery();
-		if (andSearch != null){
+		if (andSearch != null && !andSearch.isEmpty()){
 			
 			andSearch = this.stringReplace(andSearch);
-			if (!andSearch.equals("")) {
+			if (!andSearch.isEmpty()) {
 				String andQueryStr = andMakeQuery(andSearch, fieldName, analyzer);
 				if(!andQueryStr.equals("")){
 					
@@ -40,10 +40,10 @@ public class BuildQuery {
 			}
 		}
 
-		if (orSearch != null){
+		if (orSearch != null && !orSearch.isEmpty()){
 			
 			orSearch = this.stringReplace(orSearch);
-			if (!orSearch.equals("")) {
+			if (!orSearch.isEmpty()) {
 				String orQueryStr = orMakeQuery(orSearch, fieldName, analyzer);
 				if(!orQueryStr.equals("")){
 					Query orQuery = getQueryParser(analyzer, fieldName, orQueryStr);
@@ -53,17 +53,18 @@ public class BuildQuery {
 			}
 		}
 
-		if (exact != null){
+		if (exact != null && !exact.isEmpty()){
 			exact = this.stringReplace(exact);
-			if (!exact.equals("")) {
+			if (!exact.isEmpty()) {
+				exact = "\"" + exact + "\"";
 				Query exactQuery = getCustomQueryParser(fieldName, exact);
 				booleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
 			}
 		}
 
-		if (non != null){
+		if (non != null && !non.isEmpty()){
 			non = this.stringReplace(non);
-			if (!non.equals("")) {
+			if (!non.isEmpty()) {
 				String notAndQueryStr = orMakeQuery(non, fieldName, analyzer);
 				if(!notAndQueryStr.equals("")){
 					Query notAndQuery = getQueryParser(analyzer, fieldName,
