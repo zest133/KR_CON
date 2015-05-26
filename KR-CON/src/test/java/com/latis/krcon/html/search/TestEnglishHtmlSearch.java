@@ -328,44 +328,43 @@ public class TestEnglishHtmlSearch {
 
 		BooleanQuery booleanQuery = new BooleanQuery();
 
-		if (andSearch != null && andSearch != "") {
-			String andQueryStr = andAnalyze(andSearch, fieldName,
-					englishAnalyzer);
-			Query andQuery = new QueryParser(Version.LUCENE_36, fieldName,
-					englishAnalyzer).parse(andQueryStr); // #B
-
-			booleanQuery.add(andQuery, BooleanClause.Occur.MUST);
-		}
-
-		if (orSearch != null && orSearch != "") {
-			String orQueryStr = orAnalyze(orSearch, fieldName, englishAnalyzer);
-
-			Query orQuery = new QueryParser(Version.LUCENE_36, fieldName,
-					englishAnalyzer).parse(orQueryStr);
-			booleanQuery.add(orQuery, BooleanClause.Occur.MUST);
-
-		}
+//		if (andSearch != null && andSearch != "") {
+//			String andQueryStr = andAnalyze(andSearch, fieldName,
+//					englishAnalyzer);
+//			Query andQuery = new QueryParser(Version.LUCENE_36, fieldName,
+//					englishAnalyzer).parse(andQueryStr); // #B
+//
+//			booleanQuery.add(andQuery, BooleanClause.Occur.MUST);
+//		}
+//
+//		if (orSearch != null && orSearch != "") {
+//			String orQueryStr = orAnalyze(orSearch, fieldName, englishAnalyzer);
+//
+//			Query orQuery = new QueryParser(Version.LUCENE_36, fieldName,
+//					englishAnalyzer).parse(orQueryStr);
+//			booleanQuery.add(orQuery, BooleanClause.Occur.MUST);
+//
+//		}
 
 		if (exact != null && exact != "") {
 			// Set set = (Set) standardAnalyzer.STOP_WORDS_SET;
-			CustomQueryParser queryParser = new CustomQueryParser(
-					Version.LUCENE_36, fieldName, standardAnalyzer);
+			CustomQueryParser queryParser = new CustomQueryParser(Version.LUCENE_36, fieldName, standardAnalyzer);
 			Query exactQuery = queryParser.parse(exact);
 			booleanQuery.add(exactQuery, BooleanClause.Occur.MUST);
 
 		}
 
-		if (non != null && non != "") {
-			String notAndQueryStr = orAnalyze(non, fieldName, englishAnalyzer);
-			Query notAndQuery = new QueryParser(Version.LUCENE_36, fieldName,
-					englishAnalyzer).parse(notAndQueryStr);
-			booleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
-
-			// notAndQuery = new QueryParser(Version.LUCENE_36, "html",
-			// englishAnalyzer).parse(notAndQueryStr);
-			//
-			// htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
-		}
+//		if (non != null && non != "") {
+//			String notAndQueryStr = orAnalyze(non, fieldName, englishAnalyzer);
+//			Query notAndQuery = new QueryParser(Version.LUCENE_36, fieldName,
+//					englishAnalyzer).parse(notAndQueryStr);
+//			booleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+//
+//			// notAndQuery = new QueryParser(Version.LUCENE_36, "html",
+//			// englishAnalyzer).parse(notAndQueryStr);
+//			//
+//			// htmlBooleanQuery.add(notAndQuery, BooleanClause.Occur.MUST_NOT);
+//		}
 
 		// returnQuery[0] = textBooleanQuery;
 		// returnQuery[1] = htmlBooleanQuery;

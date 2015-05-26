@@ -81,10 +81,11 @@ public class BuildQuery {
 
 	public Query getCustomQueryParser(String fieldName, String exact)
 			throws ParseException {
-		CustomQueryParser queryParser = new CustomQueryParser(
-				Version.LUCENE_36, fieldName, standardAnalyzer);
+		CustomQueryParser queryParser = new CustomQueryParser(Version.LUCENE_36, fieldName, standardAnalyzer);
 		Query exactQuery = queryParser.parse(exact);
 		return exactQuery;
+		
+		
 	}
 
 
