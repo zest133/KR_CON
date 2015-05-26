@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.KeywordTokenizer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.ReusableAnalyzerBase;
@@ -15,6 +16,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.ReusableAnalyzerBase.TokenStreamComponents;
 import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -49,9 +51,14 @@ public class CustomSimpleAnalyzer extends ReusableAnalyzerBase {
 //		tokenStream.setMaxTokenLength(maxTokenLength);
 		TokenStream result = new StandardFilter(version,tokenStream);
 		result = new LowerCaseFilter(version,result);
-//		String[] MY_WORDS = new String[] {}; 
-//		Set mySet = new HashSet(Arrays.asList(MY_WORDS));
-		result = new StopFilter(version, result,StopAnalyzer.ENGLISH_STOP_WORDS_SET);
+		String[] MY_WORDS = new String[] {}; 
+		Set mySet = new HashSet(Arrays.asList(MY_WORDS));
+//		Set<?> mySet = StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+//		CharArraySet stopSet = CharArraySet.copy(Version.LUCENE_36, StandardAnalyzer.STOP_WORDS_SET); 
+//		stopSet.add("("); 
+//		stopSet.add(")"); 
+//		System.out.println(mySet);
+		result = new StopFilter(version, result,mySet);
 //		result = new StopFilter(enableStopPositionIncrements, result, stopSet);
 		
 		return new TokenStreamComponents(tokenStream, result);
