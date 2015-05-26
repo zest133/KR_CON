@@ -79,7 +79,7 @@ public class TestHtmlIndexer {
 		
 		dir = FSDirectory.open(new File(path));
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36,
-				whitespaceAnalyzer);
+				customAnalyzer);
 		
 		
 		iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
