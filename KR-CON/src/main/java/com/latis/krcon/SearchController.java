@@ -3,6 +3,8 @@ package com.latis.krcon;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +27,8 @@ public class SearchController {
 	public SynonymSearchDAO synonumSearchDAO;
 	
 	@RequestMapping(value = "/search.do", method = RequestMethod.POST)
-	public String search(Model model,
+	public String search(
+			Model model,
 			@RequestParam String searchAND,
 			@RequestParam String searchOR, 
 			@RequestParam String searchExact, 
