@@ -24,8 +24,8 @@
 				<p>
 					Stop Word:
 					<c:forEach items="${stopWord}" var="item">
-							${item},
-						</c:forEach>
+						${item},
+					</c:forEach>
 				</p>
 			</div>
 		</c:if>
