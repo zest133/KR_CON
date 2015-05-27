@@ -1,0 +1,142 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Content-Encoding" content="UTF-8">
+<meta name="Content-Type" content="text/html; charset=UTF-8">
+<meta name="dc:title" content="">
+<title></title>
+</head>
+<body>
+<h3>RESOLUTIONS ADOPTED BY THE INTERNATIONAL CONFERENCE ON SAFETY OF LIFE AT SEA, 1974</h3>
+
+<h3>Resolution 1</h3>
+
+<h3>Comprehensive Revision of the International Convention for the Safety of Life at Sea, 1974</h3>
+
+<h3>THE CONFERENCE,</h3>
+
+<h5>HAVING CONCLUDED the International Convention for the Safety of Life at Sea, 1974, to replace the International Convention for the Safety of Life at Sea, 1960,</h5>
+
+<h5>NOTING that the substantive changes to the technical provisions of the 1960 Convention now incorporated in the 1974 Convention have been limited to :</h5>
+
+<h6>(a) amendments to the 1960 Convention which have been adopted by the Assembly of the Inter-Governmental Maritime Consultative Organization ; and</h6>
+
+<h6>(b) new Regulations recommended by the Assembly for inclusion in the 1974 Convention,</h6>
+
+<h5>RECOGNIZING the need for a comprehensive revision of the technical provisions of the 1974 Convention to reflect technological developments,</h5>
+
+<h5>RECOGNIZING also that the 1974 Convention provides in Article VIII improved amendment Procedures to enable such revised technical provisions to be adopted and brought into force in an expeditious manner,</h5>
+
+<h5>TAKING NOTE of the work being carried out or envisaged by the Maritime Safety Committee of the Organization with a view to extensive revision of the Safety Convention,</h5>
+
+<h5>INVITES the Organization to pursue its work in this field as a matter of high priority so that the technical provisions of the 1974 Convention may he revised as necessary, with particular reference to the items covered by the recommendations in the Appendix hereto.</h5>
+
+<h3>APPENDIX</h3>
+
+<h3>Recommendations for Further Improvement of International</h3>
+
+<h3>Regulations for the Safety of Life at Sea</h3>
+
+<h4>1. Intact Stability of Ships</h4>
+
+<h5>THE COHERENCE,</h5>
+
+<h5>NOTING :</h5>
+
+<h6>(a) that the "Recommendation on Intact Stability of Passenger and Cargo Ships under 100 metres in Length" adopted by the Assembly of the Organization by Resolution A. 167(ES. IV), as amended by Resolution A. 206(VII), may not always be appropriate especially in relation to new types of ships of novel deign and construction, and</h6>
+
+<h6>(b) that in some cases special provisions may be required in respect of the intact stability of ships of 100 metres in length or more,</h6>
+
+<h5>RECOMMENDS that steps be taken to formulate improved international standards on intact stability of ships taking into account, inter aha, external forces affecting ships in a seaway which may lead to capsizing or to unacceptable angles of heel.</h5>
+
+<h4>2. Subdivision of ships other than Passenger Ships</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING diverse practices in various countries and the provisions of the International Convention on Load Lines, 1966, and the International Convention for the Prevention of Pollution from Ships, 1973, so far as they relate to subdivision of ships other than passenger ships,</h6>
+
+<h6>BEING OF THE OPINION that the same basic approach to safety of life at sea should be adopted, so far as practicable, in relation to all persons aboard ships, whether passengers or crew,</h6>
+
+<h6>RECOMMENDS that efforts be made to formulate international requirements on subdivision of ships other than passenger ships, having regard inter aha to the compatibility of such requirements with practical service conditions.</h6>
+
+<h4>3. Fire Safety Requirements for Ships</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h5>NOTING :</h5>
+
+<h6>(a) that fire safety requirements for cargo ships, except tankers, and for passenger ships carrying not more than 36 passengers are still in many respects unsatisfactory and should be improved, and</h6>
+
+<h6>(b) that fire safety requirements for novel craft and special purpose ships are still under consideration,</h6>
+
+<h5>RECOMMENDS that further steps be taken to introduce comprehensive fire safety requirement for those types of ships.</h5>
+
+<h4>4. Life-Bating Appliances</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING that the Maritime Safety Committee of the Organization has decided that a total revision of Chapter 111 of the Convention should be carried out as a matter of priority and that the preparatory work for such a revision has commenced, CONCURRING with the decisions taken by the Maritime Safety Committee in this matter, RECOMMENDS that this work should be completed as soon as possible.</h6>
+
+<h4>5. Main Propulsion Machinery</h4>
+
+<h5>THE CONFERENCE</h5>
+
+<h6>NOTING increases in ship size and power, and in the complexity and Power rating of machinery,</h6>
+
+<h6>RECOGNIZING the importance of reliable main propulsion machinery so as to ensure safe navigation, in particular while manoeuvring,</h6>
+
+<h6>RECOMMENDS continued work on the development of regulations in this respect for the construction, control and maintenance of main propulsion machinery.</h6>
+
+<h4>6. Periodically Unattended Machinery Spaces</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING the increasing use of automation In shops,</h6>
+
+<h6>CONSIDERING the dependence of ship safety on the efficiency and reliability of then equipment involved, as well as the reduction in tai number of crew resulting from automation in ships,</h6>
+
+<h6>RECOMMENDS that safety requirements be developed covering all aspects of automated and remotely controlled installations, and that special attention be given to the determination of the minimum number of crew needed to deal with emergency situations.</h6>
+
+<h4>7. Nuclear Ships</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING progress in nuclear engineering:, experience gained by a number of countries in operating ships with nuclear propulsion,1 units and the expected increase in the use of nuclear propulsion in ships,</h6>
+
+<h6>RECOMMENDS the revision of the relevant provisions of the Convention in respect of nuclear ships.</h6>
+
+<h4>8. Safety Measures for Certain Types of Ships</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>TAKING INTO ACCOUNT the development of certain types of ships to which the provisions of the Convention for passenger or cargo ships are not applicable or for which those provisions are not adequate or suitable,</h6>
+
+<h6>RECOGNIZING the need for future modifications to the Convention in this respect,</h6>
+
+<h6>RECOMMENDS that the development and refinement of specific safety requirements for special purpose ships, not·el craft, ships carrying chemicals and liquefied gases in bulk and other new types of ships be continued.</h6>
+
+<h4>9. Unification of Definitions and Provisions in Different Conventions and Codes</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING that the International Convention for the Safety of Life at Sea, 1974. and other Conventions and Codes prepared under the auspices of the Organization contain, in relation to the same subject matter, different definitions and provisions,</h6>
+
+<h6>RECOMMENDS that continued efforts be made to achieve unification of definitions and provisions used in the same context in different documents.</h6>
+
+<h4>10. Amalgamation of Conventions</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING the common aims of the International Convention for the Safety of Life at Sea, 1974, and the International Convention on Load Lines, 1966, in respect of safety at sea,</h6>
+
+<h6>RECOMMENDS that efforts be made to amalgamate these Conventions</h6>
+
+<h4>11. Carriage of Dangerous Goods</h4>
+
+<h5>THE CONFERENCE,</h5>
+
+<h6>NOTING the rapid increase in the carriage of dangerous goods by different modes of transport,</h6>
+
+<h6>REALIZING the need to ensure the safe and economical transport of dangerous goods by unification of national, regional and international rules governing the carriage, stowage and handling of dangerous goods by all modes of transport,</h6>
+
+<h6>RECOMMENDS that the Organization should continue its work in cooperation with other international organizations concerned and in particular the United Nations Committee of Experts on the Transport of Dangerous Goods with a view to the adoption of a self-contained International Convention on the Carriage of Dangerous Goods by all Modes of Transport at the earliest practicable opportunity.</h6>
+</body></html>

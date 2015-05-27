@@ -59,7 +59,11 @@ public class HtmlWithTikaParser {
 		parser.parse(input, teeHandler, metadata, parseContext);
 
 		ArrayList<String> returnList = new ArrayList<String>();
-		returnList.add(textHandler.toString());
+//		System.out.println(textHandler.toString());
+		String temp = textHandler.toString();
+		temp = temp.replaceAll("\u00a0"," ");
+		
+		returnList.add(temp);
 		returnList.add(toHTMLHandler.toString());
 		
 		return returnList;
