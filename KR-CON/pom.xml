@@ -234,6 +234,14 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+		<!-- Jericho HTML Parser -->
+		<dependency>
+			<groupId>net.htmlparser.jericho</groupId>
+			<artifactId>jericho-html</artifactId>
+			<version>3.3</version>
+		</dependency>
+
+
 
 		<!-- Test -->
 		<dependency>
@@ -258,6 +266,8 @@
 			<artifactId>junit-dep</artifactId>
 			<version>4.7</version>
 		</dependency>
+
+
 
 	</dependencies>
 
