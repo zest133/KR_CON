@@ -28,7 +28,6 @@ Search.prototype.search = function(){
 Search.prototype.advSearch = function(){
 	
 	this.dataReset("advance");
-	
 	this.searchData.searchAND = $("#searchAND").val();
 	this.searchData.searchOR = $("#searchOR").val();
 	this.searchData.searchExact = $("#searchExact").val();
@@ -37,7 +36,7 @@ Search.prototype.advSearch = function(){
 	this.searchData.filterTitleList = $("#filterTitleList").val();
 	this.searchData.filterLocaleList = $("#filterLocaleList").val();
 	
-	//$(".contents").html("");
+	$("#searchinputbox").val("");
 	this.ajaxSearch(this);
 	
 };
@@ -49,6 +48,7 @@ Search.prototype.synonymSearch = function(){
 };
 
 Search.prototype.ajaxSearch = function(search){
+	$("#searchinputbox").val("");
 	
 	$("#frameFormSearchAND").val(search.searchData.searchAND);
 	$("#frameFormSearchOR").val(search.searchData.searchOR);

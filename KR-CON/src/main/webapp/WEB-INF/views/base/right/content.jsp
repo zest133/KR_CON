@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%> 
 <div id="graph_area"></div>
 <div class="contents">
 	<iframe name="iframe" src="" frameborder=0 class="contentsFrame" src="" width=100% height=100% ></iframe>
@@ -30,16 +31,16 @@
 		<div class="optionDiv">
 			<label>Search Word</label>
 			<ul class="searchOptionsField">
-				<li><label>all these words</label> <input type="text"
+				<li><label>All these words</label> <input type="text"
 					id="searchAND" name="searchAND"></li>
 
-				<li><label>any of these words</label> <input type="text"
+				<li><label>Any of these words</label> <input type="text"
 					id="searchOR" name="searchOR"></li>
 
-				<li><label>this exact word or phrase</label> <input type="text"
+				<li><label>Within word or phrase</label> <input type="text"
 					id="searchExact" name="searchExact"></li>
 
-				<li><label>none of these words</label> <input type="text"
+				<li><label>None of these words</label> <input type="text"
 					id="searchNON" name="searchNON"></li>
 			</ul>
 		</div>

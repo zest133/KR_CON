@@ -25,10 +25,6 @@
 		<constructor-arg ref="LUCENE_VERSION" />
 	</bean>	
 	
-	<bean id="customKeywordAnalyzer" class="com.latis.krcon.analyzer.CustomKeywordAnalyzer">
-		<constructor-arg ref="LUCENE_VERSION" />
-	</bean>
-	
 	<bean class="com.latis.krcon.html.parser.HtmlWithTikaParser" id="htmlParsingWithTika" >
 	</bean>
 	
