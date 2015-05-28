@@ -189,6 +189,10 @@ public class EnglishHtmlSearch {
 			String locale) throws Exception {
 		// HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
 		// locale);
+		
+//		if(!breadcrumb.equals("All")){
+//			breadcrumb = breadcrumb ;
+//		}
 
 		htmlFilter.setFilter(breadcrumb, categoryTitle, locale);
 

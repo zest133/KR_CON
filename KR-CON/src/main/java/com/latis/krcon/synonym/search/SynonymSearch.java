@@ -124,7 +124,6 @@ public class SynonymSearch {
 			throws IOException {
 		ArrayList< Document> docList = null; 
 		if (hits.totalHits == 0) {
-			logger.info("No hits");
 			return null;
 		}
 		docList = new ArrayList<Document>();
