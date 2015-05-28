@@ -209,7 +209,31 @@ public class BuildQuery {
 
 	public String stringReplace(String str) {
 		String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
-		str = str.replaceAll(match, "");
-		return str;
+		str = str.replaceAll(match, " ");
+		return str.trim();
+	}
+	
+	public String highlightQuery(Analyzer analyzer, String[] searchWords) throws IOException{
+		
+		StringBuffer termBuffer = null;
+		
+		for(String word : searchWords ){
+			
+			word = checkWord(word);
+			
+			TokenStream stream = analyzer.tokenStream("text", new StringReader(
+					word));
+			CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
+			
+			while (stream.incrementToken()) { // C
+				if(termBuffer == null){
+					termBuffer = new StringBuffer();
+				}
+				termBuffer.append(term.toString()).append(" ");
+			}
+		}
+			
+		
+		return termBuffer.toString();
 	}
 }

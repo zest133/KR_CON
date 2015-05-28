@@ -184,3 +184,68 @@ Search.prototype.appendSearch = function(){
 		}
 	});
 }
+
+
+Search.prototype.searchHighlight = function(target) {
+    var keywordArray = Search.arrSearchWord;
+    for (var k = 0; k < keywordArray.length; k++) {
+        var content = $("." + target).html();
+        var para = $("p, span, h1, h2, h3, h4, h5, dt");
+        var currentKey = keywordArray[k];
+        for (var i = 0; i < para.length; i++) {
+            var tempHTML = para[i].outerHTML;
+            var tagData = tempHTML.match(/<.*?>/gi);
+            var resultData = "";
+            var indexArray = new Array();
+            var offset = 0;
+            for (var j = 0; j < tagData.length; j++) {
+                var index = 0;
+                var lastIndex = 0;
+                if (tagData.length - 1 == j) {
+                    resultData += tagData[j];
+                    break;
+                } else {
+                    index = tempHTML.indexOf(tagData[j], offset) + tagData[j].length;
+                    resultData += tagData[j];
+                    lastIndex = tempHTML.indexOf(tagData[j + 1], index);
+                    offset = lastIndex;
+                    var tempData = tempHTML.substring(index, lastIndex);
+                    tempData = this.replaceSearch(tempData, currentKey);
+                    resultData += tempData;
+                }
+            }
+            content = content.replace(tempHTML, resultData);
+        }
+        $("." + target).html(content);
+    }
+};
+
+Search.prototype.replaceSearch = function(data, currentKey) {
+    if (data.indexOf("&nbsp;") > -1) {
+        data = data.split("&nbsp;").join(" ");
+    }
+    if (currentKey != "") {
+        var keyIgnoreCaseIndex = data.toUpperCase().indexOf(currentKey.toUpperCase());
+        var tempData = "";
+        if (keyIgnoreCaseIndex > -1) {
+            var currentKeyword = data.substring(keyIgnoreCaseIndex, currentKey.length + keyIgnoreCaseIndex);
+            var currentReplacedData = data.substring(0, currentKey.length + keyIgnoreCaseIndex);
+            var nextData = data.substring(currentKey.length + keyIgnoreCaseIndex, data.length);
+            currentReplacedData = this.replaceHighglight(currentReplacedData, currentKeyword);
+            nextData = this.replaceSearch(nextData, currentKey);
+            tempData += currentReplacedData;
+            tempData += nextData;
+            return tempData;
+        } else {
+
+        }
+    }
+    return data;
+};
+
+Search.prototype.replaceHighglight = function(data, key) {
+    var startTag = "<span class='highlight'>";
+    var endTag = "</span>";
+    var tempData = data.replace(key, startTag + key + endTag);
+    return tempData;
+};

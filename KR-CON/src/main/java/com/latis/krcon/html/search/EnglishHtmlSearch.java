@@ -34,7 +34,8 @@ import com.latis.krcon.html.sort.HtmlSort;
 import com.latis.krcon.query.BuildQuery;
 
 public class EnglishHtmlSearch {
-	private static final Logger logger = LoggerFactory.getLogger(EnglishHtmlSearch.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(EnglishHtmlSearch.class);
 	@Value("${fileindex}")
 	private String dirPath;
 
@@ -77,32 +78,34 @@ public class EnglishHtmlSearch {
 	private int searchResultSize;
 
 	private int totalHits = 0;
-	
+
 	@Value("${localeField}")
 	private String localeField;
-	
+
 	@Autowired
 	private HtmlFilter htmlFilter;
-	
+	private String highlighQuery;
+
 	public EnglishHtmlSearch() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws IOException {
 
-		if(reader != null){
-			
+		if (reader != null) {
+
 			IndexReader oldReader = searcher.getIndexReader();
 			if (!oldReader.isCurrent()) {
-				IndexReader newIndexReader = IndexReader.openIfChanged(oldReader);
+				IndexReader newIndexReader = IndexReader
+						.openIfChanged(oldReader);
 				oldReader.close();
 				searcher.close();
 				IndexSearcher searcher2 = new IndexSearcher(newIndexReader);
 				searcher = searcher2;
-//			searcher2.search();
+				// searcher2.search();
 			}
-		}else{
-			
+		} else {
+
 			dir = FSDirectory.open(new File(dirPath));
 			reader = IndexReader.open(dir);
 			searcher = new IndexSearcher(reader);
@@ -114,8 +117,8 @@ public class EnglishHtmlSearch {
 		try {
 			if (searcher != null)
 				searcher.close();
-//			if (reader != null)
-//				reader.close();
+			// if (reader != null)
+			// reader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
@@ -184,16 +187,16 @@ public class EnglishHtmlSearch {
 
 	public Filter applyChainedFilter(String breadcrumb, String categoryTitle,
 			String locale) throws Exception {
-//		HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
-//				locale);
-		
+		// HtmlFilter htmlFilter = new HtmlFilter(breadcrumb, categoryTitle,
+		// locale);
+
 		htmlFilter.setFilter(breadcrumb, categoryTitle, locale);
 
 		return htmlFilter.getFilter();
 	}
 
 	private ArrayList<SearchResultDTO> getDocumentList(IndexSearcher searcher,
-			TopDocs hits, String fieldName) throws IOException {
+			TopDocs hits, String fieldName) throws IOException, ParseException {
 
 		ArrayList<SearchResultDTO> returnList = null;
 		if (hits.totalHits == 0) {
@@ -212,9 +215,11 @@ public class EnglishHtmlSearch {
 		if (totalPageCount < searchResultSize) {
 			compareValue = 0;
 		} else {
-			if(totalPageCount == hits.totalHits){
-				compareValue = totalPageCount - (totalPageCount - searchDTO.getPageNum() * searchResultSize);
-			}else{
+			if (totalPageCount == hits.totalHits) {
+				compareValue = totalPageCount
+						- (totalPageCount - searchDTO.getPageNum()
+								* searchResultSize);
+			} else {
 				compareValue = totalPageCount - searchResultSize;
 			}
 		}
@@ -225,53 +230,53 @@ public class EnglishHtmlSearch {
 
 			resultDTO.setTitle(doc.get(categoryTitleField));
 
-			try {
-//				String highlight = htmlHighlight.getHighlightHTML(
-//						englishAnalyzer, doc.get(textField), textField,
-//						searchDTO.getAndWordSearch(),
-//						searchDTO.getOrWordSearch(),
-//						searchDTO.getExactWordSearch(),
-//						searchDTO.getNotWordSearch());
-//
-//				highlight = htmlHighlight.substringHighlight(highlight);
-				
-				String highlight = htmlHighlight.getHighlightHTML(
-						englishAnalyzer, doc.get(textField), textField,
-						searchDTO.getAndWordSearch(),
-						searchDTO.getOrWordSearch(),
-						searchDTO.getExactWordSearch(),
-						searchDTO.getNotWordSearch());
-				
-
-				highlight = htmlHighlight.substringHighlight(highlight);
-
-				highlight = htmlHighlight.getHighlightHTML(
-						englishAnalyzer, highlight, textField,
-						searchDTO.getAndWordSearch(),
-						searchDTO.getOrWordSearch(),
-						searchDTO.getExactWordSearch(),
-						searchDTO.getNotWordSearch());
-
-				resultDTO.setHtmlText(highlight);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				logger.error(e.getMessage());
-			}
+			// String highlight = htmlHighlight.getHighlightHTML(
+			// englishAnalyzer, doc.get(textField), textField,
+			// searchDTO.getAndWordSearch(),
+			// searchDTO.getOrWordSearch(),
+			// searchDTO.getExactWordSearch(),
+			// searchDTO.getNotWordSearch());
 			
+			
+			
+//			String[] searchWords = new String[3];
+ 
+			
+			String patternString = htmlHighlight
+					.buildPatternString(this.getHighlightQueryString());
+
+			String highlight = htmlHighlight.textHighlight(
+					doc.get(textField), patternString);
+
+			highlight = htmlHighlight.substringHighlight(highlight);
+
+			highlight = htmlHighlight.textHighlight(highlight,
+					patternString);
+
+			// highlight = htmlHighlight.getHighlightHTML(
+			// englishAnalyzer, highlight, textField,
+			// searchDTO.getAndWordSearch(),
+			// searchDTO.getOrWordSearch(),
+			// searchDTO.getExactWordSearch(),
+			// searchDTO.getNotWordSearch());
+
+			resultDTO.setHtmlText(highlight);
+
 			String breadcrumbs = doc.get(breadcrumbField);
-			
-			breadcrumbs = breadcrumbs.replace("KRCON/KR-CON (English)/SOLAS 1974 ***/", "");
+
+			breadcrumbs = breadcrumbs.replace(
+					"KRCON/KR-CON (English)/SOLAS 1974 ***/", "");
 
 			resultDTO.setBreadcrumbs(breadcrumbs);
 
 			String categoryTreeId = doc.get(categoryTreeField);
 
 			String categoryTree = buildCategoryTreePath(categoryTreeId);
-			
+
 			resultDTO.setCategoryTree(categoryTree);
-			
+
 			Random random = new Random();
-			
+
 			resultDTO.setRank(random.nextInt(100));
 			resultDTO.setView(random.nextInt(50));
 
@@ -280,31 +285,34 @@ public class EnglishHtmlSearch {
 		return returnList;
 	}
 
+	
+
 	public String buildCategoryTreePath(String categoryTreeId) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(rootCategoryTreeName);
 
 		String categoryTree = "";
-		
-		if(!categoryTreeId.equals(rootCategoryTreeName)){
-			String solasId = categoryTreeId.substring(rootCategoryTreeName.length() + 1);
+
+		if (!categoryTreeId.equals(rootCategoryTreeName)) {
+			String solasId = categoryTreeId.substring(rootCategoryTreeName
+					.length() + 1);
 			String[] ids = solasId.split("\\.");
-			
+
 			String subCategory = "";
-			
+
 			for (String id : ids) {
 				if (subCategory.equals("")) {
 					subCategory = subCategory + id;
 				} else {
 					subCategory = subCategory + "." + id;
 				}
-				
+
 				buffer.append("/").append(rootCategoryTreeName).append(".")
-				.append(subCategory);
+						.append(subCategory);
 			}
-			
+
 			categoryTree = buffer.toString();
-		}else{
+		} else {
 			categoryTree = rootCategoryTreeName;
 		}
 		return categoryTree;
@@ -318,7 +326,11 @@ public class EnglishHtmlSearch {
 		this.searchDTO = searchDTO;
 	}
 
-	public ArrayList<SearchResultDTO> getSearchData() throws IOException {
+	public ArrayList<SearchResultDTO> getSearchData() throws IOException, ParseException {
+		String[] searchWords = {searchDTO.getAndWordSearch(), 
+				searchDTO.getOrWordSearch(), searchDTO.getExactWordSearch()};
+		this.setHighlightQuery(buildQuery.highlightQuery(englishAnalyzer, searchWords));
+		
 		TopDocs hits = htmlSearchData();
 		this.totalHits = hits.totalHits;
 		ArrayList<SearchResultDTO> list = getDocumentList(searcher, hits,
@@ -380,19 +392,19 @@ public class EnglishHtmlSearch {
 	public void setTotalHits(int totalHits) {
 		this.totalHits = totalHits;
 	}
-	
-	public String getQueryString(){
+
+	public String getQueryString() {
 		StringBuilder builder = new StringBuilder();
-		
+
 		if (searchDTO.getAndWordSearch() != null
 				&& !searchDTO.getAndWordSearch().equals("")) {
-			
+
 			builder.append("(");
 			String[] words = searchDTO.getAndWordSearch().split(" ");
-			for(int i = 0; i < words.length; i ++){
+			for (int i = 0; i < words.length; i++) {
 				String word = words[i];
 				builder.append(word);
-				if(i != words.length - 1){
+				if (i != words.length - 1) {
 					builder.append(" <span class='queryRegex'>AND</span> ");
 				}
 			}
@@ -401,17 +413,17 @@ public class EnglishHtmlSearch {
 
 		if (searchDTO.getOrWordSearch() != null
 				&& !searchDTO.getOrWordSearch().equals("")) {
-			
-			if(!builder.toString().equals("")){
-				builder.append(" <span class='queryRegex'>AND</span>"); 
+
+			if (!builder.toString().equals("")) {
+				builder.append(" <span class='queryRegex'>AND</span>");
 			}
-			
+
 			builder.append("(");
 			String[] words = searchDTO.getOrWordSearch().split(" ");
-			for(int i = 0; i < words.length; i ++){
+			for (int i = 0; i < words.length; i++) {
 				String word = words[i];
 				builder.append(word);
-				if(i != words.length - 1){
+				if (i != words.length - 1) {
 					builder.append(" <span class='queryRegex'>OR</span> ");
 				}
 			}
@@ -420,11 +432,11 @@ public class EnglishHtmlSearch {
 
 		if (searchDTO.getExactWordSearch() != null
 				&& !searchDTO.getExactWordSearch().equals("")) {
-			
-			if(!builder.toString().equals("")){
-				builder.append(" <span class='queryRegex'>AND</span>"); 
+
+			if (!builder.toString().equals("")) {
+				builder.append(" <span class='queryRegex'>AND</span>");
 			}
-			
+
 			builder.append("(\"");
 			builder.append(searchDTO.getExactWordSearch());
 			builder.append("\")");
@@ -434,17 +446,25 @@ public class EnglishHtmlSearch {
 				&& !searchDTO.getNotWordSearch().equals("")) {
 			builder.append(" <span class='queryRegex'>NOT</span>(");
 			String[] words = searchDTO.getNotWordSearch().split(" ");
-			for(int i = 0; i < words.length; i ++){
+			for (int i = 0; i < words.length; i++) {
 				String word = words[i];
 				builder.append(word);
-				if(i != words.length - 1){
+				if (i != words.length - 1) {
 					builder.append(" <span class='queryRegex'>AND</span> ");
 				}
 			}
 			builder.append(")");
 		}
-		
+
 		return builder.toString();
 	}
 
+	public String getHighlightQueryString() {
+		// TODO Auto-generated method stub
+		return highlighQuery;
+	}
+	public void setHighlightQuery(String highlightQuery) {
+		// TODO Auto-generated method stub
+		this.highlighQuery = highlightQuery;
+	}
 }

@@ -59,8 +59,11 @@ public class SearchController {
 				
 		ArrayList<SearchResultDTO> searchResult = htmlSearchDAO.advSearch(dto);
 		
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(searchAND).append(" ").append(searchOR).append(" ").append(searchExact).append(" ").append(searchNON);
+//		StringBuffer buffer = new StringBuffer();
+//		buffer.append(searchAND).append(" ").append(searchOR).append(" ").append(searchExact).append(" ").append(searchNON);
+//		
+//		
+//		buildQuery.highlightQuery(englishAnalyzer, searchWords);
 		
 		model.addAttribute("searchKeyword", htmlSearchDAO.getQueryString());
 		if(Integer.parseInt(pageNum) == 0){
@@ -72,7 +75,7 @@ public class SearchController {
 		model.addAttribute("stopWord", htmlSearchDAO.getStopWordList());
 		model.addAttribute("synonym", synonumSearchDAO.checkSynonymWord(searchAND));
 		model.addAttribute("pageNum", pageNum);
-		model.addAttribute("highlightQuery", buffer.toString());
+		model.addAttribute("highlightQuery", htmlSearchDAO.highlightQuery());
 		
 		return "searchResult";
 		

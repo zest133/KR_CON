@@ -173,7 +173,6 @@ public class CategorySearch {
 				jsonObject.put("isLazy", "true");
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage());
 		}
 
