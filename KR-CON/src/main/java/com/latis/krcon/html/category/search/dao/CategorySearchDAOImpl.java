@@ -19,8 +19,9 @@ import com.latis.krcon.html.search.highlight.HtmlHighlight;
 
 public class CategorySearchDAOImpl implements CategorySearchDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(CategorySearchDAOImpl.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(CategorySearchDAOImpl.class);
+
 	@Autowired
 	private CategorySearch categorySearch;
 
@@ -29,7 +30,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Autowired
 	private HtmlHighlight htmlHighlight;
-	
+
 	@Autowired
 	private EnglishHtmlSearch englishHtmlSearch;
 
@@ -38,17 +39,15 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Value("${htmlField}")
 	private String htmlField;
-	
+
 	@Value("${fileindex}")
 	private String dirPath;
 
 	public CategorySearchDAOImpl() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public JSONArray getRootCategory() {
-		// TODO Auto-generated method stub
 		JSONArray returnArray = null;
 		try {
 			categorySearch.init();
@@ -57,11 +56,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 			returnArray = convertJsonArray(list);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			
 			logger.error(e.getMessage());
-		} finally {
-			// categorySearch.close();
 		}
 
 		return returnArray;
@@ -69,7 +64,6 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	@Override
 	public JSONArray getSubCategory(String selectedCategoryTree) {
-		// TODO Auto-generated method stub
 		JSONArray returnArray = null;
 		try {
 			categorySearch.init();
@@ -78,11 +72,7 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 					.categorySubTreeSearchData();
 			returnArray = convertJsonArray(list);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
-			logger.error(e.getMessage());;
-		} finally {
-			// categorySearch.close();
+			logger.error(e.getMessage());
 		}
 
 		return returnArray;
@@ -91,23 +81,15 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 	@Override
 	public String getCurrentCategoryHTML(String selectedCategoryTree,
 			String highlightQuery) {
-		// TODO Auto-generated method stub
 		String returnVal = "";
 		try {
 			categorySearch.init();
 			ArrayList<Document> list = categorySearch
 					.currentSearch(selectedCategoryTree);
-			
-			if(highlightQuery == "@"){
-				highlightQuery = "";
-			}
-			
+
 			returnVal = convertHtmlText(list, highlightQuery);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage());;
-		} finally {
-			// categorySearch.close();
+			logger.error(e.getMessage());
 		}
 
 		return returnVal;
@@ -118,7 +100,6 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 		JSONArray array = new JSONArray();
 
 		try {
-			// categorySearch.init();
 			for (Document document : list) {
 				JSONObject jsonObject = new JSONObject();
 
@@ -129,16 +110,10 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 				categorySearch.checkSubCategory(document, jsonObject);
 
-				// jsonObject.put("isFolder", "true");
-				// jsonObject.put("isLazy", "true");
-
 				array.add(jsonObject);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage());;
-		} finally {
-			// categorySearch.close();
+			logger.error(e.getMessage());
 		}
 
 		return array;
@@ -146,30 +121,18 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 
 	public String convertHtmlText(ArrayList<Document> list,
 			String highlightQuery) {
+		String html = list.get(0).get(htmlField).trim();
 
-		String returnVal = "";
-
-		String html = list.get(0).get(htmlField);
-
-		try {
-
-			returnVal = htmlHighlight.getHighlightHTML(englishAnalyzer, html,
-					htmlField, highlightQuery);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage());
+		if (highlightQuery.equals("")) {
+			return html;
+		} else {
+			return htmlHighlight.htmlHighlight(html,
+					htmlHighlight.buildPatternString(highlightQuery));
 		}
-
-		return returnVal;
 	}
 
 	@Override
 	public String buildCategoryPath(String categoryTree) {
-		// TODO Auto-generated method stub
 		return englishHtmlSearch.buildCategoryTreePath(categoryTree);
 	}
 }

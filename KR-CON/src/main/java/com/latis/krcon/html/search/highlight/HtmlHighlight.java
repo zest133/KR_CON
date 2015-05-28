@@ -3,6 +3,8 @@ package com.latis.krcon.html.search.highlight;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharReader;
@@ -25,26 +27,25 @@ import com.latis.krcon.html.search.dao.HtmlSearchDAOImpl;
 import com.latis.krcon.query.BuildQuery;
 
 public class HtmlHighlight {
-	private static final Logger logger = LoggerFactory.getLogger(HtmlHighlight.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(HtmlHighlight.class);
 	@Value("${highlightStartTag}")
 	private String highlightStartTag;
-	
+
 	@Value("${highlightEndTag}")
 	private String highlightEndTag;
-	
-	
+
 	@Autowired
 	private StandardAnalyzer standardAnalyzer;
-	
+
 	@Autowired
 	private BuildQuery buildQuery;
-	
+
 	public HtmlHighlight() {
-		// TODO Auto-generated constructor stub
 	}
-	
-	
-	public String highlightHTML(Analyzer analyzer, String htmlText, Query query,String field) {
+
+	public String highlightHTML(Analyzer analyzer, String htmlText,
+			Query query, String field) {
 
 		QueryScorer scorer = new QueryScorer(query, field);
 
@@ -79,58 +80,120 @@ public class HtmlHighlight {
 		return htmlText;
 
 	}
-	
-	public String getHighlightHTML(Analyzer analyzer, String text, String field, String andWordSearch,
-			String orWordSearch, String exact, String non)
-			throws CorruptIndexException, IOException, ParseException {
+
+	public String getHighlightHTML(Analyzer analyzer, String text,
+			String field, String andWordSearch, String orWordSearch,
+			String exact, String non) throws CorruptIndexException,
+			IOException, ParseException {
 		String result = null;
-			//
+		//
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(andWordSearch).append(" ").append(orWordSearch).append(" ").append(exact).append(" ").append(non);
-		Query query = buildQuery.totalSearchBuildQuery(analyzer, field, buffer.toString(), null,
-				null, null);
-		result = highlightHTML(analyzer, text, query,
-				field);
+		buffer.append(andWordSearch).append(" ").append(orWordSearch)
+				.append(" ").append(exact).append(" ").append(non);
+		Query query = buildQuery.totalSearchBuildQuery(analyzer, field,
+				buffer.toString(), null, null, null);
+		result = highlightHTML(analyzer, text, query, field);
 		return result;
 	}
-	
-	
-	public String getHighlightHTML(Analyzer analyzer, String text, String field, String queryStr)
-			throws CorruptIndexException, IOException, ParseException {
+
+	public String getHighlightHTML(Analyzer analyzer, String text,
+			String field, String queryStr) throws CorruptIndexException,
+			IOException, ParseException {
 		String result = null;
-		Query query = buildQuery.totalSearchBuildQuery(analyzer, field, queryStr, null,
-				null, null);
-		result = highlightHTML(analyzer, text, query,
-				field);
+		Query query = buildQuery.totalSearchBuildQuery(analyzer, field,
+				queryStr, null, null, null);
+		result = highlightHTML(analyzer, text, query, field);
 		return result;
 	}
-	
-	
+
 	public String substringHighlight(String highlight) {
 		int offset = highlight.indexOf(highlightStartTag);
-		if(offset > -1){
-			highlight = highlight.replaceAll(highlightStartTag, "");
-			highlight = highlight.replaceAll(highlightEndTag, "");
-			
+		if (offset > -1) {
+			highlight = highlight.replaceAll(highlightStartTag, " ");
+			highlight = highlight.replaceAll(highlightEndTag, " ");
+
 			int substringLength = 200;
-			
-			if(offset > 0){
-				if(highlight.length() >= offset + substringLength){
-					highlight = "..." + highlight.substring(offset, offset + substringLength) + "...";
-				}else{
-					highlight = "..." + highlight.substring(offset, highlight.length());
+
+			if (offset > 0) {
+				if (highlight.length() >= offset + substringLength) {
+					highlight = "..."
+							+ highlight.substring(offset, offset
+									+ substringLength) + "...";
+				} else {
+					highlight = "..."
+							+ highlight.substring(offset, highlight.length());
 				}
-			}else{
-				if(highlight.length() >= substringLength){
-					highlight = highlight.substring(offset, substringLength) + "...";
-				}else{
+			} else {
+				if (highlight.length() >= substringLength) {
+					highlight = highlight.substring(offset, substringLength)
+							+ "...";
+				} else {
 					highlight = highlight.substring(offset, highlight.length());
 				}
 			}
 		}
 		return highlight;
 	}
-	
-	
-	
+
+	public String htmlHighlight(String html, String patternString) {
+		// System.out.println(html);
+		String regex = "(<.*?>)(.*?)(<.*?>)";
+		Pattern patternTag = null;
+		Matcher matcherTag = null;
+		patternTag = Pattern.compile(regex);
+		matcherTag = patternTag.matcher(html);
+		StringBuffer buffer = new StringBuffer(1024 * 8);
+
+		while (matcherTag.find()) {
+			String startTag = matcherTag.group(1);
+			String text = matcherTag.group(2); // tag content
+			String endTag = matcherTag.group(3);
+
+			if (text.length() > 0) {
+				matcherTag.appendReplacement(buffer,
+						startTag + textHighlight(text, patternString) + endTag);
+			}
+		}
+		matcherTag.appendTail(buffer);
+
+		return buffer.toString();
+	}
+
+	public String textHighlight(String text, String patternString) {
+
+		Pattern pattern = Pattern.compile(patternString);
+		Matcher matcher = pattern.matcher(text);
+		StringBuffer buffer = new StringBuffer(1024 * 8);
+
+		while (matcher.find()) {
+			int length = matcher.groupCount();
+			for (int i = 1; i <= length; i++) {
+				if (matcher.group(i) != null) {
+					matcher.appendReplacement(buffer, " " + highlightStartTag
+							+ matcher.group(i) + highlightEndTag + " ");
+					break;
+				}
+			}
+		}
+		matcher.appendTail(buffer);
+
+		return buffer.toString();
+	}
+
+	public String buildPatternString(String input) {
+		String[] keywords = input.trim().split(" ");
+
+		StringBuffer buffer = new StringBuffer();
+		for (String keyword : keywords) {
+			// buffer.append("[ ]("+ keyword + ".*?)[ ]|");
+
+			buffer.append("^((?i)" + keyword + ".*?)\\W|\\W((?i)" + keyword
+					+ ".*?)\\W|");
+		}
+
+		String patternString = buffer.toString();
+		patternString = patternString.substring(0, patternString.length() - 1);
+		return patternString;
+	}
+
 }

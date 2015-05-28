@@ -66,9 +66,9 @@ CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 	}
 	
 	
-	if(highlightQuery == ""){
-		highlightQuery = "@";
-	}
+//	if(highlightQuery == ""){
+//		highlightQuery = "@";
+//	}
 	
 	$("#frameFormCategoryTree").val(currentCategoryTree);
 	$("#frameFormHighlightQuery").val(highlightQuery);

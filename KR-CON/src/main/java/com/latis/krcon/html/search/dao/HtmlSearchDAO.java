@@ -17,4 +17,5 @@ public interface HtmlSearchDAO {
 	
 	public String getQueryString();
 
+	public String highlightQuery();
 }
