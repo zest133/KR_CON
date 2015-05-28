@@ -9,6 +9,8 @@
 <body>
 	<input type="hidden" id="frameId" value="content">
 	<input type="hidden" id="frameCurrentTree" value="${categoryTree }">
+	<input type="hidden" id="frameHighlightQuery" value="${highlightQuery }">
+	
 	<div id="frameDiv" style="height: 100%; overflow-y: auto;">
 		${html}</div>
 </body>

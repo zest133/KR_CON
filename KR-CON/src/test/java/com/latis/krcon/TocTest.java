@@ -200,7 +200,7 @@ public class TocTest {
 	@Test
 	public void test() throws IOException {
 
-		URL url = this.getClass().getClassLoader().getResource("html/18716.en.18716.html");
+		URL url = this.getClass().getClassLoader().getResource("html/7733.en.7733.html");
 		String path = url.getPath();
 
 		File file = new File(path);
@@ -215,7 +215,7 @@ public class TocTest {
 		}
 		br.close();
 
-		String input = "convention";
+		String input = "protocol";
 		htmlHighlight(htmlBuffer.toString(), buildPatternString(input));
 		
 //		String text = "The purpose of jQuery is to make it much easier to use JavaScript on your website";
@@ -224,7 +224,7 @@ public class TocTest {
 
 	public void htmlHighlight(String html, String patternString) {
 
-		String regex = "(<.*?>)(.*?)";
+		String regex = "(>\r\n|>\n|>)(.*?)(\r\n<|\n<|<)";
 		Pattern patternTag = null;
 		Matcher matcherTag = null;
 		patternTag = Pattern.compile(regex);
@@ -234,14 +234,15 @@ public class TocTest {
 		while (matcherTag.find()) {
 			String startTag = matcherTag.group(1);
 			String text = matcherTag.group(2); // tag content
-//			String endTag = matcherTag.group(3);
+			String endTag = matcherTag.group(3);
 
 			if (text.length() > 0) {
-				matcherTag.appendReplacement(buffer, startTag + textHighlight(text, patternString));
+//				System.out.println(text);
+				matcherTag.appendReplacement(buffer, startTag + textHighlight(text, patternString) + endTag);
 			}
 		}
 		matcherTag.appendTail(buffer);
-//		System.out.println(buffer.toString());
+		System.out.println(buffer.toString());
 	}
 
 	public String textHighlight(String text, String patternString) {
@@ -256,7 +257,7 @@ public class TocTest {
 			for (int i = 1; i <= length; i++) {
 				if (matcher.group(i) != null) {
 					matcher.appendReplacement(buffer,
-							" <span>" + matcher.group(i) + "</span> ");
+							" <span class='highlight'>" + matcher.group(i) + "</span> ");
 					break;
 				}
 			}

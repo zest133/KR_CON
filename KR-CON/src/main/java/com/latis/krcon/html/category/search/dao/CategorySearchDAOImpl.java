@@ -122,13 +122,13 @@ public class CategorySearchDAOImpl implements CategorySearchDAO {
 	public String convertHtmlText(ArrayList<Document> list,
 			String highlightQuery) {
 		String html = list.get(0).get(htmlField).trim();
-
-		if (highlightQuery.equals("")) {
-			return html;
-		} else {
-			return htmlHighlight.htmlHighlight(html,
-					htmlHighlight.buildPatternString(highlightQuery));
-		}
+		return html;
+//		if (highlightQuery.equals("")) {
+//			return html;
+//		} else {
+//			return htmlHighlight.htmlHighlight(html,
+//					htmlHighlight.buildPatternString(highlightQuery));
+//		}
 	}
 
 	@Override

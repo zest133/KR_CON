@@ -7,20 +7,20 @@
 
 <div style="display: none;">
 	<form id="categoryFrameForm" action="current_html.do" target="iframe" method="post">
-		<input type="text" id="frameFormCategoryTree" name="categoryTree">
-		<input type="text" id="frameFormHighlightQuery" name="highlightQuery">
+		<input type="hidden" id="frameFormCategoryTree" name="categoryTree">
+		<input type="hidden" id="frameFormHighlightQuery" name="highlightQuery">
 	</form>
 	
 	<form id="searchFrameForm" action="search.do" target="iframe" method="post">
-		<input type="text" id="frameFormSearchAND" name="searchAND">
-		<input type="text" id="frameFormSearchOR" name="searchOR">
-		<input type="text" id="frameFormSearchExact" name="searchExact">
-		<input type="text" id="frameFormSearchNON" name="searchNON">
-		<input type="text" id="frameFormFilterBreradcrumbsList" name="filterBreradcrumbsList">
-		<input type="text" id="frameFormFilterTitleList" name="filterTitleList">
-		<input type="text" id="frameFormFilterLocaleList" name="filterLocaleList">
-		<input type="text" id="frameFormPageNum" name="pageNum">
-		<input type="text" id="frameFormTotalCount" name="totalCount">
+		<input type="hidden" id="frameFormSearchAND" name="searchAND">
+		<input type="hidden" id="frameFormSearchOR" name="searchOR">
+		<input type="hidden" id="frameFormSearchExact" name="searchExact">
+		<input type="hidden" id="frameFormSearchNON" name="searchNON">
+		<input type="hidden" id="frameFormFilterBreradcrumbsList" name="filterBreradcrumbsList">
+		<input type="hidden" id="frameFormFilterTitleList" name="filterTitleList">
+		<input type="hidden" id="frameFormFilterLocaleList" name="filterLocaleList">
+		<input type="hidden" id="frameFormPageNum" name="pageNum">
+		<input type="hidden" id="frameFormTotalCount" name="totalCount">
 	</form>
 </div>
 

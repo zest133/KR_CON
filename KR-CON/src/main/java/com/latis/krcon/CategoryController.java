@@ -65,6 +65,7 @@ public class CategoryController {
 		categoryTree = categorySearchDAO.buildCategoryPath(categoryTree);
 		
 		model.addAttribute("html", html);
+		model.addAttribute("highlightQuery", highlightQuery);
 		model.addAttribute("categoryTree", categoryTree);
 		return "frameContent";
 	}
