@@ -14,12 +14,12 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 					node.deactivate();
 					$("iframe").contents().find("#highlightQuery").val("");
 				},
-				
+
 				onActivate : function(node) {
 					//
 					node.focus();
 					$(document).unbind('scroll');
-					$( ".advancedSearch" ).slideUp();
+					$(".advancedSearch").slideUp();
 					categoryTree.getCurrentHtmlContent(categoryTree,
 							node.data.categoryTree);
 				},
@@ -38,17 +38,15 @@ CategoryTree.prototype.buildTree = function(categoryTree) {
 CategoryTree.prototype.openCurrentTree = function(keyPath) {
 	var tree = $("#tocContent").dynatree("getTree");
 
-	tree.loadKeyPath(keyPath, function(node,
-			status) {
+	tree.loadKeyPath(keyPath, function(node, status) {
 		node.deactivate();
 		if (status == "loaded") {
 			node.expand();
-		} else if (status == "ok") {			
+		} else if (status == "ok") {
 			node.activate();
 		}
 	});
 };
-
 
 $("#btnCollapseAll").click(function() {
 	$("#tocContent").dynatree("getRoot").visit(function(node) {
@@ -59,32 +57,41 @@ $("#btnCollapseAll").click(function() {
 
 CategoryTree.prototype.getCurrentHtmlContent = function(categoryTree,
 		currentCategoryTree) {
-	
+
 	var highlightQuery = "";
-	if($("iframe").contents().find("#highlightQuery").val() != null){
+	if ($("iframe").contents().find("#highlightQuery").val() != null) {
 		highlightQuery = $("iframe").contents().find("#highlightQuery").val();
 	}
-	
-	
-//	if(highlightQuery == ""){
-//		highlightQuery = "@";
-//	}
-	
+
+	// if(highlightQuery == ""){
+	// highlightQuery = "@";
+	// }
+
 	$("#frameFormCategoryTree").val(currentCategoryTree);
 	$("#frameFormHighlightQuery").val(highlightQuery);
-	
+
 	$("#categoryFrameForm").submit();
-	
+
 };
 
 CategoryTree.prototype.setLayoutResizable = function(categoryTree) {
 	$("#" + categoryTree.categoryDivSelector).resizable({
-		handles : 'e'
-	});
-
-	$("#" + categoryTree.categoryDivSelector).resize(
-			function() {
-				$("." + categoryTree.contentDivSelector).css("left",
-						Number($("#" + categoryTree.categoryDivSelector).width()) + 20);
+		handles : 'e',
+		resize : function() {
+			$("." + categoryTree.contentDivSelector).css(
+					"left",
+					Number($("#" + categoryTree.categoryDivSelector).width()) + 10);
+		},
+		start : function() {
+			var d = $("<div class='iframeCover' style='zindex:99;position:absolute;width:100%;top:0px;left:0px;height:"
+							+ $(".contents").height()
+							+ "px'></div>");
+					$(".contents").append(d);
+				},
+				stop : function() {
+					$('.iframeCover').remove();
+				}
 			});
+
+	
 };
