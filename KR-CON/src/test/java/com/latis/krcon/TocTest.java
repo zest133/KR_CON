@@ -59,6 +59,13 @@ public class TocTest {
 			String linkText = matcherTag.group(2); // link text
 			String linkText2 = matcherTag.group(3); // link text
 			
+			int[] inta = new int[1];
+			
+			
+			
+			
+			
+			int[] intb = {1,2, 1,3, 4};
 			if(linkText.length() > 0){
 				
 						
