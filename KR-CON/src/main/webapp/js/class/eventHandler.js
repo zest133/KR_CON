@@ -77,8 +77,8 @@ EventHandler.prototype.setFrameOnLoadEvent = function() {
 			var frameId = frameBody.children[0].value;
 			if(frameId == "content"){
 				var tree = frameBody.children[1].value;
-				var highlightQuery = frameBody.children[2].value;
-				Search.prototype.searchHighlight(highlightQuery);
+//				var highlightQuery = frameBody.children[2].value;
+//				Search.prototype.searchHighlight(highlightQuery);
 			}else if(frameId == "search"){
 				var result = $(this).contents().find("body");
 				$(this).contents().scroll(function(){

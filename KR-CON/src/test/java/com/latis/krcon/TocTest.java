@@ -201,31 +201,31 @@ public class TocTest {
 	@Test
 	public void test() throws IOException {
 
-		URL url = this.getClass().getClassLoader().getResource("html/7733.en.7733.html");
-		String path = url.getPath();
-
-		File file = new File(path);
-
-		BufferedReader br = new BufferedReader(new FileReader(file));
-
-		StringBuffer htmlBuffer = new StringBuffer(1024 * 8);
-
-		String line = null;
-		while ((line = br.readLine()) != null) {
-			htmlBuffer.append(line).append("\n");
-		}
-		br.close();
-
-		String input = "protocol";
-		htmlHighlight(htmlBuffer.toString(), buildPatternString(input));
+//		URL url = this.getClass().getClassLoader().getResource("html/7733.en.7733.html");
+//		String path = url.getPath();
+//
+//		File file = new File(path);
+//
+//		BufferedReader br = new BufferedReader(new FileReader(file));
+//
+//		StringBuffer htmlBuffer = new StringBuffer(1024 * 8);
+//
+//		String line = null;
+//		while ((line = br.readLine()) != null) {
+//			htmlBuffer.append(line).append("\n");
+//		}
+//		br.close();
+//
+		String input = "JavaScript function";
+//		htmlHighlight(htmlBuffer.toString(), buildPatternString(input));
 		
-//		String text = "The purpose of jQuery is to make it much easier to use JavaScript on your website";
-//		System.out.println(textHighlight(htmlBuffer.toString(), buildPatternString(input)));
+		String text = "The purpose of jQuery is to make it much easier to use JavaScript function on your website function";
+		System.out.println(textHighlight(text, buildPatternString(input)));
 	}
 
 	public void htmlHighlight(String html, String patternString) {
 
-		String regex = "(>\r\n|>\n|>)(.*?)(\r\n<|\n<|<)";
+		String regex = "((?<=>)|^)[^<>]+";
 		Pattern patternTag = null;
 		Matcher matcherTag = null;
 		patternTag = Pattern.compile(regex);
@@ -233,13 +233,19 @@ public class TocTest {
 		StringBuffer buffer = new StringBuffer(1024 * 8);
 
 		while (matcherTag.find()) {
-			String startTag = matcherTag.group(1);
-			String text = matcherTag.group(2); // tag content
-			String endTag = matcherTag.group(3);
+//			String startTag = matcherTag.group(1);
+//			String text = matcherTag.group(2); // tag content
+//			String endTag = matcherTag.group(3);
 
-			if (text.length() > 0) {
-//				System.out.println(text);
-				matcherTag.appendReplacement(buffer, startTag + textHighlight(text, patternString) + endTag);
+//			if (text.length() > 0) {
+////				System.out.println(text);
+//				matcherTag.appendReplacement(buffer, startTag + textHighlight(text, patternString) + endTag);
+//			}
+			
+//			System.out.println(matcherTag.group());
+			String text = matcherTag.group();
+			if(!text.equals("") && !text.equals("\n") ){
+				matcherTag.appendReplacement(buffer, textHighlight(text, patternString));
 			}
 		}
 		matcherTag.appendTail(buffer);
@@ -275,7 +281,11 @@ public class TocTest {
 		for (String keyword : keywords) {
 			// buffer.append("[ ]("+ keyword + ".*?)[ ]|");
 			buffer.append("^((?i)" + keyword + ".*?)\\W|\\W((?i)" + keyword
-					+ ".*?)\\W|");
+					+ ".*?)\\W|^((?i)" + keyword + ".*?)$|\\W((?i)" + keyword + ".*?)$|");
+//			buffer
+//				.append("(?i)((?<=\\W)|^)")
+//				.append(keyword)
+//				.append("[^\\s]+|");
 		}
 
 		String patternString = buffer.toString();

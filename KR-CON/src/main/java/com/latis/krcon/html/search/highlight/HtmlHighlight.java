@@ -44,67 +44,67 @@ public class HtmlHighlight {
 	public HtmlHighlight() {
 	}
 
-	public String highlightHTML(Analyzer analyzer, String htmlText,
-			Query query, String field) {
-
-		QueryScorer scorer = new QueryScorer(query, field);
-
-		SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(
-				this.highlightStartTag, this.highlightEndTag);
-
-		Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
-
-		// Nullfragmenter for highlighting entire document.
-		highlighter.setTextFragmenter(new NullFragmenter());
-
-		StringReader strReader = new StringReader(htmlText);
-		TokenStream ts = analyzer.tokenStream(
-				field,
-				new HTMLStripCharFilter(CharReader.get(strReader
-						.markSupported() ? strReader : new BufferedReader(
-						strReader))));
-
-		try {
-
-			String highlightedText = highlighter.getBestFragment(ts, htmlText);
-
-			if (highlightedText != null) {
-				return highlightedText;
-			}
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			// LOG.error("Failed to highlight query string "+ query, e);
-		}
-
-		return htmlText;
-
-	}
-
-	public String getHighlightHTML(Analyzer analyzer, String text,
-			String field, String andWordSearch, String orWordSearch,
-			String exact, String non) throws CorruptIndexException,
-			IOException, ParseException {
-		String result = null;
-		//
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(andWordSearch).append(" ").append(orWordSearch)
-				.append(" ").append(exact).append(" ").append(non);
-		Query query = buildQuery.totalSearchBuildQuery(analyzer, field,
-				buffer.toString(), null, null, null);
-		result = highlightHTML(analyzer, text, query, field);
-		return result;
-	}
-
-	public String getHighlightHTML(Analyzer analyzer, String text,
-			String field, String queryStr) throws CorruptIndexException,
-			IOException, ParseException {
-		String result = null;
-		Query query = buildQuery.totalSearchBuildQuery(analyzer, field,
-				queryStr, null, null, null);
-		result = highlightHTML(analyzer, text, query, field);
-		return result;
-	}
+//	public String highlightHTML(Analyzer analyzer, String htmlText,
+//			Query query, String field) {
+//
+//		QueryScorer scorer = new QueryScorer(query, field);
+//
+//		SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter(
+//				this.highlightStartTag, this.highlightEndTag);
+//
+//		Highlighter highlighter = new Highlighter(htmlFormatter, scorer);
+//
+//		// Nullfragmenter for highlighting entire document.
+//		highlighter.setTextFragmenter(new NullFragmenter());
+//
+//		StringReader strReader = new StringReader(htmlText);
+//		TokenStream ts = analyzer.tokenStream(
+//				field,
+//				new HTMLStripCharFilter(CharReader.get(strReader
+//						.markSupported() ? strReader : new BufferedReader(
+//						strReader))));
+//
+//		try {
+//
+//			String highlightedText = highlighter.getBestFragment(ts, htmlText);
+//
+//			if (highlightedText != null) {
+//				return highlightedText;
+//			}
+//
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//			// LOG.error("Failed to highlight query string "+ query, e);
+//		}
+//
+//		return htmlText;
+//
+//	}
+//
+//	public String getHighlightHTML(Analyzer analyzer, String text,
+//			String field, String andWordSearch, String orWordSearch,
+//			String exact, String non) throws CorruptIndexException,
+//			IOException, ParseException {
+//		String result = null;
+//		//
+//		StringBuffer buffer = new StringBuffer();
+//		buffer.append(andWordSearch).append(" ").append(orWordSearch)
+//				.append(" ").append(exact).append(" ").append(non);
+//		Query query = buildQuery.totalSearchBuildQuery(analyzer, field,
+//				buffer.toString(), null, null, null);
+//		result = highlightHTML(analyzer, text, query, field);
+//		return result;
+//	}
+//
+//	public String getHighlightHTML(Analyzer analyzer, String text,
+//			String field, String queryStr) throws CorruptIndexException,
+//			IOException, ParseException {
+//		String result = null;
+//		Query query = buildQuery.totalSearchBuildQuery(analyzer, field,
+//				queryStr, null, null, null);
+//		result = highlightHTML(analyzer, text, query, field);
+//		return result;
+//	}
 
 	public String substringHighlight(String highlight) {
 		int offset = highlight.indexOf(highlightStartTag);
@@ -137,7 +137,7 @@ public class HtmlHighlight {
 
 	public String htmlHighlight(String html, String patternString) {
 		// System.out.println(html);
-		String regex = "(<.*?>)(.*?)(<.*?>)";
+		String regex = "((?<=>)|^)[^<>]+";
 		Pattern patternTag = null;
 		Matcher matcherTag = null;
 		patternTag = Pattern.compile(regex);
@@ -145,13 +145,15 @@ public class HtmlHighlight {
 		StringBuffer buffer = new StringBuffer(1024 * 8);
 
 		while (matcherTag.find()) {
-			String startTag = matcherTag.group(1);
-			String text = matcherTag.group(2); // tag content
-			String endTag = matcherTag.group(3);
+//			String startTag = matcherTag.group(1);
+//			String text = matcherTag.group(2); // tag content
+//			String endTag = matcherTag.group(3);
 
-			if (text.length() > 0) {
-				matcherTag.appendReplacement(buffer,
-						startTag + textHighlight(text, patternString) + endTag);
+			
+			
+			String text = matcherTag.group();
+			if(!text.equals("") && !text.equals("\n") ){
+				matcherTag.appendReplacement(buffer, textHighlight(text, patternString));
 			}
 		}
 		matcherTag.appendTail(buffer);
@@ -188,7 +190,7 @@ public class HtmlHighlight {
 			// buffer.append("[ ]("+ keyword + ".*?)[ ]|");
 
 			buffer.append("^((?i)" + keyword + ".*?)\\W|\\W((?i)" + keyword
-					+ ".*?)\\W|");
+					+ ".*?)\\W|^((?i)" + keyword + ".*?)$|\\W((?i)" + keyword + ".*?)$|");
 		}
 
 		String patternString = buffer.toString();
