@@ -17,9 +17,20 @@ PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://
 		<put-attribute name="footer"   value="/WEB-INF/views/base/footer/footer.jsp"/>
 	</definition>
 	
+	<definition name="commonAdminPage2" extends="base">
+		<put-attribute name="header"   value="/WEB-INF/views/base/header/header2.jsp"/> 
+		<put-attribute name="left"   value="/WEB-INF/views/base/left/toc2.jsp"/>
+		<put-attribute name="footer"   value="/WEB-INF/views/base/footer/footer.jsp"/>
+	</definition>
+	
+	
 	<definition name="content" extends="commonAdminPage">
 		<put-attribute name="right"   value="/WEB-INF/views/base/right/content.jsp"/>
 	</definition>
+	<definition name="content2" extends="base">
+		<put-attribute name="header"   value="/WEB-INF/views/base/header/header2.jsp"/> 
+	</definition>
+	
 	
 	<definition name="frameContent" extends="base">
 		<put-attribute name="right"   value="/WEB-INF/views/base/right/frameContent.jsp"/>

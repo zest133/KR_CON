@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +13,12 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -197,6 +204,23 @@ public class TocTest {
 
 //		System.out.println("----------" + text);
 	};
+	
+	
+	@Test
+	public void test2() throws ParseException, IOException{
+		EngSimpleAnalyzer anal = new EngSimpleAnalyzer(Version.LUCENE_36);
+		TokenStream stream = anal.tokenStream("dddd", new StringReader(
+				"Test Exams Safies"));
+		CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
+		while (stream.incrementToken()) { // C
+//			buffer.append("+");
+			// buffer.append(field);
+			// buffer.append(":");
+			System.out.println("dddddddddd==>"+term.toString());
+//			buffer.append(term.toString()).append("* ");
+		}
+//		Query query = new QueryParser(Version.LUCENE_36, "test", anal).parse("(+cross +section )");
+	}
 
 	@Test
 	public void test() throws IOException {
@@ -294,4 +318,9 @@ public class TocTest {
 	}
 	
 	
+	
+	@Test
+	public void test2222(){
+		
+	}
 }

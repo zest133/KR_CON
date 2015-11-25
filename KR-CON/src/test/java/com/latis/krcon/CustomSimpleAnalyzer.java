@@ -16,6 +16,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.ReusableAnalyzerBase.TokenStreamComponents;
 import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.en.EnglishMinimalStemFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
@@ -40,12 +41,13 @@ public class CustomSimpleAnalyzer extends ReusableAnalyzerBase {
 //		WhitespaceTokenizer tokenStream = new WhitespaceTokenizer(version,
 //				reader);
 		CustomTokenizer tokenStream = new CustomTokenizer(version,reader); 
+		
 		CharTermAttribute term = tokenStream
 				.addAttribute(CharTermAttribute.class);
 		try {
 			while(tokenStream.incrementToken()){
 				System.out.println(term.toString());
-				break;
+//				break;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -58,7 +60,7 @@ public class CustomSimpleAnalyzer extends ReusableAnalyzerBase {
 		Set mySet = new HashSet(Arrays.asList(MY_WORDS));
 
 		result = new StopFilter(version, result, mySet);
-		
+		EnglishMinimalStemFilter filter = new EnglishMinimalStemFilter(tokenStream);
 
 		return new TokenStreamComponents(tokenStream, result);
 //		return result;

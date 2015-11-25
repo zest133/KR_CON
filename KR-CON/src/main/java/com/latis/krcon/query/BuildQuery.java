@@ -2,6 +2,8 @@ package com.latis.krcon.query;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -39,6 +41,7 @@ public class BuildQuery {
 				}
 			}
 		}
+		
 
 		if (orSearch != null && !orSearch.isEmpty()){
 			
@@ -215,7 +218,7 @@ public class BuildQuery {
 	
 	public String highlightQuery(Analyzer analyzer, String[] searchWords) throws IOException{
 		
-		StringBuffer termBuffer = null;
+		StringBuffer termBuffer = new StringBuffer();
 		
 		for(String word : searchWords ){
 			
@@ -226,9 +229,9 @@ public class BuildQuery {
 			CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
 			
 			while (stream.incrementToken()) { // C
-				if(termBuffer == null){
-					termBuffer = new StringBuffer();
-				}
+//				if(termBuffer == null){
+//					termBuffer = new StringBuffer();
+//				}
 				termBuffer.append(term.toString()).append(" ");
 			}
 		}

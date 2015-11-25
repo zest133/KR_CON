@@ -30,6 +30,54 @@ public class CategoryController {
 				.toString();
 		return returnVal;
 	}
+	
+	@RequestMapping(value = "/root_category2.do")
+	public @ResponseBody String getRootCategory2() {
+		String returnVal = categorySearchDAO.getRootCategory().toString();
+		String temp = "{																																	"+
+				"    \"folders\": [                                                 "+
+				"        {                                                          "+
+				"            \"name\": \"Folder 1\",                                "+
+				"            \"files\": [                                           "+
+				"                {                                                  "+
+				"                    \"name\": \"File 1.jpg\"                       "+
+				"                },                                                 "+
+				"                {                                                  "+
+				"                    \"name\": \"File 2.png\"                       "+
+				"                }                                                  "+
+				"            ],                                                     "+
+				"            \"folders\": [                                         "+
+				"                {                                                  "+
+				"                    \"name\": \"Subfolder 1\",                     "+
+				"                    \"files\": [                                   "+
+				"                        {                                          "+
+				"                            \"name\": \"Subfile 1.txt\"            "+
+				"                        }                                          "+
+				"                    ]                                              "+
+				"                },                                                 "+
+				"                {                                                  "+
+				"                    \"name\": \"Subfolder 2\"                      "+
+				"                },                                                 "+
+				"                {                                                  "+
+				"                    \"name\": \"Subfolder 3\"                      "+
+				"                }                                                  "+
+				"            ]                                                      "+
+				"        }                                                         "+
+				
+				"    ],                                                             "+
+				"    \"files\": [                                                   "+
+				"        {                                                          "+
+				"            \"name\": \"File 1.gif\"                               "+
+				"        },                                                         "+
+				"        {                                                          "+
+				"            \"name\": \"File 2.gif\"                               "+
+				"        }                                                          "+
+				"    ]                                                              "+
+				"}                                                                  ";
+		return temp;
+	}
+	
+	
 
 //	@RequestMapping(value = "{categoryTree}/{highlightQuery}/current_html.do")
 //	public String getCurrentCategoryHTML(

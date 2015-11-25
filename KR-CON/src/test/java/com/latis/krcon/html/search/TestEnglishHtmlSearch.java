@@ -17,6 +17,7 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.index.TermPositionVector;
 import org.apache.lucene.index.TermVectorOffsetInfo;
@@ -26,10 +27,13 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.QueryTermVector;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.NullFragmenter;
@@ -71,6 +75,7 @@ public class TestEnglishHtmlSearch {
 	@Value("${textField}")
 	private String textField;
 
+	
 	@Value("${htmlField}")
 	private String htmlField;
 
@@ -98,6 +103,7 @@ public class TestEnglishHtmlSearch {
 
 	@Before
 	public void setup() throws IOException {
+		textField = "text";
 		dir = FSDirectory.open(new File(dirPath));
 		reader = IndexReader.open(dir);
 		searcher = new IndexSearcher(reader);
@@ -109,10 +115,73 @@ public class TestEnglishHtmlSearch {
 		reader.close();
 	}
 
+	
+	@Test
+	public void testHtmlBasicSearchData() {
+		String andWordSearch = "cross";
+		
+		if (andWordSearch != null && andWordSearch != "") {
+				try {
+					searchIndex(andWordSearch, textField);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+
+		}
+		
+	}
+	
+	@Test
+	public void testHtmlBasicSearchData2() {
+		String andWordSearch = "cross sectional";
+		
+		if (andWordSearch != null && andWordSearch != "") {
+				try {
+//					searchIndex(andWordSearch, textField);
+					String queryStr = tempAndAnalyze(andWordSearch.split(" "), "text");
+					Query andQuery = new QueryParser(Version.LUCENE_36, "text",
+							new StandardAnalyzer(Version.LUCENE_36)).parse(queryStr); // #B
+					
+					TopDocs hits = searcher.search(andQuery, searcher.maxDoc());
+					dumpHits(searcher, hits, "text");
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+
+		}
+		
+	}
+	
+	
+	
+	public void searchIndex(String searchString, String field) throws ParseException, IOException  {
+		System.out.println("\nSearching for '" + searchString + "' using QueryParser");
+
+		QueryParser queryParser = new QueryParser(Version.LUCENE_36, field, new StandardAnalyzer(Version.LUCENE_36));
+		Query query = queryParser.parse(searchString);
+		System.out.println("Type of query: " + query.getClass().getSimpleName());
+		TopDocs hits = searcher.search(query, searcher.maxDoc());
+		dumpHits(searcher, hits, field);
+
+	}
+	
+	
+	
+	
 	@Test
 	public void testHtmlSearchData() {
 		// Query allCategoryQuery = new MatchAllDocsQuery();
-		String andWordSearch = "cross-sectional";
+		String andWordSearch = "cross sectional";
 		String orWordSearch = "Wireless network setup";
 		String exactWordSearch = "\"cross-sectional\"";
 		String notWordSearch = "Wireless network setup";
@@ -328,14 +397,14 @@ public class TestEnglishHtmlSearch {
 
 		BooleanQuery booleanQuery = new BooleanQuery();
 
-//		if (andSearch != null && andSearch != "") {
-//			String andQueryStr = andAnalyze(andSearch, fieldName,
-//					englishAnalyzer);
-//			Query andQuery = new QueryParser(Version.LUCENE_36, fieldName,
-//					englishAnalyzer).parse(andQueryStr); // #B
-//
-//			booleanQuery.add(andQuery, BooleanClause.Occur.MUST);
-//		}
+		if (andSearch != null && andSearch != "") {
+			String andQueryStr = andAnalyze(andSearch, fieldName,
+					englishAnalyzer);
+			Query andQuery = new QueryParser(Version.LUCENE_36, fieldName,
+					englishAnalyzer).parse(andQueryStr); // #B
+
+			booleanQuery.add(andQuery, BooleanClause.Occur.MUST);
+		}
 //
 //		if (orSearch != null && orSearch != "") {
 //			String orQueryStr = orAnalyze(orSearch, fieldName, englishAnalyzer);
@@ -450,6 +519,28 @@ public class TestEnglishHtmlSearch {
 		}
 		return docList;
 	}
+	
+	
+	public String tempAndAnalyze(String string[], String field)
+			throws IOException {
+		StringBuffer buffer = new StringBuffer();
+
+		buffer.append("(");
+		for(String str : string){
+				buffer.append("+");
+				// buffer.append(field);
+				// buffer.append(":");
+				buffer.append(str).append(" ");
+			
+		}
+		
+		buffer.append(")");
+
+
+
+		return buffer.toString();
+	}
+	
 
 	public String andAnalyze(String string, String field, Analyzer analyzer)
 			throws IOException {
