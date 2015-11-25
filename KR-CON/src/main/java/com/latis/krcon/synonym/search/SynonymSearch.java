@@ -34,6 +34,7 @@ public class SynonymSearch {
 	private Directory dir;
 	private IndexReader reader;
 	
+	
 //	@Autowired
 //	private CustomKeywordAnalyzer analyzer;
 	
